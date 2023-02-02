@@ -1,0 +1,5 @@
+query GetForumPostsCount($where: ForumPostWhereInput) {
+  forumPostsConnection(first: 0, where: $where) {
+    totalCount
+  }
+}

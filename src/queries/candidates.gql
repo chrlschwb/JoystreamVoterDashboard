@@ -1,0 +1,5 @@
+query GetCandidatesCount($where: CandidateWhereInput) {
+  candidatesConnection(first: 0, where: $where) {
+    totalCount
+  }
+}

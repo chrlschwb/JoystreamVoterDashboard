@@ -1,0 +1,78 @@
+query GetChannels(
+  $where: ChannelWhereInput
+  $orderBy: [ChannelOrderByInput!]
+  $offset: Int
+  $limit: Int
+) {
+  channels(where: $where, orderBy: $orderBy, offset: $offset, limit: $limit) {
+    ...FullChannelFields
+  }
+}
+
+query GetChannelsCount($where: ChannelWhereInput) {
+  channelsConnection(where: $where) {
+    totalCount
+  }
+}
+
+fragment FullChannelFields on Channel {
+  ...BasicChannelFields
+  activeVideosCounter
+  description
+  isPublic
+  isCensored
+  language {
+    id
+    iso
+  }
+  ownerMember {
+    ...BasicMembershipFields
+  }
+  coverPhoto {
+    ...StorageDataObjectFields
+  }
+}
+
+fragment BasicMembershipFields on Membership {
+  id
+  handle
+  metadata {
+    avatar {
+      ... on AvatarObject {
+        avatarObject {
+          ...StorageDataObjectFields
+        }
+      }
+      ... on AvatarUri {
+        avatarUri
+      }
+    }
+    about
+  }
+}
+
+fragment BasicChannelFields on Channel {
+  id
+  title
+  createdAt
+  rewardAccount
+  channelStateBloatBond
+
+  avatarPhoto {
+    ...StorageDataObjectFields
+  }
+}
+
+fragment StorageDataObjectFields on StorageDataObject {
+  id
+  createdAt
+  size
+  isAccepted
+  ipfsHash
+  storageBag {
+    id
+  }
+  type {
+    __typename
+  }
+}

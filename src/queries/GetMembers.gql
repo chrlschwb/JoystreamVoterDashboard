@@ -25,13 +25,13 @@ query GetMembers(
   }
 }
 
-query GetnvitedMembersCount($where: MemberInvitedEventWhereInput) {
+query GetInvitedMembersCount($where: MemberInvitedEventWhereInput) {
   memberInvitedEventsConnection(where: $where) {
     totalCount
   }
 }
 
-query GetnvitedMembers(
+query GetInvitedMembers(
   $where: MemberInvitedEventWhereInput
   $orderBy: [MemberInvitedEventOrderByInput!]
   $offset: Int

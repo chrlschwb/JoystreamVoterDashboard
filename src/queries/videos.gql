@@ -1,0 +1,40 @@
+query GetVideoCount($where: VideoWhereInput) {
+  videosConnection(first: 0, where: $where) {
+    totalCount
+  }
+}
+
+query GetVideos(
+  $whereVideo: VideoWhereInput
+  $whereChannel: ChannelWhereInput
+  $skip: Int = 0
+  $limit: Int = 5
+  $text: String!
+) {
+  search(
+    whereVideo: $whereVideo
+    whereChannel: $whereChannel
+    skip: $skip
+    limit: $limit
+    text: $text
+  ) {
+    rank
+    item {
+      __typename
+
+      ... on Channel {
+        ...BasicChannelFields
+      }
+
+      ... on Video {
+        ...BasicVideoFields
+      }
+    }
+  }
+}
+
+fragment BasicVideoFields on Video {
+  id
+  title
+  createdAt
+}

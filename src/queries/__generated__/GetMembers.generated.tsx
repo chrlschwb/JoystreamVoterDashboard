@@ -20,14 +20,24 @@ export type GetMembersQueryVariables = Types.Exact<{
 
 export type GetMembersQuery = { __typename: 'Query', memberships: Array<{ __typename: 'Membership', id: string, rootAccount: string, controllerAccount: string, boundAccounts: Array<string>, handle: string, isVerified: boolean, isFoundingMember: boolean, isCouncilMember: boolean, inviteCount: number, createdAt: any, metadata: { __typename: 'MemberMetadata', name?: string | null, about?: string | null, avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri', avatarUri: string } | null }, roles: Array<{ __typename: 'Worker', id: string, createdAt: any, isLead: boolean, group: { __typename: 'WorkingGroup', name: string } }>, stakingaccountaddedeventmember?: Array<{ __typename: 'StakingAccountAddedEvent', createdAt: any, inBlock: number, network: Types.Network, account: string }> | null }> };
 
-export type MemberFieldsFragment = { __typename: 'Membership', id: string, rootAccount: string, controllerAccount: string, boundAccounts: Array<string>, handle: string, isVerified: boolean, isFoundingMember: boolean, isCouncilMember: boolean, inviteCount: number, createdAt: any, metadata: { __typename: 'MemberMetadata', name?: string | null, about?: string | null, avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri', avatarUri: string } | null }, roles: Array<{ __typename: 'Worker', id: string, createdAt: any, isLead: boolean, group: { __typename: 'WorkingGroup', name: string } }>, stakingaccountaddedeventmember?: Array<{ __typename: 'StakingAccountAddedEvent', createdAt: any, inBlock: number, network: Types.Network, account: string }> | null };
-
-export type GetnvitedMembersCountQueryVariables = Types.Exact<{
+export type GetInvitedMembersCountQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.MemberInvitedEventWhereInput>;
 }>;
 
 
-export type GetnvitedMembersCountQuery = { __typename: 'Query', memberInvitedEventsConnection: { __typename: 'MemberInvitedEventConnection', totalCount: number } };
+export type GetInvitedMembersCountQuery = { __typename: 'Query', memberInvitedEventsConnection: { __typename: 'MemberInvitedEventConnection', totalCount: number } };
+
+export type GetInvitedMembersQueryVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.MemberInvitedEventWhereInput>;
+  orderBy?: Types.InputMaybe<Array<Types.MemberInvitedEventOrderByInput> | Types.MemberInvitedEventOrderByInput>;
+  offset?: Types.InputMaybe<Types.Scalars['Int']>;
+  limit?: Types.InputMaybe<Types.Scalars['Int']>;
+}>;
+
+
+export type GetInvitedMembersQuery = { __typename: 'Query', memberInvitedEvents: Array<{ __typename: 'MemberInvitedEvent', id: string, createdAt: any, invitingMember: { __typename: 'Membership', id: string, rootAccount: string, controllerAccount: string, boundAccounts: Array<string>, handle: string, isVerified: boolean, isFoundingMember: boolean, isCouncilMember: boolean, inviteCount: number, createdAt: any, metadata: { __typename: 'MemberMetadata', name?: string | null, about?: string | null, avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri', avatarUri: string } | null }, roles: Array<{ __typename: 'Worker', id: string, createdAt: any, isLead: boolean, group: { __typename: 'WorkingGroup', name: string } }>, stakingaccountaddedeventmember?: Array<{ __typename: 'StakingAccountAddedEvent', createdAt: any, inBlock: number, network: Types.Network, account: string }> | null }, newMember: { __typename: 'Membership', id: string, rootAccount: string, controllerAccount: string, boundAccounts: Array<string>, handle: string, isVerified: boolean, isFoundingMember: boolean, isCouncilMember: boolean, inviteCount: number, createdAt: any, metadata: { __typename: 'MemberMetadata', name?: string | null, about?: string | null, avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri', avatarUri: string } | null }, roles: Array<{ __typename: 'Worker', id: string, createdAt: any, isLead: boolean, group: { __typename: 'WorkingGroup', name: string } }>, stakingaccountaddedeventmember?: Array<{ __typename: 'StakingAccountAddedEvent', createdAt: any, inBlock: number, network: Types.Network, account: string }> | null } }> };
+
+export type MemberFieldsFragment = { __typename: 'Membership', id: string, rootAccount: string, controllerAccount: string, boundAccounts: Array<string>, handle: string, isVerified: boolean, isFoundingMember: boolean, isCouncilMember: boolean, inviteCount: number, createdAt: any, metadata: { __typename: 'MemberMetadata', name?: string | null, about?: string | null, avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri', avatarUri: string } | null }, roles: Array<{ __typename: 'Worker', id: string, createdAt: any, isLead: boolean, group: { __typename: 'WorkingGroup', name: string } }>, stakingaccountaddedeventmember?: Array<{ __typename: 'StakingAccountAddedEvent', createdAt: any, inBlock: number, network: Types.Network, account: string }> | null };
 
 export const MemberFieldsFragmentDoc = gql`
     fragment MemberFields on Membership {
@@ -148,8 +158,8 @@ export function useGetMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetMembersQueryHookResult = ReturnType<typeof useGetMembersQuery>;
 export type GetMembersLazyQueryHookResult = ReturnType<typeof useGetMembersLazyQuery>;
 export type GetMembersQueryResult = Apollo.QueryResult<GetMembersQuery, GetMembersQueryVariables>;
-export const GetnvitedMembersCountDocument = gql`
-    query GetnvitedMembersCount($where: MemberInvitedEventWhereInput) {
+export const GetInvitedMembersCountDocument = gql`
+    query GetInvitedMembersCount($where: MemberInvitedEventWhereInput) {
   memberInvitedEventsConnection(where: $where) {
     totalCount
   }
@@ -157,29 +167,79 @@ export const GetnvitedMembersCountDocument = gql`
     `;
 
 /**
- * __useGetnvitedMembersCountQuery__
+ * __useGetInvitedMembersCountQuery__
  *
- * To run a query within a React component, call `useGetnvitedMembersCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetnvitedMembersCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetInvitedMembersCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInvitedMembersCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetnvitedMembersCountQuery({
+ * const { data, loading, error } = useGetInvitedMembersCountQuery({
  *   variables: {
  *      where: // value for 'where'
  *   },
  * });
  */
-export function useGetnvitedMembersCountQuery(baseOptions?: Apollo.QueryHookOptions<GetnvitedMembersCountQuery, GetnvitedMembersCountQueryVariables>) {
+export function useGetInvitedMembersCountQuery(baseOptions?: Apollo.QueryHookOptions<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetnvitedMembersCountQuery, GetnvitedMembersCountQueryVariables>(GetnvitedMembersCountDocument, options);
+        return Apollo.useQuery<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>(GetInvitedMembersCountDocument, options);
       }
-export function useGetnvitedMembersCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetnvitedMembersCountQuery, GetnvitedMembersCountQueryVariables>) {
+export function useGetInvitedMembersCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetnvitedMembersCountQuery, GetnvitedMembersCountQueryVariables>(GetnvitedMembersCountDocument, options);
+          return Apollo.useLazyQuery<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>(GetInvitedMembersCountDocument, options);
         }
-export type GetnvitedMembersCountQueryHookResult = ReturnType<typeof useGetnvitedMembersCountQuery>;
-export type GetnvitedMembersCountLazyQueryHookResult = ReturnType<typeof useGetnvitedMembersCountLazyQuery>;
-export type GetnvitedMembersCountQueryResult = Apollo.QueryResult<GetnvitedMembersCountQuery, GetnvitedMembersCountQueryVariables>;
+export type GetInvitedMembersCountQueryHookResult = ReturnType<typeof useGetInvitedMembersCountQuery>;
+export type GetInvitedMembersCountLazyQueryHookResult = ReturnType<typeof useGetInvitedMembersCountLazyQuery>;
+export type GetInvitedMembersCountQueryResult = Apollo.QueryResult<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>;
+export const GetInvitedMembersDocument = gql`
+    query GetInvitedMembers($where: MemberInvitedEventWhereInput, $orderBy: [MemberInvitedEventOrderByInput!], $offset: Int, $limit: Int) {
+  memberInvitedEvents(
+    where: $where
+    orderBy: $orderBy
+    offset: $offset
+    limit: $limit
+  ) {
+    id
+    createdAt
+    invitingMember {
+      ...MemberFields
+    }
+    newMember {
+      ...MemberFields
+    }
+  }
+}
+    ${MemberFieldsFragmentDoc}`;
+
+/**
+ * __useGetInvitedMembersQuery__
+ *
+ * To run a query within a React component, call `useGetInvitedMembersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInvitedMembersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInvitedMembersQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetInvitedMembersQuery(baseOptions?: Apollo.QueryHookOptions<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>(GetInvitedMembersDocument, options);
+      }
+export function useGetInvitedMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>(GetInvitedMembersDocument, options);
+        }
+export type GetInvitedMembersQueryHookResult = ReturnType<typeof useGetInvitedMembersQuery>;
+export type GetInvitedMembersLazyQueryHookResult = ReturnType<typeof useGetInvitedMembersLazyQuery>;
+export type GetInvitedMembersQueryResult = Apollo.QueryResult<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>;

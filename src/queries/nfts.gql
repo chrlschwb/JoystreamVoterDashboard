@@ -1,0 +1,5 @@
+query GetOwnedNftsCount($where: OwnedNftWhereInput) {
+  ownedNftsConnection(first: 0, where: $where) {
+    totalCount
+  }
+}
