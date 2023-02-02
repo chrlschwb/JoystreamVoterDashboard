@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { CouncilSelect } from '@/components';
-import { ElectedCouncil } from '@/types';
+import { useSelectedCouncil } from '@/store';
 
 export default function Home() {
-  const [council, setCouncil] = useState<ElectedCouncil | undefined>(undefined);
+  const { council, setCouncil } = useSelectedCouncil();
 
   return (
     <div>

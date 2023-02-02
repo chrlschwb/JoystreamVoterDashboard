@@ -21,54 +21,46 @@ const SingleValue = (singleValueProps: SingleValueProps<ElectedCouncil>) => {
 
 const Option = (optionProps: OptionProps<ElectedCouncil>) => {
   const { data } = optionProps;
+  console.log(optionProps);
   return <components.Option {...optionProps}>{data.id}</components.Option>;
 };
 
 export default function CouncilSelect({ council, onChange }: CouncilSelectProps) {
   const { data } = useElectedCouncils({});
 
-  const styles: StylesConfig<ElectedCouncil, false> = {
-    control: (provided) => ({
-      ...provided,
+  // const styles: StylesConfig<ElectedCouncil, false> = {
+  //   option: (provided, state) => ({
+  //     ...provided,
+  //     background: state.isSelected ? 'red' : 'transpared',
+  //     fontFamily: 'Inter',
+  //     cursor: 'pointer',
+  //   }),
+  //   input: (base) => ({
+  //     ...base,
+  //   }),
 
-      border: 0,
+  //   indicatorSeparator: () => ({ display: 'none' }),
+  //   dropdownIndicator: (provided, state) => ({
+  //     ...provided,
 
-      boxShadow: 'none',
-      cursor: 'pointer',
-    }),
-    option: (provided) => ({
-      ...provided,
+  //     transition: '0.5s',
+  //     transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+  //   }),
+  //   menu: (provided) => ({
+  //     ...provided,
+  //     background: 'transparent',
+  //   }),
+  //   menuList: (provided) => ({
+  //     ...provided,
 
-      fontFamily: 'Inter',
-
-      cursor: 'pointer',
-    }),
-    input: (base) => ({
-      ...base,
-    }),
-
-    indicatorSeparator: () => ({ display: 'none' }),
-    dropdownIndicator: (provided, state) => ({
-      ...provided,
-
-      transition: '0.5s',
-      transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-    }),
-    menu: (provided) => ({
-      ...provided,
-      background: 'transparent',
-    }),
-    menuList: (provided) => ({
-      ...provided,
-
-      borderRadius: '7px',
-    }),
-    valueContainer: (base) => ({
-      ...base,
-      fontFamily: 'Inter',
-      minWidth: '100px',
-    }),
-  };
+  //     borderRadius: '7px',
+  //   }),
+  //   valueContainer: (base) => ({
+  //     ...base,
+  //     fontFamily: 'Inter',
+  //     minWidth: '100px',
+  //   }),
+  // };
 
   return (
     <form>
@@ -76,9 +68,9 @@ export default function CouncilSelect({ council, onChange }: CouncilSelectProps)
         <label htmlFor="council">Councils</label>
         <Select
           id="council"
-          styles={styles}
-          options={data}
+          // styles={styles}
           isMulti={false}
+          options={data}
           value={council}
           onChange={(council) => onChange?.(council !== null ? council : undefined)}
           components={{ SingleValue, Option }}
