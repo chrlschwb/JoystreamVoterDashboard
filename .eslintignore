@@ -1,4 +1,6 @@
 .eslintrc.js
 vite.config.ts
+postcss.config.js
+tailwind.config.js
 **/__generated__/**/*.ts
 **/__generated__/**/*.tsx

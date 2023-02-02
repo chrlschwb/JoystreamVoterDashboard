@@ -18,6 +18,9 @@ fragment ElectedCouncilFields on ElectedCouncil {
   endedAtTime
   electedAtNetwork
   endedAtNetwork
+  councilElections {
+    cycleId
+  }
   councilMembers {
     ...CouncilMemberFields
   }
