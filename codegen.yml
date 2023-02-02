@@ -1,0 +1,28 @@
+overwrite: true
+
+schema: "https://query.joystream.org/graphql"
+
+documents:
+  - "./src/queries/**/*.gql"
+
+config:
+  scalars:
+    Date: Date
+    BigInt: string
+    Float: string
+  preResolveTypes: true # avoid using Pick
+  nonOptionalTypename: true
+
+generates:
+  src/queries/__generated__/baseTypes.generated.ts:
+    plugins:
+      - typescript
+  src/queries/__generated__/:
+    preset: near-operation-file
+    presetConfig:
+      baseTypesPath: baseTypes.generated.ts
+      folder: __generated__
+      extension: .generated.tsx
+    plugins:
+      - typescript-operations
+      - typescript-react-apollo
