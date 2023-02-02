@@ -1,0 +1,98 @@
+# Memberships: #created, #invited and #total at end of period.
+
+# Created Count
+query GetMembersCount($where: MembershipWhereInput) {
+  membershipsConnection(where: $where) {
+    totalCount
+    __typename
+  }
+}
+
+query GetMembers(
+  $where: MembershipWhereInput
+  $orderBy: [MembershipOrderByInput!]
+  $offset: Int
+  $limit: Int
+) {
+  memberships(
+    where: $where
+    orderBy: $orderBy
+    offset: $offset
+    limit: $limit
+  ) {
+    ...MemberFields
+    __typename
+  }
+}
+
+query GetnvitedMembersCount($where: MemberInvitedEventWhereInput) {
+  memberInvitedEventsConnection(where: $where) {
+    totalCount
+  }
+}
+
+query GetnvitedMembers(
+  $where: MemberInvitedEventWhereInput
+  $orderBy: [MemberInvitedEventOrderByInput!]
+  $offset: Int
+  $limit: Int
+) {
+  memberInvitedEvents(
+    where: $where
+    orderBy: $orderBy
+    offset: $offset
+    limit: $limit
+  ) {
+    id
+    createdAt
+    invitingMember {
+      ...MemberFields
+    }
+    newMember {
+      ...MemberFields
+    }
+  }
+}
+
+fragment MemberFields on Membership {
+  id
+  rootAccount
+  controllerAccount
+  boundAccounts
+  handle
+  metadata {
+    name
+    about
+    avatar {
+      __typename
+      ... on AvatarUri {
+        avatarUri
+        __typename
+      }
+    }
+    __typename
+  }
+  isVerified
+  isFoundingMember
+  isCouncilMember
+  inviteCount
+  roles {
+    id
+    group {
+      name
+      __typename
+    }
+    createdAt
+    isLead
+    __typename
+  }
+  createdAt
+  stakingaccountaddedeventmember {
+    createdAt
+    inBlock
+    network
+    account
+    __typename
+  }
+  __typename
+}
