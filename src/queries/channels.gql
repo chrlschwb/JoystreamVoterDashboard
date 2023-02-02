@@ -1,9 +1,4 @@
-query GetChannels(
-  $where: ChannelWhereInput
-  $orderBy: [ChannelOrderByInput!]
-  $offset: Int
-  $limit: Int
-) {
+query GetChannels($where: ChannelWhereInput, $orderBy: [ChannelOrderByInput!], $offset: Int, $limit: Int) {
   channels(where: $where, orderBy: $orderBy, offset: $offset, limit: $limit) {
     ...FullChannelFields
   }

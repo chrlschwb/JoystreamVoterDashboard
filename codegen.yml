@@ -1,9 +1,9 @@
 overwrite: true
 
-schema: "https://query.joystream.org/graphql"
+schema: 'https://query.joystream.org/graphql'
 
 documents:
-  - "./src/queries/**/*.gql"
+  - './src/queries/**/*.gql'
 
 config:
   scalars:

@@ -1,0 +1,4 @@
+.eslintrc.js
+vite.config.ts
+**/__generated__/**/*.ts
+**/__generated__/**/*.tsx

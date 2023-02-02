@@ -11,13 +11,7 @@ query GetVideos(
   $limit: Int = 5
   $text: String!
 ) {
-  search(
-    whereVideo: $whereVideo
-    whereChannel: $whereChannel
-    skip: $skip
-    limit: $limit
-    text: $text
-  ) {
+  search(whereVideo: $whereVideo, whereChannel: $whereChannel, skip: $skip, limit: $limit, text: $text) {
     rank
     item {
       __typename
