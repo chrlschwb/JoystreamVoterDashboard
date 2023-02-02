@@ -7,18 +7,17 @@ export type GetCandidatesCountQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.CandidateWhereInput>;
 }>;
 
-export type GetCandidatesCountQuery = {
-  __typename: 'Query';
-  candidatesConnection: { __typename: 'CandidateConnection'; totalCount: number };
-};
+
+export type GetCandidatesCountQuery = { __typename: 'Query', candidatesConnection: { __typename: 'CandidateConnection', totalCount: number } };
+
 
 export const GetCandidatesCountDocument = gql`
-  query GetCandidatesCount($where: CandidateWhereInput) {
-    candidatesConnection(first: 0, where: $where) {
-      totalCount
-    }
+    query GetCandidatesCount($where: CandidateWhereInput) {
+  candidatesConnection(first: 0, where: $where) {
+    totalCount
   }
-`;
+}
+    `;
 
 /**
  * __useGetCandidatesCountQuery__
@@ -36,27 +35,14 @@ export const GetCandidatesCountDocument = gql`
  *   },
  * });
  */
-export function useGetCandidatesCountQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetCandidatesCountQuery, GetCandidatesCountQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetCandidatesCountQuery, GetCandidatesCountQueryVariables>(
-    GetCandidatesCountDocument,
-    options
-  );
-}
-export function useGetCandidatesCountLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetCandidatesCountQuery, GetCandidatesCountQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetCandidatesCountQuery, GetCandidatesCountQueryVariables>(
-    GetCandidatesCountDocument,
-    options
-  );
-}
+export function useGetCandidatesCountQuery(baseOptions?: Apollo.QueryHookOptions<GetCandidatesCountQuery, GetCandidatesCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCandidatesCountQuery, GetCandidatesCountQueryVariables>(GetCandidatesCountDocument, options);
+      }
+export function useGetCandidatesCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCandidatesCountQuery, GetCandidatesCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCandidatesCountQuery, GetCandidatesCountQueryVariables>(GetCandidatesCountDocument, options);
+        }
 export type GetCandidatesCountQueryHookResult = ReturnType<typeof useGetCandidatesCountQuery>;
 export type GetCandidatesCountLazyQueryHookResult = ReturnType<typeof useGetCandidatesCountLazyQuery>;
-export type GetCandidatesCountQueryResult = Apollo.QueryResult<
-  GetCandidatesCountQuery,
-  GetCandidatesCountQueryVariables
->;
+export type GetCandidatesCountQueryResult = Apollo.QueryResult<GetCandidatesCountQuery, GetCandidatesCountQueryVariables>;

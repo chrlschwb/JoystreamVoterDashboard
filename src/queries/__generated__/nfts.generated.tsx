@@ -7,18 +7,17 @@ export type GetOwnedNftsCountQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.OwnedNftWhereInput>;
 }>;
 
-export type GetOwnedNftsCountQuery = {
-  __typename: 'Query';
-  ownedNftsConnection: { __typename: 'OwnedNftConnection'; totalCount: number };
-};
+
+export type GetOwnedNftsCountQuery = { __typename: 'Query', ownedNftsConnection: { __typename: 'OwnedNftConnection', totalCount: number } };
+
 
 export const GetOwnedNftsCountDocument = gql`
-  query GetOwnedNftsCount($where: OwnedNftWhereInput) {
-    ownedNftsConnection(first: 0, where: $where) {
-      totalCount
-    }
+    query GetOwnedNftsCount($where: OwnedNftWhereInput) {
+  ownedNftsConnection(first: 0, where: $where) {
+    totalCount
   }
-`;
+}
+    `;
 
 /**
  * __useGetOwnedNftsCountQuery__
@@ -36,21 +35,14 @@ export const GetOwnedNftsCountDocument = gql`
  *   },
  * });
  */
-export function useGetOwnedNftsCountQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetOwnedNftsCountQuery, GetOwnedNftsCountQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetOwnedNftsCountQuery, GetOwnedNftsCountQueryVariables>(GetOwnedNftsCountDocument, options);
-}
-export function useGetOwnedNftsCountLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetOwnedNftsCountQuery, GetOwnedNftsCountQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetOwnedNftsCountQuery, GetOwnedNftsCountQueryVariables>(
-    GetOwnedNftsCountDocument,
-    options
-  );
-}
+export function useGetOwnedNftsCountQuery(baseOptions?: Apollo.QueryHookOptions<GetOwnedNftsCountQuery, GetOwnedNftsCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOwnedNftsCountQuery, GetOwnedNftsCountQueryVariables>(GetOwnedNftsCountDocument, options);
+      }
+export function useGetOwnedNftsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOwnedNftsCountQuery, GetOwnedNftsCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOwnedNftsCountQuery, GetOwnedNftsCountQueryVariables>(GetOwnedNftsCountDocument, options);
+        }
 export type GetOwnedNftsCountQueryHookResult = ReturnType<typeof useGetOwnedNftsCountQuery>;
 export type GetOwnedNftsCountLazyQueryHookResult = ReturnType<typeof useGetOwnedNftsCountLazyQuery>;
 export type GetOwnedNftsCountQueryResult = Apollo.QueryResult<GetOwnedNftsCountQuery, GetOwnedNftsCountQueryVariables>;

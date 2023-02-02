@@ -4,7 +4,7 @@ query GetElectedCouncils(
   $offset: Int
   $limit: Int
 ) {
-  electedCouncils(where: $where, orderBy: $orderBy) {
+  electedCouncils(where: $where, orderBy: $orderBy, offset: $offset, limit: $limit) {
     ...ElectedCouncilFields
     __typename
   }
