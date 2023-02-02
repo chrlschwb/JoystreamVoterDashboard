@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CouncilSelect } from '@/components';
+import { CouncilSelect, Memberships } from '@/components';
 import { useSelectedCouncil } from '@/store';
 
 export default function Home() {
@@ -9,6 +9,7 @@ export default function Home() {
   return (
     <div>
       <CouncilSelect council={council} onChange={setCouncil} />
+      <Memberships />
     </div>
   );
 }

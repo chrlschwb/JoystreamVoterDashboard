@@ -21,7 +21,6 @@ const SingleValue = (singleValueProps: SingleValueProps<ElectedCouncil>) => {
 
 const Option = (optionProps: OptionProps<ElectedCouncil>) => {
   const { data } = optionProps;
-  console.log(optionProps);
   return <components.Option {...optionProps}>{data.id}</components.Option>;
 };
 
