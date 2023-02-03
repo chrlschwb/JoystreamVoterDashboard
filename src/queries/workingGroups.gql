@@ -1,36 +1,3 @@
-query GetWorkingGroups(
-  $where: WorkingGroupWhereInput
-  $orderBy: [WorkingGroupOrderByInput!]
-  $offset: Int
-  $limit: Int
-) {
-  workingGroups(where: $where, orderBy: $orderBy, offset: $offset, limit: $limit) {
-    ...WorkingGroupFields
-  }
-}
-
-query GetWorkers($where: WorkerWhereInput, $offset: Int, $limit: Int) {
-  workers(where: $where, offset: $offset, limit: $limit) {
-    ...WorkerFields
-  }
-}
-
-fragment WorkingGroupFields on WorkingGroup {
-  id
-  name
-  budget
-  metadata {
-    ...WorkingGroupMetadataFields
-  }
-  workers {
-    stake
-  }
-  leader {
-    membershipId
-    isActive
-  }
-}
-
 fragment WorkingGroupMetadataFields on WorkingGroupMetadata {
   about
   description
@@ -56,4 +23,470 @@ fragment WorkerFields on Worker {
   rewardPerBlock
   missingRewardAmount
   stake
+}
+
+fragment PastWorkerFields on Worker {
+  id
+  runtimeId
+  membership {
+    ...MemberFields
+  }
+  createdAt
+  updatedAt
+  status {
+    ... on WorkerStatusLeft {
+      workerExitedEvent {
+        createdAt
+        inBlock
+        network
+      }
+    }
+    ... on WorkerStatusTerminated {
+      terminatedWorkerEvent {
+        createdAt
+        inBlock
+        network
+      }
+    }
+  }
+  entry {
+    createdAt
+    inBlock
+    network
+  }
+}
+
+fragment WorkerDetailedFields on Worker {
+  ...WorkerFields
+  roleAccount
+  rewardAccount
+  stakeAccount
+  entry {
+    inBlock
+    network
+    createdAt
+  }
+  application {
+    id
+    openingId
+    opening {
+      stakeAmount
+    }
+  }
+}
+
+fragment WorkingGroupFields on WorkingGroup {
+  id
+  name
+  budget
+  metadata {
+    ...WorkingGroupMetadataFields
+  }
+  workers {
+    stake
+  }
+  leader {
+    membershipId
+    isActive
+  }
+}
+
+fragment WorkingGroupDetailedFields on WorkingGroup {
+  ...WorkingGroupFields
+  leader {
+    id
+    runtimeId
+    stake
+    membershipId
+    rewardPerBlock
+  }
+}
+
+fragment BudgetSpendingEventFields on BudgetSpendingEvent {
+  id
+  groupId
+  reciever
+  amount
+  rationale
+}
+
+fragment RewardPaidEventFields on RewardPaidEvent {
+  id
+  amount
+  rewardAccount
+  createdAt
+}
+
+query GetWorkingGroups(
+  $where: WorkingGroupWhereInput
+  $orderBy: [WorkingGroupOrderByInput!]
+  $offset: Int
+  $limit: Int
+) {
+  workingGroups(where: $where, orderBy: $orderBy, offset: $offset, limit: $limit) {
+    ...WorkingGroupFields
+  }
+}
+
+query GetBudgetSpending($where: BudgetSpendingEventWhereInput) {
+  budgetSpendingEvents(where: $where) {
+    ...BudgetSpendingEventFields
+  }
+}
+
+query GetWorkers($where: WorkerWhereInput, $offset: Int, $limit: Int) {
+  workers(where: $where, offset: $offset, limit: $limit) {
+    ...WorkerFields
+  }
+}
+
+query GetPastWorkers($where: WorkerWhereInput, $offset: Int, $limit: Int, $orderBy: [WorkerOrderByInput!]) {
+  workers(where: $where, offset: $offset, limit: $limit, orderBy: $orderBy) {
+    ...PastWorkerFields
+  }
+}
+
+query GetWorkersCount($where: WorkerWhereInput) {
+  workersConnection(where: $where) {
+    totalCount
+  }
+}
+
+query GetDetailedWorkers($where: WorkerWhereInput) {
+  workers(where: $where) {
+    ...WorkerDetailedFields
+  }
+}
+
+query GetWorker($where: WorkerWhereUniqueInput!) {
+  workerByUniqueInput(where: $where) {
+    ...WorkerDetailedFields
+  }
+}
+
+query GetGroupDebt($where: WorkerWhereInput!) {
+  workers(where: $where) {
+    missingRewardAmount
+  }
+}
+
+query GetRewards($where: RewardPaidEventWhereInput) {
+  rewardPaidEvents(where: $where) {
+    ...RewardPaidEventFields
+  }
+}
+
+fragment WorkingGroupOpeningMetadataFields on WorkingGroupOpeningMetadata {
+  title
+  applicationDetails
+  shortDescription
+  description
+  hiringLimit
+  expectedEnding
+}
+
+fragment WorkingGroupOpeningFields on WorkingGroupOpening {
+  id
+  runtimeId
+  groupId
+  group {
+    name
+    budget
+    leaderId
+  }
+  type
+  stakeAmount
+  rewardPerBlock
+  createdInEvent {
+    inBlock
+    network
+    createdAt
+  }
+  metadata {
+    ...WorkingGroupOpeningMetadataFields
+  }
+  status {
+    __typename
+  }
+  unstakingPeriod
+  applications {
+    id
+    status {
+      __typename
+    }
+  }
+  openingfilledeventopening {
+    workersHired {
+      id
+    }
+  }
+}
+
+fragment WorkingGroupOpeningDetailedFields on WorkingGroupOpening {
+  ...WorkingGroupOpeningFields
+  applications {
+    id
+    status {
+      __typename
+    }
+    applicant {
+      ...MemberFields
+    }
+    status {
+      __typename
+    }
+  }
+}
+
+query CountWorkingGroupOpenings($where: WorkingGroupOpeningWhereInput) {
+  workingGroupOpeningsConnection(where: $where) {
+    totalCount
+  }
+}
+
+query CountWorkingGroupWorkers($groupId_eq: ID, $status_json: JSONObject) {
+  workersConnection(where: { group: { id_eq: $groupId_eq }, status_json: $status_json }) {
+    totalCount
+  }
+}
+
+query GetWorkingGroupOpenings(
+  $where: WorkingGroupOpeningWhereInput
+  $order: [WorkingGroupOpeningOrderByInput!]
+  $limit: Int
+  $offset: Int
+) {
+  workingGroupOpenings(where: $where, limit: $limit, offset: $offset, orderBy: $order) {
+    ...WorkingGroupOpeningFields
+  }
+}
+
+query SimpleSearchWorkingGroupOpenings($text: String!, $limit: Int) {
+  workingGroupOpenings(where: { metadata: { shortDescription_contains: $text } }, limit: $limit) {
+    id
+    metadata {
+      shortDescription
+    }
+  }
+}
+
+query GetWorkingGroupOpening($where: WorkingGroupOpeningWhereUniqueInput!) {
+  workingGroupOpeningByUniqueInput(where: $where) {
+    ...WorkingGroupOpeningDetailedFields
+  }
+}
+
+fragment WorkingGroupOpeningMentionFields on WorkingGroupOpening {
+  id
+  type
+  rewardPerBlock
+  metadata {
+    title
+    shortDescription
+    description
+    hiringLimit
+    expectedEnding
+  }
+  applications {
+    applicantId
+  }
+  openingfilledeventopening {
+    id
+    workersHired {
+      id
+    }
+  }
+}
+
+query GetWorkingGroupOpeningMention($id: ID!) {
+  opening: workingGroupOpeningByUniqueInput(where: { id: $id }) {
+    ...WorkingGroupOpeningMentionFields
+  }
+}
+
+fragment WorkingGroupApplicationMentionFields on WorkingGroupApplication {
+  id
+  createdInEvent {
+    createdAt
+    inBlock
+    network
+  }
+  applicant {
+    ...MemberFields
+  }
+  opening {
+    type
+    metadata {
+      title
+      shortDescription
+      description
+    }
+  }
+}
+
+query GetWorkingGroupApplicationMention($id: ID!) {
+  application: workingGroupApplicationByUniqueInput(where: { id: $id }) {
+    ...WorkingGroupApplicationMentionFields
+  }
+}
+
+fragment ApplicationQuestionFields on ApplicationFormQuestion {
+  index
+  type
+  question
+}
+
+query GetWorkingGroupOpeningQuestions($id: ID!) {
+  workingGroupOpeningByUniqueInput(where: { id: $id }) {
+    metadata {
+      applicationFormQuestions {
+        ...ApplicationQuestionFields
+      }
+    }
+  }
+}
+
+query GetWorkingGroup($where: WorkingGroupWhereUniqueInput!) {
+  workingGroupByUniqueInput(where: $where) {
+    ...WorkingGroupDetailedFields
+  }
+}
+
+fragment WorkingGroupApplicationFields on WorkingGroupApplication {
+  id
+  runtimeId
+  answers {
+    answer
+    question {
+      question
+    }
+  }
+  opening {
+    id
+    group {
+      id
+      name
+    }
+    type
+    rewardPerBlock
+    metadata {
+      expectedEnding
+    }
+  }
+  applicant {
+    ...MemberFields
+  }
+  status {
+    __typename
+  }
+  stakingAccount
+  createdInEvent {
+    createdAt
+    inBlock
+    network
+  }
+  stake
+  roleAccount
+}
+
+query GetWorkingGroupApplications(
+  $where: WorkingGroupApplicationWhereInput
+  $orderBy: [WorkingGroupApplicationOrderByInput!]
+  $limit: Int
+) {
+  workingGroupApplications(where: $where, orderBy: $orderBy, limit: $limit) {
+    ...WorkingGroupApplicationFields
+  }
+}
+
+query SimpleSearchWorkingGroupApplications($text: String!, $limit: Int) {
+  workingGroupApplications(where: { applicant: { handle_contains: $text } }, limit: $limit) {
+    id
+    applicant {
+      id
+      handle
+    }
+  }
+}
+
+query GetWorkingGroupApplicationIds($where: WorkingGroupApplicationWhereInput) {
+  workingGroupApplications(where: $where) {
+    id
+  }
+}
+
+query GetWorkingGroupApplication($where: WorkingGroupApplicationWhereUniqueInput!) {
+  workingGroupApplicationByUniqueInput(where: $where) {
+    ...WorkingGroupApplicationFields
+  }
+}
+
+fragment ApplicationFormQuestionAnswerFields on ApplicationFormQuestionAnswer {
+  question {
+    ...ApplicationQuestionFields
+  }
+  answer
+}
+
+query GetApplicationFormQuestionAnswer($applicationId_eq: ID) {
+  applicationFormQuestionAnswers(where: { application: { id_eq: $applicationId_eq } }) {
+    ...ApplicationFormQuestionAnswerFields
+  }
+}
+
+fragment UpcomingWorkingGroupOpeningFields on UpcomingWorkingGroupOpening {
+  id
+  groupId
+  group {
+    name
+    budget
+    leaderId
+  }
+  expectedStart
+  stakeAmount
+  rewardPerBlock
+  createdInEvent {
+    createdAt
+    inBlock
+    network
+  }
+  metadata {
+    ...WorkingGroupOpeningMetadataFields
+  }
+}
+
+query GetUpcomingWorkingGroupOpening($where: UpcomingWorkingGroupOpeningWhereUniqueInput!) {
+  upcomingWorkingGroupOpeningByUniqueInput(where: $where) {
+    ...UpcomingWorkingGroupOpeningFields
+  }
+}
+
+query GetUpcomingWorkingGroupOpenings($where: UpcomingWorkingGroupOpeningWhereInput, $limit: Int, $offset: Int) {
+  upcomingWorkingGroupOpenings(where: $where, limit: $limit, offset: $offset) {
+    ...UpcomingWorkingGroupOpeningFields
+  }
+}
+
+query GetWorkerIds($where: WorkerWhereInput) {
+  workers(where: $where) {
+    id
+  }
+}
+
+query GetWorkerUnstakingDetails($where: WorkerWhereUniqueInput!) {
+  workerByUniqueInput(where: $where) {
+    status {
+      __typename
+      ... on WorkerStatusLeaving {
+        workerStartedLeavingEvent {
+          createdAt
+        }
+      }
+    }
+    application {
+      opening {
+        unstakingPeriod
+      }
+    }
+  }
 }

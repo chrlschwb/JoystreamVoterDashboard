@@ -1,9 +1,25 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-import { useWorkingGroups } from '@/hooks';
+import { useGroupWorkers, useWorkingGroups } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { isDefined } from '@/types';
+import { isDefined, WorkingGroup } from '@/types';
+
+export interface WorkingGroupProps {
+  workingGroup: WorkingGroup;
+}
+
+export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
+  const { workers } = useGroupWorkers({ workingGroup });
+  return (
+    <tr>
+      <td>{workingGroup.name}</td>
+      <td>{workers?.length}</td>
+      <td>Tokens</td>
+      <td>Budget: {workingGroup.budget?.toString()}</td>
+    </tr>
+  );
+}
 
 export default function WorkingGroups() {
   const { council } = useSelectedCouncil();
@@ -32,12 +48,18 @@ export default function WorkingGroups() {
       <h4>Working Groups</h4>
       <Table style={{ marginTop: '10px' }}>
         <thead style={{ backgroundColor: '#0080ff' }}>
-          <td style={{ borderWidth: '3px', borderColor: 'black' }}>Worker Groups</td>
-          <td style={{ borderWidth: '3px', borderColor: 'black' }}>Workers</td>
-          <td style={{ borderWidth: '3px', borderColor: 'black' }}>Tokens</td>
-          <td style={{ borderWidth: '3px', borderColor: 'black' }}>Budget / Debt</td>
+          <tr>
+            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Worker Groups</td>
+            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Workers</td>
+            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Tokens</td>
+            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Budget / Debt</td>
+          </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          {isDefined(workingGroups)
+            ? workingGroups.map((workingGroup) => <GroupWorkers key={workingGroup.id} workingGroup={workingGroup} />)
+            : null}
+        </tbody>
       </Table>
     </div>
   );

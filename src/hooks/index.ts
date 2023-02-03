@@ -2,6 +2,7 @@ export * from './useChannels';
 export * from './useElectedCouncils';
 export * from './useElection';
 export * from './useGetValidation';
+export * from './useGroupWorkers';
 export * from './useMemberships';
 export * from './useNfts';
 export * from './useNumberProposal';
