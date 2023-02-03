@@ -1,0 +1,40 @@
+.sub_panel {
+  background-color: #9747ff;
+  border-radius: 8px;
+  color: black;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.select_input {
+  padding: 5px;
+  border-width: 2px;
+  min-width: 150px;
+  border-radius: 10px;
+  margin-bottom: 3px;
+}
+
+.select_input:hover {
+  box-shadow: 0 0 10px white;
+}
+
+.input_box {
+  max-width: 100px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #fcd19c;
+}
+
+.input_box_md {
+  background-color: #fcd19c;
+  max-width: 80px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.table_background {
+  background-color: #fcd19c;
+  padding: 10px;
+  border-radius: 8px;
+  color: black;
+}
