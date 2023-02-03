@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Col, Row } from 'react-bootstrap';
 
 import { useThreadData } from '@/hooks';
@@ -13,11 +12,11 @@ export default function Thread() {
   // Add some
 
   if (loading) {
-    return <div className="sub_panel loading">loading...</div>
+    return <div className="sub_panel loading">loading...</div>;
   }
 
   if (error) {
-    return <div className="sub_panel loading">error</div>
+    return <div className="sub_panel loading">error</div>;
   }
 
   return (
@@ -33,6 +32,6 @@ export default function Thread() {
           <h6>total</h6>
         </Col>
       </Row>
-    </div >
+    </div>
   );
 }

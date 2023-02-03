@@ -30,10 +30,10 @@ export default function CouncilSelect({ council, onChange }: CouncilSelectProps)
   return (
     <div>
       <div className="justify-content-center">
-        <span style={{ fontSize: "30px", color: "white" }}>COUNCIL PERIOD : &nbsp;</span>
+        <span style={{ fontSize: '30px', color: 'white' }}>COUNCIL PERIOD : &nbsp;</span>
         <Select
           id="council"
-          className='select_input'
+          className="select_input"
           // styles={styles}
           isMulti={false}
           options={data}
@@ -42,8 +42,8 @@ export default function CouncilSelect({ council, onChange }: CouncilSelectProps)
           components={{ SingleValue, Option }}
         />
         {council && (
-          < >
-            <span className='time_label'>
+          <>
+            <span className="time_label">
               Elected: <BlockTime block={council.electedAt} />
             </span>
             {council.endedAt && (

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Col, Row } from 'react-bootstrap';
 
 import { useValidation } from '@/hooks';
@@ -13,11 +12,11 @@ export default function Validation() {
   // Add some
 
   if (loading) {
-    return <div className="sub_panel loading">loading...</div>
+    return <div className="sub_panel loading">loading...</div>;
   }
 
   if (error) {
-    return <div className="sub_panel loading">error</div>
+    return <div className="sub_panel loading">error</div>;
   }
 
   return (
@@ -37,6 +36,6 @@ export default function Validation() {
           <h6>mint</h6>
         </Col>
       </Row>
-    </div >
+    </div>
   );
 }

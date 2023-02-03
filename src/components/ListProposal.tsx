@@ -35,7 +35,24 @@ export default function ListProposal() {
           <td style={{ borderWidth: '3px', borderColor: 'black' }}>link</td>
           <td style={{ borderWidth: '3px', borderColor: 'black' }}>status</td>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          {isDefined(proposals)
+            ? proposals.map((proposal) => (
+                <tr key={proposal.id}>
+                  <td>{proposal.title}</td>
+                  <td>{proposal.createdAt}</td>
+                  <a
+                    href={`https://pioneerapp.xyz/#/proposals/preview/${proposal.id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Link to porposal
+                  </a>
+                  <td>{proposal.status}</td>
+                </tr>
+              ))
+            : null}
+        </tbody>
       </Table>
     </div>
   );

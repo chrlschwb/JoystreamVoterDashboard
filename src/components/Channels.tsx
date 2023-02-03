@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Col, Row } from 'react-bootstrap';
 
 import { useChannels } from '@/hooks';
@@ -13,11 +12,11 @@ export default function Channels() {
   // Add some
 
   if (loading) {
-    return <div className="sub_panel loading">loading...</div>
+    return <div className="sub_panel loading">loading...</div>;
   }
 
   if (error) {
-    return <div className="sub_panel loading">error</div>
+    return <div className="sub_panel loading">error</div>;
   }
 
   return (
@@ -32,8 +31,8 @@ export default function Channels() {
           <div className="input_box_md">{isDefined(total) ? total : '-'}</div>
           <h6>total</h6>
         </Col>
-        <div ></div>
+        <div></div>
       </Row>
-    </div >
+    </div>
   );
 }
