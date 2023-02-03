@@ -1,6 +1,7 @@
 import * as Types from './baseTypes.generated';
 
 import { gql } from '@apollo/client';
+import { MemberFieldsFragmentDoc } from './members.generated';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type GetElectedCouncilsQueryVariables = Types.Exact<{
@@ -17,52 +18,6 @@ export type ElectedCouncilFieldsFragment = { __typename: 'ElectedCouncil', id: s
 
 export type CouncilMemberFieldsFragment = { __typename: 'CouncilMember', id: string, unpaidReward: string, stake: string, member: { __typename: 'Membership', id: string, rootAccount: string, controllerAccount: string, boundAccounts: Array<string>, handle: string, isVerified: boolean, isFoundingMember: boolean, isCouncilMember: boolean, inviteCount: number, createdAt: any, councilMembers: Array<{ __typename: 'CouncilMember' }>, metadata: { __typename: 'MemberMetadata', name?: string | null, about?: string | null, avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri', avatarUri: string } | null }, roles: Array<{ __typename: 'Worker', id: string, createdAt: any, isLead: boolean, group: { __typename: 'WorkingGroup', name: string } }>, stakingaccountaddedeventmember?: Array<{ __typename: 'StakingAccountAddedEvent', createdAt: any, inBlock: number, network: Types.Network, account: string }> | null } };
 
-export type MemberFieldsFragment = { __typename: 'Membership', id: string, rootAccount: string, controllerAccount: string, boundAccounts: Array<string>, handle: string, isVerified: boolean, isFoundingMember: boolean, isCouncilMember: boolean, inviteCount: number, createdAt: any, metadata: { __typename: 'MemberMetadata', name?: string | null, about?: string | null, avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri', avatarUri: string } | null }, roles: Array<{ __typename: 'Worker', id: string, createdAt: any, isLead: boolean, group: { __typename: 'WorkingGroup', name: string } }>, stakingaccountaddedeventmember?: Array<{ __typename: 'StakingAccountAddedEvent', createdAt: any, inBlock: number, network: Types.Network, account: string }> | null };
-
-export const MemberFieldsFragmentDoc = gql`
-    fragment MemberFields on Membership {
-  id
-  rootAccount
-  controllerAccount
-  boundAccounts
-  handle
-  metadata {
-    name
-    about
-    avatar {
-      __typename
-      ... on AvatarUri {
-        avatarUri
-        __typename
-      }
-    }
-    __typename
-  }
-  isVerified
-  isFoundingMember
-  isCouncilMember
-  inviteCount
-  roles {
-    id
-    group {
-      name
-      __typename
-    }
-    createdAt
-    isLead
-    __typename
-  }
-  createdAt
-  stakingaccountaddedeventmember {
-    createdAt
-    inBlock
-    network
-    account
-    __typename
-  }
-  __typename
-}
-    `;
 export const CouncilMemberFieldsFragmentDoc = gql`
     fragment CouncilMemberFields on CouncilMember {
   id
@@ -71,11 +26,9 @@ export const CouncilMemberFieldsFragmentDoc = gql`
     councilMembers {
       __typename
     }
-    __typename
   }
   unpaidReward
   stake
-  __typename
 }
     ${MemberFieldsFragmentDoc}`;
 export const ElectedCouncilFieldsFragmentDoc = gql`

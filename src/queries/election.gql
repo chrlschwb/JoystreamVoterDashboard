@@ -1,0 +1,5 @@
+query GetCastVotesCount($where: CastVoteWhereInput) {
+  castVotesConnection(first: 0, where: $where) {
+    totalCount
+  }
+}

@@ -1,18 +1,17 @@
 import { useEffect, useMemo } from 'react';
 
-import { useGetNftIssuedCountLazyQuery, useGetNftSaleCountLazyQuery } from '@/queries/__generated__/GetNfts.generated';
+import { useGetNftIssuedCountLazyQuery, useGetNftSaleCountLazyQuery } from '@/queries';
 
 import { ForSelectedCouncil } from './types';
 
 export function useNFTs({ council }: ForSelectedCouncil) {
-
   const [fetchIssued, IssuedQuery] = useGetNftIssuedCountLazyQuery();
   const [totalSale, SaleQuery] = useGetNftSaleCountLazyQuery();
 
   useEffect(() => {
     if (!council) return;
 
-    var variables = {
+    const variables = {
       where: { createdAt_gt: council.electedAt.timestamp, createdAt_lt: council.endedAt?.timestamp },
     };
 
@@ -26,7 +25,7 @@ export function useNFTs({ council }: ForSelectedCouncil) {
 
   const issued = useMemo(() => IssuedQuery.data?.nftIssuedEventsConnection.totalCount, [IssuedQuery.data]);
   const sale = useMemo(() => SaleQuery.data?.nftBoughtEventsConnection.totalCount, [SaleQuery.data]);
-  const fee = "-" //// ???------
+  const fee = '-'; //// ???------
   return {
     issued,
     sale,

@@ -1,18 +1,17 @@
 import { useEffect, useMemo } from 'react';
 
-import { useGetCandidatesCountQuery, useGetCastVotesCountLazyQuery } from '@/queries/__generated__/GetElection.generated';
+import { useGetCandidatesCountLazyQuery, useGetCastVotesCountLazyQuery } from '@/queries';
 
 import { ForSelectedCouncil } from './types';
 
 export function useElection({ council }: ForSelectedCouncil) {
-
-  const [fetchCandidates, CandidateQuery] = useGetCandidatesCountQuery();
+  const [fetchCandidates, CandidateQuery] = useGetCandidatesCountLazyQuery();
   const [fetchVotes, VotesQuery] = useGetCastVotesCountLazyQuery();
 
   useEffect(() => {
     if (!council) return;
 
-    var variables = {
+    const variables = {
       where: { createdAt_gt: council.electedAt.timestamp, createdAt_lt: council.endedAt?.timestamp },
     };
 
@@ -26,7 +25,7 @@ export function useElection({ council }: ForSelectedCouncil) {
 
   const candidates = useMemo(() => CandidateQuery.data?.candidatesConnection.totalCount, [CandidateQuery.data]);
   const votes = useMemo(() => VotesQuery.data?.castVotesConnection.totalCount, [VotesQuery.data]);
-  const stake = "-" ///  ------
+  const stake = '-'; ///  ------
   return {
     candidates,
     votes,

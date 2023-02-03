@@ -8,13 +8,16 @@ export type GetForumPostsCountQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetForumPostsCountQuery = { __typename: 'Query', forumPostsConnection: { __typename: 'ForumPostConnection', totalCount: number } };
+export type GetForumPostsCountQuery = { __typename: 'Query', forumPostsConnection: { __typename: 'ForumPostConnection', totalCount: number }, forumPosts: Array<{ __typename: 'ForumPost', createdAt: any }> };
 
 
 export const GetForumPostsCountDocument = gql`
     query GetForumPostsCount($where: ForumPostWhereInput) {
   forumPostsConnection(first: 0, where: $where) {
     totalCount
+  }
+  forumPosts {
+    createdAt
   }
 }
     `;

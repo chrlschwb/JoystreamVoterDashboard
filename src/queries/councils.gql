@@ -16,4 +16,25 @@ fragment ElectedCouncilFields on ElectedCouncil {
   endedAtBlock
   electedAtTime
   endedAtTime
+  electedAtNetwork
+  endedAtNetwork
+  councilElections {
+    cycleId
+  }
+
+  councilMembers {
+    ...CouncilMemberFields
+  }
+}
+
+fragment CouncilMemberFields on CouncilMember {
+  id
+  member {
+    ...MemberFields
+    councilMembers {
+      __typename
+    }
+  }
+  unpaidReward
+  stake
 }

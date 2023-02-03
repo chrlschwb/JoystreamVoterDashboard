@@ -1,8 +1,4 @@
-import {
-  ElectedCouncilOrderByInput,
-  GetElectedCouncilsQueryVariables,
-  useGetElectedCouncilsQuery,
-} from '@/queries/__generated__';
+import { ElectedCouncilOrderByInput, GetElectedCouncilsQueryVariables, useGetElectedCouncilsQuery } from '@/queries';
 import { asElectedCouncil } from '@/types';
 
 export const useElectedCouncils = ({

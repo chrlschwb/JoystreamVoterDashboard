@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import { useGetMembersCountLazyQuery } from '@/queries/__generated__/GetMembers.generated';
-import { useGetInvitedMembersCountLazyQuery } from '@/queries/__generated__/members.generated';
+import { useGetInvitedMembersCountLazyQuery, useGetMembersCountLazyQuery } from '@/queries';
 
 import { ForSelectedCouncil } from './types';
 
@@ -12,7 +11,7 @@ export function useMemberships({ council }: ForSelectedCouncil) {
 
   useEffect(() => {
     if (!council) return;
-    var variables = {
+    let variables = {
       where: { createdAt_gt: council.electedAt.timestamp, createdAt_lt: council.endedAt?.timestamp },
     };
     fetchCreated({
@@ -24,13 +23,12 @@ export function useMemberships({ council }: ForSelectedCouncil) {
     });
 
     variables = {
-      where: { createdAt_gt: "2013-01-10T22:50:12.000Z", createdAt_lt: council.endedAt?.timestamp },
+      where: { createdAt_gt: '2013-01-10T22:50:12.000Z', createdAt_lt: council.endedAt?.timestamp },
     };
 
     fetchTotal({
       variables,
     });
-
   }, [council]);
 
   const created = useMemo(() => createdQuery.data?.membershipsConnection.totalCount, [createdQuery.data]);

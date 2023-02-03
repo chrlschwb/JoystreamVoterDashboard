@@ -1,4 +1,4 @@
-import { ElectedCouncilFieldsFragment } from '@/queries/__generated__';
+import { ElectedCouncilFieldsFragment } from '@/queries';
 
 import { asBlock, Block } from './common/Block';
 import { asCouncilor, Councilor } from './Councilor';
@@ -23,9 +23,9 @@ export const asElectedCouncil = (fields: ElectedCouncilFieldsFragment): ElectedC
   endedAt:
     fields.endedAtBlock && fields.endedAtNetwork
       ? asBlock({
-        createdAt: fields.endedAtTime,
-        inBlock: fields.endedAtBlock,
-        network: fields.endedAtNetwork,
-      })
+          createdAt: fields.endedAtTime,
+          inBlock: fields.endedAtBlock,
+          network: fields.endedAtNetwork,
+        })
       : undefined,
 });

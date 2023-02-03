@@ -1,0 +1,35 @@
+query getCreatedProposalsCount($where: ProposalCreatedEventWhereInput) {
+  proposalCreatedEventsConnection(where: $where) {
+    totalCount
+  }
+}
+
+query getExecutedProposalsCount($where: ProposalExecutedEventWhereInput) {
+  proposalExecutedEventsConnection(where: $where) {
+    totalCount
+  }
+}
+
+query getProposals($where: ProposalWhereInput, $orderBy: [ProposalOrderByInput!], $limit: Int, $offset: Int) {
+  proposals(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+    ...ProposalFields
+  }
+}
+
+fragment ProposalFields on Proposal {
+  id
+  title
+  status {
+    __typename
+  }
+  statusSetAtTime
+  details {
+    __typename
+  }
+  creator {
+    ...MemberFields
+  }
+  createdAt
+  councilApprovals
+  exactExecutionBlock
+}

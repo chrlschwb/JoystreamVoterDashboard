@@ -1,6 +1,7 @@
-import { MemberFieldsFragment, MembershipExternalResourceType } from '@/queries/__generated__';
+import { MemberFieldsFragment, MembershipExternalResourceType } from '@/queries';
 
 import { Address, asBlock, Block, castQueryResult } from './common';
+import { asWorkingGroupName } from './WorkingGroup';
 
 type ID = string;
 
@@ -98,9 +99,3 @@ export const asMemberRole = (data: MemberFieldsFragment['roles'][0]): MemberRole
   groupName: asWorkingGroupName(data.group.name),
   createdAt: data.createdAt,
 });
-
-export const asWorkingGroupName = (name: string) =>
-  name
-    .replace('WorkingGroup', '')
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/^[a-z]/, (match) => match.toUpperCase());

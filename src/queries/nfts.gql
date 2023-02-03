@@ -1,10 +1,10 @@
 query GetNftIssuedCount($where: NftIssuedEventWhereInput) {
- nftIssuedEventsConnection(where:$where){
-  totalCount,
-	}
+  nftIssuedEventsConnection(where: $where) {
+    totalCount
+  }
 }
 query GetNftSaleCount($where: NftBoughtEventWhereInput) {
-nftBoughtEventsConnection(where:$where){
-  totalCount,
-}
+  nftBoughtEventsConnection(where: $where) {
+    totalCount
+  }
 }

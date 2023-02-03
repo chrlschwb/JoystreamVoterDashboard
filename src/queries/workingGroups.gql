@@ -1,0 +1,59 @@
+query GetWorkingGroups(
+  $where: WorkingGroupWhereInput
+  $orderBy: [WorkingGroupOrderByInput!]
+  $offset: Int
+  $limit: Int
+) {
+  workingGroups(where: $where, orderBy: $orderBy, offset: $offset, limit: $limit) {
+    ...WorkingGroupFields
+  }
+}
+
+query GetWorkers($where: WorkerWhereInput, $offset: Int, $limit: Int) {
+  workers(where: $where, offset: $offset, limit: $limit) {
+    ...WorkerFields
+  }
+}
+
+fragment WorkingGroupFields on WorkingGroup {
+  id
+  name
+  budget
+  metadata {
+    ...WorkingGroupMetadataFields
+  }
+  workers {
+    stake
+  }
+  leader {
+    membershipId
+    isActive
+  }
+}
+
+fragment WorkingGroupMetadataFields on WorkingGroupMetadata {
+  about
+  description
+  status
+  statusMessage
+}
+
+fragment WorkerFields on Worker {
+  id
+  runtimeId
+  membership {
+    ...MemberFields
+  }
+  group {
+    id
+    name
+  }
+  status {
+    __typename
+  }
+  applicationId
+  isLead
+  rewardPerBlock
+  missingRewardAmount
+  stake
+}
