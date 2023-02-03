@@ -1,27 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import { CouncilSelect, Memberships, Videos, Channels, Nfts } from '@/components';
+import { useSelectedCouncil } from '@/store';
 
-import { useElectedCouncils } from '@/hooks';
-
-import { Col, Row, Table } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import "./home.css";
 
 
 export default function Home() {
-  const { data } = useElectedCouncils({});
+  const { council, setCouncil } = useSelectedCouncil();
 
-  const [period, setPeriod] = useState<number>(0);
-
-  return <div className='main'>
-    <div className='justify-content-center'>
-      <span style={{ fontSize: "30px" }}>
-        COUNCIL PERIOD : &nbsp;
-      </span>
-      <select name="cars" className="select_input" onChange={(e) => setPeriod(Number(e.target.value))}>
-        {(data === undefined) ? "" : data.electedCouncils.map((data, i) =>
-          <option key={i}>{data.id}</option>)
-        }
-      </select>
-      <hr />
+  return (
+    <div style={{ backgroundColor: "black" }}>
+      <CouncilSelect council={council} onChange={setCouncil} />
+      <hr style={{ height: "3px", color: "white" }} />
+      <Row>
+        <Col md={4}>
+          <Memberships />
+        </Col>
+        <Col md={2}>
+          <Channels />
+        </Col>
+        <Col md={2}>
+          <Videos />
+        </Col>
+        <Col md={4}>
+          <Nfts />
+        </Col>
+      </Row>
     </div>
-  </div>;
+  );
 }

@@ -8,10 +8,11 @@
 
 .select_input {
   padding: 5px;
-  border-width: 2px;
-  min-width: 150px;
+  border-width: 1px;
+  min-width: 200px;
   border-radius: 10px;
   margin-bottom: 3px;
+  display: inline-table;
 }
 
 .select_input:hover {
@@ -37,4 +38,17 @@
   padding: 10px;
   border-radius: 8px;
   color: black;
+}
+
+.time_label {
+  margin-left: 30px;
+  text-underline-offset: unset;
+  color: white;
+}
+
+.loading {
+  height: 100%;
+  width: 100%;
+  vertical-align: middle;
+  padding-top: 35px;
 }
