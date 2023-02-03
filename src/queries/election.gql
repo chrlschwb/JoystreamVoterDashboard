@@ -1,5 +1,19 @@
-query GetCastVotesCount($where: CastVoteWhereInput) {
-  castVotesConnection(first: 0, where: $where) {
-    totalCount
+query GetElections($where: ElectionRoundWhereInput, $orderBy: [ElectionRoundOrderByInput!], $offset: Int, $limit: Int) {
+  electionRounds(where: $where, orderBy: $orderBy, offset: $offset, limit: $limit) {
+    ...ElectionRoundFields
+    __typename
+  }
+}
+fragment ElectionRoundFields on ElectionRound {
+  id
+  cycleId
+  endedAtBlock
+  endedAtTime
+  endedAtNetwork
+  candidates {
+    stake
+  }
+  castVotes {
+    voteForId
   }
 }

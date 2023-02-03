@@ -1,5 +1,4 @@
 export * from './__generated__/baseTypes.generated';
-export * from './__generated__/candidates.generated';
 export * from './__generated__/channels.generated';
 export * from './__generated__/councils.generated';
 export * from './__generated__/election.generated';

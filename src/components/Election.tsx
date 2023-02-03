@@ -1,13 +1,14 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
+import { sumStakes } from '@/helpers';
 import { useElection } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined } from '@/types';
 
 export default function Election() {
   const { council } = useSelectedCouncil();
-  const { candidates, votes, stake, loading, error } = useElection({ council });
+  const { election, loading, error } = useElection({ council });
 
   // Add some
 
@@ -24,15 +25,15 @@ export default function Election() {
       <h4>Elections</h4>
       <Row>
         <Col>
-          <div className="input_box">{isDefined(candidates) ? candidates : '-'} </div>
+          <div className="input_box">{isDefined(election) ? election.candidates.length : '-'} </div>
           <h6>candidates</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(votes) ? votes : '-'}</div>
+          <div className="input_box">{isDefined(election) ? election.castVotes.length : '-'}</div>
           <h6>votes</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(stake) ? stake : '-'}</div>
+          <div className="input_box">{isDefined(election) ? sumStakes(election.candidates).toString() : '-'}</div>
           <h6>stake</h6>
         </Col>
       </Row>

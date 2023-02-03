@@ -1,12 +1,11 @@
 import { useEffect, useMemo } from 'react';
 
-import { useGetCandidatesCountLazyQuery, useGetCastVotesCountLazyQuery } from '@/queries';
+import { useGetElectionsLazyQuery } from '@/queries';
 
 import { ForSelectedCouncil } from './types';
 
 export function useElection({ council }: ForSelectedCouncil) {
-  const [fetchCandidates, CandidateQuery] = useGetCandidatesCountLazyQuery();
-  const [fetchVotes, VotesQuery] = useGetCastVotesCountLazyQuery();
+  const [fetch, query] = useGetElectionsLazyQuery();
 
   useEffect(() => {
     if (!council) return;
@@ -15,22 +14,18 @@ export function useElection({ council }: ForSelectedCouncil) {
       where: { createdAt_gt: council.electedAt.timestamp, createdAt_lt: council.endedAt?.timestamp },
     };
 
-    fetchCandidates({
-      variables,
-    });
-    fetchVotes({
+    fetch({
       variables,
     });
   }, [council]);
 
-  const candidates = useMemo(() => CandidateQuery.data?.candidatesConnection.totalCount, [CandidateQuery.data]);
-  const votes = useMemo(() => VotesQuery.data?.castVotesConnection.totalCount, [VotesQuery.data]);
-  const stake = '-'; ///  ------
+  const election = useMemo(
+    () => ((query.data?.electionRounds.length || 0) > 0 ? query.data?.electionRounds[0] : undefined),
+    [query.data]
+  );
   return {
-    candidates,
-    votes,
-    stake,
-    loading: CandidateQuery.loading || VotesQuery.loading,
-    error: CandidateQuery.error || VotesQuery.loading,
+    election,
+    loading: query.loading,
+    error: query.error,
   };
 }
