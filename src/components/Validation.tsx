@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Col, Row } from 'react-bootstrap';
 
-import { useNFTs } from '@/hooks';
+import { useValidation } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined } from '@/types';
 
-export default function NFTs() {
+export default function Validation() {
   const { council } = useSelectedCouncil();
-  const { issued, sale, fee, loading, error } = useNFTs({ council });
+  const { validator, stake, mint, loading, error } = useValidation({ council });
 
   // Add some
 
@@ -22,19 +22,19 @@ export default function NFTs() {
 
   return (
     <div className="sub_panel">
-      <h4>NFTs</h4>
+      <h4>Validations</h4>
       <Row>
         <Col>
-          <div className="input_box">{isDefined(issued) ? issued : '-'}</div>
-          <h6>issued</h6>
+          <div className="input_box">{isDefined(validator) ? validator : '-'}</div>
+          <h6>validator</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(sale) ? sale : '-'}</div>
-          <h6>sale</h6>
+          <div className="input_box">{isDefined(stake) ? stake : '-'} </div>
+          <h6>stake</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(fee) ? fee : '-'} </div>
-          <h6>fee</h6>
+          <div className="input_box">{isDefined(mint) ? mint : '-'}</div>
+          <h6>mint</h6>
         </Col>
       </Row>
     </div >

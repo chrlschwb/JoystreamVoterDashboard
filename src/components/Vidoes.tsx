@@ -25,11 +25,11 @@ export default function Videos() {
       <h4>Videos</h4>
       <Row>
         <Col>
-          <input type="number" min={0} className="input_box_md" readOnly value={isDefined(created) ? created : '-'} />
+          <div className="input_box_md">{isDefined(created) ? created : '-'}</div>
           <h6>created</h6>
         </Col>
         <Col>
-          <input type="number" min={0} className="input_box_md" readOnly value={isDefined(total) ? total : '-'} />
+          <div className="input_box_md">{isDefined(total) ? total : '-'}</div>
           <h6>total</h6>
         </Col>
       </Row>

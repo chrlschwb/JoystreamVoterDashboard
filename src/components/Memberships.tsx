@@ -25,15 +25,15 @@ export default function Memberships() {
       <h4>Memberships</h4>
       <Row>
         <Col md={4}>
-          <input type="number" min={0} className="input_box" readOnly value={isDefined(created) ? created : '-'} />
+          <div className="input_box">{isDefined(created) ? created : '-'}</div>
           <h6>created</h6>
         </Col>
         <Col>
-          <input type="number" min={0} className="input_box" readOnly value={isDefined(invited) ? invited : '-'} />
+          <div className="input_box">{isDefined(invited) ? invited : '-'}</div>
           <h6>invited</h6>
         </Col>
         <Col>
-          <input type="number" min={0} className="input_box" readOnly value={isDefined(total) ? total : '-'} />
+          <div className="input_box">{isDefined(total) ? total : '-'} </div>
           <h6>total</h6>
         </Col>
       </Row>

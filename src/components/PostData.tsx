@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Col, Row } from 'react-bootstrap';
 
-import { useChannels } from '@/hooks';
+import { usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined } from '@/types';
 
-export default function Channels() {
+export default function PostData() {
   const { council } = useSelectedCouncil();
-  const { created, total, loading, error } = useChannels({ council });
+  const { created, total, loading, error } = usePostTokenData({ council });
 
   // Add some
 
@@ -22,17 +22,16 @@ export default function Channels() {
 
   return (
     <div className="sub_panel">
-      <h4>Channels</h4>
+      <h4>POSTS</h4>
       <Row>
         <Col>
-          <div className="input_box_md">{isDefined(created) ? created : '-'}</div>
+          <div className="input_box_md">{isDefined(created) ? created : '-'} </div>
           <h6>created</h6>
         </Col>
         <Col>
           <div className="input_box_md">{isDefined(total) ? total : '-'}</div>
           <h6>total</h6>
         </Col>
-        <div ></div>
       </Row>
     </div >
   );

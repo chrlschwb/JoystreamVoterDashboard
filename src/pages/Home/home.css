@@ -24,13 +24,15 @@
   border-radius: 5px;
   text-align: center;
   background-color: #fcd19c;
+  margin-left: 10px;
 }
 
 .input_box_md {
   background-color: #fcd19c;
-  max-width: 80px;
+  max-width: 75px;
   border-radius: 5px;
   text-align: center;
+  margin-left: 5px;
 }
 
 .table_background {

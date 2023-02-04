@@ -1,4 +1,5 @@
 import React from 'react';
+import Moment from 'react-moment';
 
 import { Block } from '@/types';
 
@@ -13,6 +14,6 @@ export default function BlockTime({ block }: BlockTimeProps) {
         }`}
     >
       {block.timestamp}
-    </a>
+    </a >
   );
 }

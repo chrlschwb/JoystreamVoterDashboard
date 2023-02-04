@@ -1,0 +1,24 @@
+query getProposalCreatedEvent($where:WorkingGroupWhereInput ) {
+  workingGroupsConnection(first:0,where: $where) {
+    totalCount,
+		edges{node{
+      id,
+      createdAt,
+      updatedAt,
+      name,
+      budget,  
+      rewardpaideventgroup{
+        amount,     
+      },
+      workers{
+      	id,
+        membership{
+          handle
+        }
+      }
+    }
+      ,cursor}
+    
+  }
+}
+

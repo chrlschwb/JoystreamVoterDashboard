@@ -1,4 +1,7 @@
-import { CouncilSelect, Memberships, Videos, Channels, Nfts } from '@/components';
+import {
+  CouncilSelect, Memberships, Videos, Channels, Nfts, Thread, PostData, Election,
+  TokenMinted, NumberProposal, Validation, WorkingGroups, ListProposal
+} from '@/components';
 import { useSelectedCouncil } from '@/store';
 
 import { Col, Row } from 'react-bootstrap';
@@ -26,6 +29,31 @@ export default function Home() {
           <Nfts />
         </Col>
       </Row>
+      <Row style={{ marginTop: "20px" }}>
+        <Col md={2}>
+          <Thread />
+        </Col>
+        <Col md={2}>
+          <PostData />
+        </Col>
+        <Col md={4}>
+          <Election />
+        </Col>
+        <Col md={4}>
+          <Validation />
+        </Col>
+      </Row>
+      <Row style={{ marginTop: "20px" }}>
+        <Col md={5}>
+          <TokenMinted />
+        </Col>
+        <Col md={7}>
+          <NumberProposal />
+        </Col>
+      </Row>
+
+      <WorkingGroups />
+      <ListProposal />
     </div>
   );
 }

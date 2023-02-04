@@ -27,7 +27,6 @@ const Option = (optionProps: OptionProps<ElectedCouncil>) => {
 export default function CouncilSelect({ council, onChange }: CouncilSelectProps) {
   const { data } = useElectedCouncils({});
 
-  console.log(data);
   return (
     <div>
       <div className="justify-content-center">

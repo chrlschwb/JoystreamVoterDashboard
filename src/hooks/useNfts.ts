@@ -26,10 +26,11 @@ export function useNFTs({ council }: ForSelectedCouncil) {
 
   const issued = useMemo(() => IssuedQuery.data?.nftIssuedEventsConnection.totalCount, [IssuedQuery.data]);
   const sale = useMemo(() => SaleQuery.data?.nftBoughtEventsConnection.totalCount, [SaleQuery.data]);
-
+  const fee = "-" //// ???------
   return {
     issued,
     sale,
+    fee,
     loading: IssuedQuery.loading || SaleQuery.loading,
     error: IssuedQuery.error || SaleQuery.loading,
   };
