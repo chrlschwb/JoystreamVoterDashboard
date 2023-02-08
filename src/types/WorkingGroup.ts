@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 
 import { sumStakes } from '@/helpers';
-import { WorkerFieldsFragment, WorkingGroupFieldsFragment } from '@/queries';
+import { WorkerFieldsFragment, WorkingGroupFieldsFragment, GetWorkingGroupTokenQuery } from '@/queries';
 
 export const GroupIdToGroupParam = {
   contentWorkingGroup: 'Content',
@@ -18,7 +18,7 @@ export const GroupIdToGroupParam = {
 export type GroupIdName = keyof typeof GroupIdToGroupParam;
 
 export interface WorkingGroup {
-  id: GroupIdName;
+  id: string;
   name: string;
   image?: string;
   about?: string;
@@ -31,11 +31,13 @@ export interface WorkingGroup {
   isActive?: boolean;
 }
 
+
+
 export const asWorkingGroup = (group: WorkingGroupFieldsFragment): WorkingGroup => {
   return {
-    id: group.id as GroupIdName,
+    id: group.id,
     image: undefined,
-    name: asWorkingGroupName(group.name),
+    name: group.name,
     about: group.metadata?.about ?? '',
     description: group.metadata?.description ?? '',
     status: group.metadata?.status ?? '',
@@ -46,6 +48,7 @@ export const asWorkingGroup = (group: WorkingGroupFieldsFragment): WorkingGroup 
     isActive: group.leader?.isActive ?? false,
   };
 };
+
 
 export const asWorkingGroupName = (name: string) =>
   name

@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from 'react';
 
-import { useGetCreatedProposalsCountLazyQuery, useGetExecutedProposalsCountLazyQuery } from '@/queries';
+import { useGetCreatedProposalsCountLazyQuery, useGetExecutedProposalsCountLazyQuery, useGetProposalsLazyQuery } from '@/queries';
 
 import { ForSelectedCouncil } from './types';
 
 export function useNumberProposal({ council }: ForSelectedCouncil) {
   const [fetchCreated, createdQuery] = useGetCreatedProposalsCountLazyQuery();
   const [fetchExcuted, excutedQuery] = useGetExecutedProposalsCountLazyQuery();
+  const [fetchProposals, proposalsQuery] = useGetProposalsLazyQuery();
 
   useEffect(() => {
     if (!council) return;
@@ -21,12 +22,35 @@ export function useNumberProposal({ council }: ForSelectedCouncil) {
     fetchExcuted({
       variables,
     });
+    fetchProposals({
+      variables,
+    });
   }, [council]);
 
   const created = useMemo(() => createdQuery.data?.proposalCreatedEventsConnection.totalCount, [createdQuery.data]);
   const executed = useMemo(() => excutedQuery.data?.proposalExecutedEventsConnection.totalCount, [excutedQuery.data]);
-  const failed = created! - executed!;
-  const wait = '-'; /// -----
+
+  const wait = useMemo(() => {
+    var test: number = 0;
+    proposalsQuery.data?.proposals.map(d => {
+      if (d.status.__typename === "ProposalStatusDormant")
+        test = test + 1;
+    }
+    )
+    return (test)
+  }, [proposalsQuery.data]);
+
+  const deciding = useMemo(() => {
+    var test: number = 0;
+    proposalsQuery.data?.proposals.map(d => {
+      if (d.status.__typename === "ProposalStatusDeciding")
+        test = test + 1;
+    }
+    )
+    return (test)
+  }, [proposalsQuery.data]);
+
+  const failed = created! - executed! - wait - deciding;
   return {
     created,
     executed,

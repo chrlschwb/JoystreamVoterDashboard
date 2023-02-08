@@ -1,0 +1,33 @@
+query mintedTokens($where:RewardPaymentEventWhereInput) {
+  rewardPaymentEvents(where: $where) {
+    inBlock
+    councilMemberId
+    id
+    paidBalance
+    missingBalance
+    councilMember {
+      electedInCouncilId
+      member {
+        id
+      }
+    }
+  }
+}
+
+query workingGroupToken($where:BudgetUpdatedEventWhereInput) {
+  budgetUpdatedEvents(where:$where) {
+    
+    groupId
+    budgetChangeAmount
+    inBlock
+    id
+  }
+}
+
+query councilTokens ($where:BudgetRefillEventWhereInput){
+  budgetRefillEvents(where: $where) {
+    id
+    balance
+    inBlock
+  }
+}

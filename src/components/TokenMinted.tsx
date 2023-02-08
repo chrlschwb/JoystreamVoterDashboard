@@ -25,21 +25,21 @@ export default function TokenMinted() {
       <Row>
         <Col>
           <div className="input_box" style={{ marginLeft: '30px' }}>
-            {isDefined(minted) ? minted : '-'}
+            {isDefined(minted) ? minted.toFixed(0) : '-'}
           </div>
           <h6>minted</h6>
         </Col>
         <Col>
           <div className="input_box" style={{ marginLeft: '30px' }}>
-            {isDefined(councildata) ? councildata : '-'}
+            {isDefined(councildata) ? councildata.toFixed(0) : '-'}
           </div>
           <h6>council</h6>
         </Col>
         <Col>
           <div className="input_box" style={{ marginLeft: '30px' }}>
-            {isDefined(proposal) ? proposal : '-'}
+            {isDefined(proposal) ? proposal.toFixed(0) : '-'}
           </div>
-          <h6>proposal</h6>
+          <h6>WG budget</h6>
         </Col>
       </Row>
     </div>

@@ -4,28 +4,41 @@ import { Table } from 'react-bootstrap';
 import { useGroupWorkers, useWorkingGroups } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined, WorkingGroup } from '@/types';
+import { GetWorkingGroupTokenQuery } from '@/queries'
+import { _1Bn } from '@polkadot/util';
+import { BN } from 'bn.js';
 
 export interface WorkingGroupProps {
   workingGroup: WorkingGroup;
 }
 
+
 export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
+
+  const { council } = useSelectedCouncil();
+  const { workingTokens } = useWorkingGroups({ council });
   const { workers } = useGroupWorkers({ workingGroup });
+
+
+  var token = workingTokens?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
+    return a + (b.budgetChangeAmount / 10000000000);
+  }, 0)
+
+
   return (
     <tr>
       <td>{workingGroup.name}</td>
       <td>{workers?.length}</td>
-      <td>Tokens</td>
-      <td>Budget: {workingGroup.budget?.toString()}</td>
+      <td>{token?.toFixed(0)}</td>
+      <td>{isDefined(workingGroup) ? workingGroup.budget?.div(new BN(10000000000)).toString() : ""}</td>
     </tr>
   );
 }
 
 export default function WorkingGroups() {
   const { council } = useSelectedCouncil();
-  const { workingGroups, loading, error } = useWorkingGroups({ council });
+  const { workingGroups, loading, error, workingTokens } = useWorkingGroups({ council });
 
-  console.log('workingGroups', workingGroups);
 
   if (loading) {
     return (

@@ -9,3 +9,4 @@ export * from './__generated__/proposals.generated';
 export * from './__generated__/threads.generated';
 export * from './__generated__/videos.generated';
 export * from './__generated__/workingGroups.generated';
+export * from './__generated__/tokens.generated';

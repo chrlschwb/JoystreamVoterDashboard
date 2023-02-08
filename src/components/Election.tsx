@@ -33,7 +33,7 @@ export default function Election() {
           <h6>votes</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(election) ? sumStakes(election.candidates).toString() : '-'}</div>
+          <div className="input_box">{isDefined(election) ? sumStakes(election.candidates).toString().slice(0, length - 10) : '-'}</div>
           <h6>stake</h6>
         </Col>
       </Row>

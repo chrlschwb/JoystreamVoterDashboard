@@ -1,37 +1,52 @@
 import { useEffect, useMemo } from 'react';
 
-// import { useGetCandidatesCountQuery, useGetCastVotesCountLazyQuery } from '@/queries/__generated__/GetElection.generated';
+
 import { ForSelectedCouncil } from './types';
+import { useGetCouncilTokenLazyQuery, useGetWorkingGroupTokenLazyQuery, useGetMintedTokenLazyQuery } from '@/queries'
 
 export function useTokenMinted({ council }: ForSelectedCouncil) {
-  // const [fetchCandidates, CandidateQuery] = useGetCandidatesCountQuery();
-  // const [fetchVotes, VotesQuery] = useGetCastVotesCountLazyQuery();
+
+  const [fetchCouncilToken, CouncilTokenQuery] = useGetCouncilTokenLazyQuery();
+  const [fetchWorkingGroupToken, WorkingGroupTokenQuery] = useGetWorkingGroupTokenLazyQuery();
+  const [fetchMintedToken, MintedTokenQuery] = useGetMintedTokenLazyQuery();
 
   useEffect(() => {
     if (!council) return;
 
-    // var variables = {
-    //   where: { createdAt_gt: council.electedAt.timestamp, createdAt_lt: council.endedAt?.timestamp },
-    // };
+    var variables = {
+      where: { createdAt_gt: council.electedAt.timestamp, createdAt_lt: council.endedAt?.timestamp },
+    };
 
-    // fetchCandidates({
-    //   variables,
-    // });
-    // fetchVotes({
-    //   variables,
-    // });
+    fetchCouncilToken({
+      variables,
+    });
+
+    fetchWorkingGroupToken({
+      variables,
+    });
+
+    fetchMintedToken({
+      variables,
+    });
   }, [council]);
 
-  // const candidates = useMemo(() => CandidateQuery.data?.candidatesConnection.totalCount, [CandidateQuery.data]);
-  // const votes = useMemo(() => VotesQuery.data?.castVotesConnection.totalCount, [VotesQuery.data]);
-  const proposal = '-'; ///  ------
-  const minted = '-';
-  const councildata = '-';
+  const proposal = useMemo(() => WorkingGroupTokenQuery.data?.budgetUpdatedEvents.reduce((a: number, b) => {
+    return a + (b.budgetChangeAmount / 10000000000);
+  }, 0), [WorkingGroupTokenQuery.data]);
+
+  const councildata = useMemo(() => MintedTokenQuery.data?.rewardPaymentEvents.reduce((a: number, b) => {
+    return a + (b.paidBalance / 10000000000);
+  }, 0), [MintedTokenQuery.data]);
+
+  const minted = useMemo(() => CouncilTokenQuery.data?.budgetRefillEvents.reduce((a: number, b) => {
+    return a + (b.balance / 10000000000);
+  }, 0), [CouncilTokenQuery.data]);
+
   return {
     proposal,
     minted,
     councildata,
-    loading: false, // CandidateQuery.loading || VotesQuery.loading,
-    error: false, //CandidateQuery.error || VotesQuery.loading,
+    loading: MintedTokenQuery.loading || CouncilTokenQuery.loading || WorkingGroupTokenQuery.loading,
+    error: MintedTokenQuery.error || CouncilTokenQuery.error || WorkingGroupTokenQuery.error,
   };
 }
