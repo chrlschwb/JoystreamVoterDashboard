@@ -12,3 +12,4 @@ export * from './useThread';
 export * from './useTokenMinted';
 export * from './useVideos';
 export * from './useWorkingGroups';
+export * from './useWorker';

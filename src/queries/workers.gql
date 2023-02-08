@@ -1,0 +1,35 @@
+query getTerminatedWorkder($where:TerminatedWorkerEventWhereInput) {
+  terminatedWorkerEvents(where:$where) {
+
+        groupId
+        workerId
+    createdAt
+    __typename
+    worker{
+      membershipId
+     
+    }
+  }	
+}
+
+query getWorkerExited($where:WorkerExitedEventWhereInput) {
+  workerExitedEvents(where:$where) {
+     createdAt
+    groupId
+    workerId
+    __typename
+    worker{
+      membershipId
+    }
+  }	
+}
+
+query getOpeningFilled($where:OpeningFilledEventWhereInput){
+  openingFilledEvents(where:$where){
+    createdAt
+    groupId
+    workersHired{
+      membershipId
+    }
+  }
+}

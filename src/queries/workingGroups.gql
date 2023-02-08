@@ -8,9 +8,7 @@ fragment WorkingGroupMetadataFields on WorkingGroupMetadata {
 fragment WorkerFields on Worker {
   id
   runtimeId
-  membership {
-    ...MemberFields
-  }
+
   group {
     id
     name
@@ -28,9 +26,7 @@ fragment WorkerFields on Worker {
 fragment PastWorkerFields on Worker {
   id
   runtimeId
-  membership {
-    ...MemberFields
-  }
+
   createdAt
   updatedAt
   status {
@@ -229,9 +225,7 @@ fragment WorkingGroupOpeningDetailedFields on WorkingGroupOpening {
     status {
       __typename
     }
-    applicant {
-      ...MemberFields
-    }
+
     status {
       __typename
     }
@@ -311,9 +305,7 @@ fragment WorkingGroupApplicationMentionFields on WorkingGroupApplication {
     inBlock
     network
   }
-  applicant {
-    ...MemberFields
-  }
+
   opening {
     type
     metadata {
@@ -373,9 +365,7 @@ fragment WorkingGroupApplicationFields on WorkingGroupApplication {
       expectedEnding
     }
   }
-  applicant {
-    ...MemberFields
-  }
+
   status {
     __typename
   }
