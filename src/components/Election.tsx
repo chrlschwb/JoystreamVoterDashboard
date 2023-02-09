@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { sumStakes } from '@/helpers';
 import { useElection } from '@/hooks';
@@ -25,15 +25,21 @@ export default function Election() {
       <h4>Elections</h4>
       <Row>
         <Col>
-          <div className="input_box">{isDefined(election) ? election.candidates.length : '-'} </div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>candidation.length of electionRounds</Tooltip>}>
+            <div className="input_box">{isDefined(election) ? election.candidates.length : '-'} </div>
+          </OverlayTrigger>
           <h6>candidates</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(election) ? election.castVotes.length : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>castVotes.length of electionRounds</Tooltip>}>
+            <div className="input_box">{isDefined(election) ? election.castVotes.length : '-'}</div>
+          </OverlayTrigger>
           <h6>votes</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(election) ? sumStakes(election.candidates).toString().slice(0, length - 10) : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>sum candidates.stake of electionRounds</Tooltip>}>
+            <div className="input_box">{isDefined(election) ? sumStakes(election.candidates).toString().slice(0, length - 10) : '-'}</div>
+          </OverlayTrigger>
           <h6>stake</h6>
         </Col>
       </Row>

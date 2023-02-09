@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useProposals } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
@@ -38,9 +38,16 @@ export default function ListProposal() {
         <tbody>
           {isDefined(proposals)
             ? proposals.map((proposal) => (
-                <tr key={proposal.id}>
+              <tr key={proposal.id}>
+                <OverlayTrigger placement="bottom" overlay={<Tooltip>title of proposals</Tooltip>}>
                   <td>{proposal.title}</td>
+                </OverlayTrigger>
+                <OverlayTrigger placement="bottom" overlay={<Tooltip>createAt of proposals</Tooltip>}>
+
                   <td>{proposal.createdAt}</td>
+                </OverlayTrigger>
+                <OverlayTrigger placement="bottom" overlay={<Tooltip>{"https://pioneerapp.xyz/#/proposals/preview/${proposal.id} of proposals"}</Tooltip>}>
+
                   <a
                     href={`https://pioneerapp.xyz/#/proposals/preview/${proposal.id}`}
                     target="_blank"
@@ -48,9 +55,12 @@ export default function ListProposal() {
                   >
                     Link to porposal
                   </a>
+                </OverlayTrigger>
+                <OverlayTrigger placement="bottom" overlay={<Tooltip>status of proposals</Tooltip>}>
                   <td>{proposal.status}</td>
-                </tr>
-              ))
+                </OverlayTrigger>
+              </tr>
+            ))
             : null}
         </tbody>
       </Table>

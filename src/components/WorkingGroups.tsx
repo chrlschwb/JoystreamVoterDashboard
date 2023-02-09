@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-import { useGroupWorkers, useWorkingGroups, useWorker } from '@/hooks';
+import { useWorkingGroups, useWorker } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined, WorkingGroup } from '@/types';
 
@@ -15,7 +15,7 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
   const { council } = useSelectedCouncil();
   const { workingTokens, rewardToken, workingTokensReward } = useWorkingGroups({ council });
   const { exitedWorker, filledWorker, terminatedWorker } = useWorker({ council });
-  const { workers } = useGroupWorkers({ workingGroup });
+
 
 
   var token = workingTokens?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
@@ -54,11 +54,19 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
 
   return (
     <tr>
-      <td>{workingGroup.name}</td>
-      <td>{worker}</td>
-      <td>{token?.toFixed(0)}</td>
+      <OverlayTrigger placement="bottom" overlay={<Tooltip> workingGroup.name of workingGroups</Tooltip>}>
+        <td>{workingGroup.name}</td>
+      </OverlayTrigger>
+      <OverlayTrigger placement="bottom" overlay={<Tooltip>worker = (workersHired.length of openingFilledEvents) -(worker.length of workerExitedEvents) - (worker.length of terminatedWorkerEvents); </Tooltip>}>
+        <td>{worker}</td>
+      </OverlayTrigger>
+      <OverlayTrigger placement="bottom" overlay={<Tooltip>sum budgetChangeAmount of budgetUpdatedEvents </Tooltip>}>
+        <td>{token?.toFixed(0)}</td>
+      </OverlayTrigger>
       {/* <td>{isDefined(workingGroup) ? workingGroup.budget?.div(new BN(10000000000)).toString() : ""}</td> */}
-      <td>{budget.toFixed(0)}</td>
+      <OverlayTrigger placement="bottom" overlay={<Tooltip>reward = (sum budgetChangeAmount of budgetUpdatedEvents) -(sum amount of RewardPaidEvent)  </Tooltip>}>
+        <td>{budget.toFixed(0)}</td>
+      </OverlayTrigger>
     </tr>
   );
 }

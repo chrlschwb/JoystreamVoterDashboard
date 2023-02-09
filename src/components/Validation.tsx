@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useValidation } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
@@ -24,15 +24,21 @@ export default function Validation() {
       <h4>Validations</h4>
       <Row>
         <Col>
-          <div className="input_box">{isDefined(validator) ? validator : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> value of blockchain</Tooltip>}>
+            <div className="input_box">{isDefined(validator) ? validator : '-'}</div>
+          </OverlayTrigger>
           <h6>validator</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(stake) ? stake : '-'} </div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> value of blockchain</Tooltip>}>
+            <div className="input_box">{isDefined(stake) ? stake : '-'} </div>
+          </OverlayTrigger>
           <h6>stake</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(mint) ? mint : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> value of blockchain</Tooltip>}>
+            <div className="input_box">{isDefined(mint) ? mint : '-'}</div>
+          </OverlayTrigger>
           <h6>mint</h6>
         </Col>
       </Row>

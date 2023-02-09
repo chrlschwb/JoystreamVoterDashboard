@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useThreadData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
@@ -24,11 +24,15 @@ export default function Thread() {
       <h4>Thread</h4>
       <Row>
         <Col>
-          <div className="input_box_md">{isDefined(created) ? created : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> totalCount of forumThreadsConnection between council period</Tooltip>}>
+            <div className="input_box_md">{isDefined(created) ? created : '-'}</div>
+          </OverlayTrigger>
           <h6>created</h6>
         </Col>
         <Col>
-          <div className="input_box_md">{isDefined(total) ? total : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> totalCount of forumThreadsConnection at the end of council period</Tooltip>}>
+            <div className="input_box_md">{isDefined(total) ? total : '-'}</div>
+          </OverlayTrigger>
           <h6>total</h6>
         </Col>
       </Row>

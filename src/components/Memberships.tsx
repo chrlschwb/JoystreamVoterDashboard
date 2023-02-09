@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useMemberships } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
@@ -24,15 +24,21 @@ export default function Memberships() {
       <h4>Memberships</h4>
       <Row>
         <Col md={4}>
-          <div className="input_box">{isDefined(created) ? created : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>totalCount of membershipsConnection between council period</Tooltip>}>
+            <div className="input_box">{isDefined(created) ? created : '-'}</div>
+          </OverlayTrigger>
           <h6>created</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(invited) ? invited : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>totalCount of memberInvitedEventsConnection</Tooltip>}>
+            <div className="input_box">{isDefined(invited) ? invited : '-'}</div>
+          </OverlayTrigger>
           <h6>invited</h6>
         </Col>
         <Col>
-          <div className="input_box">{isDefined(total) ? total : '-'} </div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>totalCount of membershipsConnection  at the end of council period</Tooltip>}>
+            <div className="input_box">{isDefined(total) ? total : '-'} </div>
+          </OverlayTrigger>
           <h6>total</h6>
         </Col>
       </Row>

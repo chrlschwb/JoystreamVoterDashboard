@@ -47,7 +47,7 @@ export default function CouncilSelect({ council, onChange }: CouncilSelectProps)
               Elected: <BlockTime block={council.electedAt} />
             </span>
             {council.endedAt && (
-              <span>
+              <span className="time_label">
                 Ended: <BlockTime block={council.endedAt} />
               </span>
             )}

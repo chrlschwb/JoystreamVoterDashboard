@@ -1,9 +1,15 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useChannels } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined } from '@/types';
+
+const tooltip = (context: string) => (
+  <Tooltip id="tooltip">
+    <strong>{context}</strong>
+  </Tooltip>
+);
 
 export default function Channels() {
   const { council } = useSelectedCouncil();
@@ -24,11 +30,15 @@ export default function Channels() {
       <h4>Channels</h4>
       <Row>
         <Col>
-          <div className="input_box_md">{isDefined(created) ? created : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>totalCount of channelsConnection  between council period </Tooltip>}>
+            <div className="input_box_md">{isDefined(created) ? created : '-'}</div>
+          </OverlayTrigger>
           <h6>created</h6>
         </Col>
         <Col>
-          <div className="input_box_md">{isDefined(total) ? total : '-'}</div>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>totalCount of channelsCounnection at the end of council period</Tooltip>}>
+            <div className="input_box_md">{isDefined(total) ? total : '-'}</div>
+          </OverlayTrigger>
           <h6>total</h6>
         </Col>
         <div></div>
