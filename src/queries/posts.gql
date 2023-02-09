@@ -5,5 +5,9 @@ query GetForumPostsCount($where: ForumPostWhereInput) {
   
   forumPosts{
     createdAt
+    author{
+      handle
+    }
+    text    
   }
 }

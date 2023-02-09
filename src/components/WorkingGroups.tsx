@@ -32,9 +32,6 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
 
   var budget = updateReward! - reward!;
 
-  console.log(updateReward, reward, "----");
-
-
 
   var exited = exitedWorker?.filter(data => workingGroup.name === data.groupId).reduce((a: number, b) => {
     return isNaN(a + b.worker.length) ? 0 : a + b.worker.length;
@@ -49,8 +46,6 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
   }, 0)
 
   var worker = filled! - exited! - terminated!;
-
-  console.log(filled, exited, terminated);
 
   return (
     <tr>

@@ -26,10 +26,25 @@ fragment ProposalFields on Proposal {
   details {
     __typename
   }
-  creator {
-    ...MemberFields
-  }
   createdAt
   councilApprovals
   exactExecutionBlock
+  votes{
+    voter{
+      handle
+    }
+    voteKind
+    votingRound
+  }
+  discussionThread{
+      proposalId
+
+      posts{
+        author{
+          handle
+        }
+        text
+
+      }
+    }
 }

@@ -1,4 +1,4 @@
-import { MemberFieldsFragment, MembershipExternalResourceType } from '@/queries';
+import { MemberFieldsFragment, MembershipExternalResourceType, CouncilMemberFragment, GetCouncilMembersQuery } from '@/queries';
 
 import { Address, asBlock, Block, castQueryResult } from './common';
 import { asWorkingGroupName } from './WorkingGroup';
@@ -99,3 +99,14 @@ export const asMemberRole = (data: MemberFieldsFragment['roles'][0]): MemberRole
   groupName: asWorkingGroupName(data.group.name),
   createdAt: data.createdAt,
 });
+
+export interface CouncilMember {
+  electedInCouncilId: string;
+  handler: string;
+}
+export const asCouncilMember = (data: CouncilMemberFragment): CouncilMember => {
+  return {
+    electedInCouncilId: data.electedInCouncilId,
+    handler: data.member.handle ?? ''
+  }
+}

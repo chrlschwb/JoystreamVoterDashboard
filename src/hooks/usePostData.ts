@@ -29,10 +29,12 @@ export function usePostTokenData({ council }: ForSelectedCouncil) {
 
   const created = useMemo(() => createdQuery.data?.forumPostsConnection.totalCount, [createdQuery.data]);
   const total = useMemo(() => totalQuery.data?.forumPostsConnection.totalCount, [totalQuery.data]);
+  const forum = useMemo(() => totalQuery.data?.forumPosts, [totalQuery.data]);
 
   return {
     created,
     total,
+    forum,
     loading: createdQuery.loading,
     error: createdQuery.error,
   };
