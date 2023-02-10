@@ -30,7 +30,6 @@ fragment ElectedCouncilFields on ElectedCouncil {
 fragment CouncilMemberFields on CouncilMember {
   id
   member {
-    ...MemberFields
     councilMembers {
       __typename
     }

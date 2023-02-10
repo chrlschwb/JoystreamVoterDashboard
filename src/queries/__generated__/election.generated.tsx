@@ -59,13 +59,13 @@ export const GetElectionsDocument = gql`
  * });
  */
 export function useGetElectionsQuery(baseOptions?: Apollo.QueryHookOptions<GetElectionsQuery, GetElectionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetElectionsQuery, GetElectionsQueryVariables>(GetElectionsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetElectionsQuery, GetElectionsQueryVariables>(GetElectionsDocument, options);
+}
 export function useGetElectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetElectionsQuery, GetElectionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetElectionsQuery, GetElectionsQueryVariables>(GetElectionsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetElectionsQuery, GetElectionsQueryVariables>(GetElectionsDocument, options);
+}
 export type GetElectionsQueryHookResult = ReturnType<typeof useGetElectionsQuery>;
 export type GetElectionsLazyQueryHookResult = ReturnType<typeof useGetElectionsLazyQuery>;
 export type GetElectionsQueryResult = Apollo.QueryResult<GetElectionsQuery, GetElectionsQueryVariables>;

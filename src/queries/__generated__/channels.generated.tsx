@@ -103,33 +103,15 @@ export const GetChannelsDocument = gql`
 }
     ${FullChannelFieldsFragmentDoc}`;
 
-/**
- * __useGetChannelsQuery__
- *
- * To run a query within a React component, call `useGetChannelsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetChannelsQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      offset: // value for 'offset'
- *      limit: // value for 'limit'
- *   },
- * });
- */
+
 export function useGetChannelsQuery(baseOptions?: Apollo.QueryHookOptions<GetChannelsQuery, GetChannelsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetChannelsQuery, GetChannelsQueryVariables>(GetChannelsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetChannelsQuery, GetChannelsQueryVariables>(GetChannelsDocument, options);
+}
 export function useGetChannelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetChannelsQuery, GetChannelsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetChannelsQuery, GetChannelsQueryVariables>(GetChannelsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetChannelsQuery, GetChannelsQueryVariables>(GetChannelsDocument, options);
+}
 export type GetChannelsQueryHookResult = ReturnType<typeof useGetChannelsQuery>;
 export type GetChannelsLazyQueryHookResult = ReturnType<typeof useGetChannelsLazyQuery>;
 export type GetChannelsQueryResult = Apollo.QueryResult<GetChannelsQuery, GetChannelsQueryVariables>;
@@ -141,30 +123,14 @@ export const GetChannelsCountDocument = gql`
 }
     `;
 
-/**
- * __useGetChannelsCountQuery__
- *
- * To run a query within a React component, call `useGetChannelsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetChannelsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetChannelsCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
 export function useGetChannelsCountQuery(baseOptions?: Apollo.QueryHookOptions<GetChannelsCountQuery, GetChannelsCountQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetChannelsCountQuery, GetChannelsCountQueryVariables>(GetChannelsCountDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetChannelsCountQuery, GetChannelsCountQueryVariables>(GetChannelsCountDocument, options);
+}
 export function useGetChannelsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetChannelsCountQuery, GetChannelsCountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetChannelsCountQuery, GetChannelsCountQueryVariables>(GetChannelsCountDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetChannelsCountQuery, GetChannelsCountQueryVariables>(GetChannelsCountDocument, options);
+}
 export type GetChannelsCountQueryHookResult = ReturnType<typeof useGetChannelsCountQuery>;
 export type GetChannelsCountLazyQueryHookResult = ReturnType<typeof useGetChannelsCountLazyQuery>;
 export type GetChannelsCountQueryResult = Apollo.QueryResult<GetChannelsCountQuery, GetChannelsCountQueryVariables>;

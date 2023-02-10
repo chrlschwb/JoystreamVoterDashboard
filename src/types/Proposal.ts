@@ -1,5 +1,5 @@
 import { lowerFirstLetter } from '@/helpers';
-import { ProposalFieldsFragment } from '@/queries';
+import { ProposalFieldsFragment, ProposalPostFragment, VoteFieldsFragment } from '@/queries';
 
 import { asMember, Member } from './Member';
 
@@ -43,6 +43,8 @@ export type ProposalType =
   | 'unlockBlogPost'
   | 'veto';
 
+
+
 export interface Proposal {
   id: string;
   title: string;
@@ -53,6 +55,8 @@ export interface Proposal {
   endedAt?: string;
   councilApprovals: number;
   exactExecutionBlock?: number;
+  votes: Array<VoteFieldsFragment>;
+  posts: Array<ProposalPostFragment>;
 }
 
 export const typenameToProposalStatus = (typename: string): ProposalStatus => {
@@ -81,6 +85,8 @@ export const asProposal = (fields: ProposalFieldsFragment): Proposal => {
     createdAt: fields.createdAt,
     councilApprovals: fields.councilApprovals,
     exactExecutionBlock: fields.exactExecutionBlock ?? undefined,
+    votes: fields.votes,
+    posts: fields.discussionThread.post
   };
 
   if (!isProposalActive(proposal.status)) {

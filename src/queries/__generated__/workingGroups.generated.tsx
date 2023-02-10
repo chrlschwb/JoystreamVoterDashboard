@@ -28,7 +28,7 @@ export type GetWorkingGroupsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetWorkingGroupsQuery = { __typename: 'Query', workingGroups: Array<{ __typename: 'WorkingGroup', id: string, name: string, budget: string, metadata?: { __typename: 'WorkingGroupMetadata', about?: string | null, description?: string | null, status?: string | null, statusMessage?: string | null } | null, workers: Array<{ __typename: 'Worker', stake: string }>, leader?: { __typename: 'Worker', membershipId: string, isActive: boolean } | null }> };
+export type GetWorkingGroupsQuery = { __typename: 'Query', workingGroups: Array<WorkingGroupFieldsFragment> };
 
 export type GetBudgetSpendingQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.BudgetSpendingEventWhereInput>;

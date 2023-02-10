@@ -92,30 +92,15 @@ export const GetMembersCountDocument = gql`
 }
     `;
 
-/**
- * __useGetMembersCountQuery__
- *
- * To run a query within a React component, call `useGetMembersCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMembersCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMembersCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
+
 export function useGetMembersCountQuery(baseOptions?: Apollo.QueryHookOptions<GetMembersCountQuery, GetMembersCountQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMembersCountQuery, GetMembersCountQueryVariables>(GetMembersCountDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetMembersCountQuery, GetMembersCountQueryVariables>(GetMembersCountDocument, options);
+}
 export function useGetMembersCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMembersCountQuery, GetMembersCountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMembersCountQuery, GetMembersCountQueryVariables>(GetMembersCountDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetMembersCountQuery, GetMembersCountQueryVariables>(GetMembersCountDocument, options);
+}
 export type GetMembersCountQueryHookResult = ReturnType<typeof useGetMembersCountQuery>;
 export type GetMembersCountLazyQueryHookResult = ReturnType<typeof useGetMembersCountLazyQuery>;
 export type GetMembersCountQueryResult = Apollo.QueryResult<GetMembersCountQuery, GetMembersCountQueryVariables>;
@@ -128,33 +113,15 @@ export const GetMembersDocument = gql`
 }
     ${MemberFieldsFragmentDoc}`;
 
-/**
- * __useGetMembersQuery__
- *
- * To run a query within a React component, call `useGetMembersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMembersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMembersQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      offset: // value for 'offset'
- *      limit: // value for 'limit'
- *   },
- * });
- */
+
 export function useGetMembersQuery(baseOptions?: Apollo.QueryHookOptions<GetMembersQuery, GetMembersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMembersQuery, GetMembersQueryVariables>(GetMembersDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetMembersQuery, GetMembersQueryVariables>(GetMembersDocument, options);
+}
 export function useGetMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMembersQuery, GetMembersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMembersQuery, GetMembersQueryVariables>(GetMembersDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetMembersQuery, GetMembersQueryVariables>(GetMembersDocument, options);
+}
 export type GetMembersQueryHookResult = ReturnType<typeof useGetMembersQuery>;
 export type GetMembersLazyQueryHookResult = ReturnType<typeof useGetMembersLazyQuery>;
 export type GetMembersQueryResult = Apollo.QueryResult<GetMembersQuery, GetMembersQueryVariables>;
@@ -166,30 +133,15 @@ export const GetInvitedMembersCountDocument = gql`
 }
     `;
 
-/**
- * __useGetInvitedMembersCountQuery__
- *
- * To run a query within a React component, call `useGetInvitedMembersCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetInvitedMembersCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetInvitedMembersCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
+
 export function useGetInvitedMembersCountQuery(baseOptions?: Apollo.QueryHookOptions<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>(GetInvitedMembersCountDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>(GetInvitedMembersCountDocument, options);
+}
 export function useGetInvitedMembersCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>(GetInvitedMembersCountDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>(GetInvitedMembersCountDocument, options);
+}
 export type GetInvitedMembersCountQueryHookResult = ReturnType<typeof useGetInvitedMembersCountQuery>;
 export type GetInvitedMembersCountLazyQueryHookResult = ReturnType<typeof useGetInvitedMembersCountLazyQuery>;
 export type GetInvitedMembersCountQueryResult = Apollo.QueryResult<GetInvitedMembersCountQuery, GetInvitedMembersCountQueryVariables>;
@@ -213,33 +165,15 @@ export const GetInvitedMembersDocument = gql`
 }
     ${MemberFieldsFragmentDoc}`;
 
-/**
- * __useGetInvitedMembersQuery__
- *
- * To run a query within a React component, call `useGetInvitedMembersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetInvitedMembersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetInvitedMembersQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      offset: // value for 'offset'
- *      limit: // value for 'limit'
- *   },
- * });
- */
+
 export function useGetInvitedMembersQuery(baseOptions?: Apollo.QueryHookOptions<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>(GetInvitedMembersDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>(GetInvitedMembersDocument, options);
+}
 export function useGetInvitedMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>(GetInvitedMembersDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>(GetInvitedMembersDocument, options);
+}
 export type GetInvitedMembersQueryHookResult = ReturnType<typeof useGetInvitedMembersQuery>;
 export type GetInvitedMembersLazyQueryHookResult = ReturnType<typeof useGetInvitedMembersLazyQuery>;
 export type GetInvitedMembersQueryResult = Apollo.QueryResult<GetInvitedMembersQuery, GetInvitedMembersQueryVariables>;

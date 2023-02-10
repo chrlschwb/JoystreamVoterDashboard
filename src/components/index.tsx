@@ -12,3 +12,4 @@ export { default as TokenMinted } from './TokenMinted';
 export { default as Validation } from './Validation';
 export { default as Videos } from './Vidoes';
 export { default as WorkingGroups } from './WorkingGroups';
+export { default as CouncilVotes } from './CouncilVote';
