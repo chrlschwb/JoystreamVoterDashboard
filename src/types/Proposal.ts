@@ -86,7 +86,7 @@ export const asProposal = (fields: ProposalFieldsFragment): Proposal => {
     councilApprovals: fields.councilApprovals,
     exactExecutionBlock: fields.exactExecutionBlock ?? undefined,
     votes: fields.votes,
-    posts: fields.discussionThread.post
+    posts: fields.discussionThread.posts
   };
 
   if (!isProposalActive(proposal.status)) {
