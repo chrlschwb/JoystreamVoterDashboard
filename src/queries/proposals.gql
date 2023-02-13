@@ -29,6 +29,9 @@ fragment ProposalFields on Proposal {
   createdAt
   councilApprovals
   exactExecutionBlock
+  creator{
+      handle
+  }
   votes{
     voter{
       handle

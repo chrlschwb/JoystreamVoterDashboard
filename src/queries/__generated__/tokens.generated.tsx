@@ -41,22 +41,7 @@ query mintedTokens($where:RewardPaymentEventWhereInput) {
 }
     `;
 
-/**
- * __useGetMintedTokenCountQuery__
- *
- * To run a query within a React component, call `useGetMintedTokenCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMintedTokenCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMintedTokenCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
+
 export function useGetMintedTokenCountQuery(baseOptions?: Apollo.QueryHookOptions<GetMintedTokenCountQuery, GetMintedTokenQueryVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetMintedTokenCountQuery, GetMintedTokenQueryVariables>(GetMintedTokenCountDocument, options);
@@ -83,22 +68,7 @@ query workingGroupToken($where:BudgetUpdatedEventWhereInput) {
 }
     `;
 
-/**
- * __useGetNftSaleCountQuery__
- *
- * To run a query within a React component, call `useGetNftSaleCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetNftSaleCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetNftSaleCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
+
 export function useGetWorkingGroupTokenQuery(baseOptions?: Apollo.QueryHookOptions<GetWorkingGroupTokenQuery, GetWorkingGroupsTokenVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetWorkingGroupTokenQuery, GetWorkingGroupsTokenVariables>(GetWorkingGroupTokenDocument, options);

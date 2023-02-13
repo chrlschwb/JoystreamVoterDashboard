@@ -1,4 +1,4 @@
-import { MemberFieldsFragment, MembershipExternalResourceType, CouncilMemberFragment, GetCouncilMembersQuery } from '@/queries';
+import { MemberFieldsFragment, MembershipExternalResourceType, CouncilMemberFragment } from '@/queries';
 
 import { Address, asBlock, Block, castQueryResult } from './common';
 import { asWorkingGroupName } from './WorkingGroup';

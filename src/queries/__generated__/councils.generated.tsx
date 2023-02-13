@@ -62,33 +62,15 @@ export const GetElectedCouncilsDocument = gql`
 }
     ${ElectedCouncilFieldsFragmentDoc}`;
 
-/**
- * __useGetElectedCouncilsQuery__
- *
- * To run a query within a React component, call `useGetElectedCouncilsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetElectedCouncilsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetElectedCouncilsQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      offset: // value for 'offset'
- *      limit: // value for 'limit'
- *   },
- * });
- */
+
 export function useGetElectedCouncilsQuery(baseOptions?: Apollo.QueryHookOptions<GetElectedCouncilsQuery, GetElectedCouncilsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetElectedCouncilsQuery, GetElectedCouncilsQueryVariables>(GetElectedCouncilsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetElectedCouncilsQuery, GetElectedCouncilsQueryVariables>(GetElectedCouncilsDocument, options);
+}
 export function useGetElectedCouncilsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetElectedCouncilsQuery, GetElectedCouncilsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetElectedCouncilsQuery, GetElectedCouncilsQueryVariables>(GetElectedCouncilsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetElectedCouncilsQuery, GetElectedCouncilsQueryVariables>(GetElectedCouncilsDocument, options);
+}
 export type GetElectedCouncilsQueryHookResult = ReturnType<typeof useGetElectedCouncilsQuery>;
 export type GetElectedCouncilsLazyQueryHookResult = ReturnType<typeof useGetElectedCouncilsLazyQuery>;
 export type GetElectedCouncilsQueryResult = Apollo.QueryResult<GetElectedCouncilsQuery, GetElectedCouncilsQueryVariables>;

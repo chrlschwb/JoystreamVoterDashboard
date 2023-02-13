@@ -17,7 +17,8 @@ import {
   Validation,
   Videos,
   WorkingGroups,
-  CouncilVotes
+  CouncilVotes,
+  ProposalGroups
 } from '@/components';
 import { useSelectedCouncil } from '@/store';
 
@@ -64,6 +65,7 @@ export default function Home() {
           <NumberProposal />
         </Col>
       </Row>
+      <ProposalGroups />
       <CouncilVotes />
       <WorkingGroups />
       <ListProposal />

@@ -1,0 +1,26 @@
+query getLead($where:OpeningFilledEventWhereInput){
+    openingFilledEvents(where:$where){
+      createdAt
+      groupId
+      workersHired{
+        membership{
+          handle
+        }
+      }
+      opening{
+        type     
+      }
+    }
+}
+
+query getPostOfLead($where:ProposalDiscussionPostWhereInput){
+  proposalDiscussionPosts(where:$where){ #count, average, max
+    createdAt
+    author{
+      handle
+    }
+    text
+  }
+}
+
+

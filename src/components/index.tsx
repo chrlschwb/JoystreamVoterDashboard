@@ -13,3 +13,4 @@ export { default as Validation } from './Validation';
 export { default as Videos } from './Vidoes';
 export { default as WorkingGroups } from './WorkingGroups';
 export { default as CouncilVotes } from './CouncilVote';
+export { default as ProposalGroups } from './LeadOverView';
