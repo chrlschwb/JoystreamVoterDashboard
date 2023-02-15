@@ -26,59 +26,59 @@ fragment WorkerFields on Worker {
 fragment SpendingRewardFields on RewardPaidEvent {
   createdAt
   deletedAt
-    amount
-    worker{
-      membership{
-        handle
-      }
+  amount
+  worker {
+    membership {
+      handle
     }
-} 
+  }
+}
 
 fragment SpendingBudgetFields on BudgetSpendingEvent {
   createdAt
   deletedAt
-   amount
+  amount
 }
 
-fragment HireOpeningFillFields on OpeningFilledEvent{
+fragment HireOpeningFillFields on OpeningFilledEvent {
   createdAt
   deletedAt
-   workersHired{
-        membership{
-          handle
-        }
-      }
+  workersHired {
+    membership {
+      handle
+    }
+  }
 }
 
 fragment FireTerminatedWorkerFields on TerminatedWorkerEvent {
   createdAt
   deletedAt
-  worker{
-        membership{
-          handle
-        }
-      }
+  worker {
+    membership {
+      handle
+    }
+  }
 }
 
-fragment FireWorkeredExitedFields on WorkerExitedEvent{
+fragment FireWorkeredExitedFields on WorkerExitedEvent {
   createdAt
   deletedAt
-  worker{
-        membership{
-          handle
-        }
-      }
+  worker {
+    membership {
+      handle
+    }
+  }
 }
 
-  fragment SlashStakeFields on StakeSlashedEvent{
-    createdAt
-    deletedAt
-        worker{
-          membership{
-            handle
-          }
-        }
+fragment SlashStakeFields on StakeSlashedEvent {
+  createdAt
+  deletedAt
+  worker {
+    membership {
+      handle
+    }
   }
+}
 
 fragment WorkingGroupFields on WorkingGroup {
   id
@@ -90,27 +90,30 @@ fragment WorkingGroupFields on WorkingGroup {
   workers {
     stake
   }
-  rewardpaideventgroup{
+  rewardpaideventgroup {
     ...SpendingRewardFields
   }
-  budgetspendingeventgroup{
+  budgetspendingeventgroup {
     ...SpendingBudgetFields
   }
-  openingfilledeventgroup{
+  openingfilledeventgroup {
     ...HireOpeningFillFields
   }
-  terminatedworkereventgroup{
+  terminatedworkereventgroup {
     ...FireTerminatedWorkerFields
   }
-  workerexitedeventgroup{
+  workerexitedeventgroup {
     ...FireWorkeredExitedFields
   }
-  stakeslashedeventgroup{
+  stakeslashedeventgroup {
     ...SlashStakeFields
   }
   leader {
     membershipId
     isActive
+    membership {
+      handle
+    }
   }
 }
 

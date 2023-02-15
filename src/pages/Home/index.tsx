@@ -27,6 +27,8 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: 'black' }}>
+      <h1 className='text-white'>Joystream Council Voter Dashboard</h1>
+      <hr className='text-white' />
       <CouncilSelect council={council} onChange={setCouncil} />
       <hr style={{ height: '3px', color: 'white' }} />
       <Row>

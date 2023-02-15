@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-import { useProposals, useLeader, useWorkingGroups } from '@/hooks';
+import { useProposals, useLeader, useWorkingGroups, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined, Leader } from '@/types';
 import { compactAddLength, isNumber } from '@polkadot/util';
@@ -13,44 +13,86 @@ export interface LeaderProps {
 export function Leaders({ Leader }: LeaderProps) {
 
   const { council } = useSelectedCouncil();
+  const { postOfLeaders } = useLeader({ council })
   const { proposals } = useProposals({ council });
+  const { forum } = usePostTokenData({ council })
+  const { workingGroups } = useWorkingGroups({ council });
+
+  if (Leader.type !== "LEADER") return <></>;
 
   return (
     <tr>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> member.handle of councilMembers</Tooltip>}>
+      <OverlayTrigger placement="bottom" overlay={<Tooltip> groupId of openingFilledEvents</Tooltip>}>
         <td rowSpan={Leader.leader.length}>{Leader.groupId}</td>
       </OverlayTrigger>
       {Leader.leader.map(d => {
+
+        const createProposals = proposals?.filter(data => data.creator === d.membership.handle).length;
+
+        const hireValue = workingGroups?.filter(dataV => dataV.leader === d.membership.handle)
+          .reduce((a: number, b) => { return a + b.hire! }, 0);
+        const fireValue1 = workingGroups?.filter(data => data.leader === d.membership.handle)
+          .reduce((a: number, b) => { return a + b.fireExited! }, 0)
+        const fireValue2 = workingGroups?.filter(data => data.leader === d.membership.handle)
+          .reduce((a: number, b) => { return a + b.fireTerminated! }, 0)
+        const fireValue = fireValue1! + fireValue2!;
+
+        const spending1 = workingGroups?.filter(data => data.leader === d.membership.handle)
+          .reduce((a: number, b) => { return a + b.spendingBudget! }, 0);
+        const spending2 = workingGroups?.filter(data => data.leader === d.membership.handle)
+          .reduce((a: number, b) => { return a + b.spendingReward! }, 0);
+
+        const spending = (spending1! + spending2!) / 10000000000;
+
+        const slashValue = workingGroups?.filter(data => data.leader === d.membership.handle)
+          .reduce((a: number, b) => { return a + b.slashed! }, 0)
+
+        const forumText = forum?.filter(data => data.author.handle === d.membership.handle);
+        var buffer = forumText?.reduce((a: number, b) => { return a + b.text.length }, 0);
+        const forumAverageValue: number = forumText?.length !== 0 ? buffer! / forumText?.length! : 0
+        const forumMaxvalue: number = forumText?.length === 0 ? 0 : isDefined(forumText) ? Math.max(...forumText.map(d => d.text.length)) : 0;
+
+        const postText = postOfLeaders?.filter(data => data.author === d.membership.handle);
+        var buffer1 = postText?.reduce((a: number, b) => { return a + b.text.length }, 0);
+        const postAverageValue: number = postText?.length !== 0 ? buffer1! / postText?.length! : 0;
+        const postMaxValue: number = postText?.length === 0 ? 0 : isDefined(postText) ? Math.max(...postText.map(d => d.text.length)) : 0;
+
         return (<>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> proposals.votes.votekind = "approve" </Tooltip>}>
-            <td>{ }</td>
-          </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> proposals.votes.votekind = "rejected" </Tooltip>}>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> WorkersHired.membership.handle of openingFilledEvents </Tooltip>}>
             <td>{d.membership.handle}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> proposals.votes.votekind = "abstained" </Tooltip>}>
-            <td>{ }</td>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> lenghth of WorkersHired.membership.handle of openingFilledEvents === creator.handle of proposals </Tooltip>}>
+            <td>{createProposals}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> ignored = total - approved - rejected - abstained </Tooltip>}>
-            <td>{ }</td>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> sum of rewardPaidEvent.amount of workingGroups and budgetSpendingEvent.amount of workingGoruops </Tooltip>}>
+            <td>{spending.toFixed(0)}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> proposals.posts.length where author.handle=council.handle  </Tooltip>}>
-            <td>{ }</td>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of openingFilledEvent of workingGroups </Tooltip>}>
+            <td>{hireValue}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of proposals.posts.text of CM </Tooltip>}>
-            <td>{ }</td>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of terminatedworkereventgroup add lenth of  of workingGroups  </Tooltip>}>
+            <td>{fireValue}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of proposals.posts.text of CM  </Tooltip>}>
-            <td>{ }</td>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of stakeslashedeventgroup of workingGroups </Tooltip>}>
+            <td>{slashValue}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> forumPosts.length where author.handle=council.handle </Tooltip>}>
-            <td>{ }</td>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of forumPost  </Tooltip>}>
+            <td>{forumText?.length}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of forumPosts.text of CM </Tooltip>}>
-            <td>{ }</td>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of text of forumPosts </Tooltip>}>
+            <td>{forumAverageValue.toFixed(0)}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of forumPosts.text of CM </Tooltip>}>
-            <td>{ }</td>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of text of forumPosts  </Tooltip>}>
+            <td>{forumMaxvalue}</td>
+          </OverlayTrigger>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> length  of proposalDiscussionPosts </Tooltip>}>
+            <td>{postText?.length}</td>
+          </OverlayTrigger>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of text of proposalDiscussionPosts </Tooltip>}>
+            <td>{postAverageValue.toFixed(0)}</td>
+          </OverlayTrigger>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> Max value of text of proposalDiscussionPosts </Tooltip>}>
+            <td>{postMaxValue}</td>
           </OverlayTrigger>
         </>
         )
@@ -63,8 +105,7 @@ export default function LeaderOverView() {
 
   const { council } = useSelectedCouncil();
 
-  const { loading, error, leaders, postOfLeaders } = useLeader({ council });
-
+  const { loading, error, leaders } = useLeader({ council });
   if (loading) {
     return (
       <div className="sub_panel loading" style={{ marginTop: '20px' }}>
@@ -80,8 +121,6 @@ export default function LeaderOverView() {
       </div>
     );
   }
-
-  console.log(leaders, postOfLeaders)
 
   return (
     <div style={{ marginTop: '20px' }} className="table_background">

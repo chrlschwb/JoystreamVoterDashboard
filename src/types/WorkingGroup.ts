@@ -1,7 +1,9 @@
 import BN from 'bn.js';
 
 import { sumStakes } from '@/helpers';
-import { WorkerFieldsFragment, WorkingGroupFieldsFragment } from '@/queries';
+import {
+  WorkerFieldsFragment, WorkingGroupFieldsFragment,
+} from '@/queries';
 
 export const GroupIdToGroupParam = {
   contentWorkingGroup: 'Content',
@@ -29,11 +31,20 @@ export interface WorkingGroup {
   budget?: BN;
   averageStake?: BN;
   isActive?: boolean;
+  leader?: string;
+  spendingReward?: number,
+  spendingBudget?: number,
+  hire?: number,
+  fireExited?: number,
+  fireTerminated?: number,
+  slashed?: number
 }
 
 
 
-export const asWorkingGroup = (group: WorkingGroupFieldsFragment): WorkingGroup => {
+export const asWorkingGroup = (
+  group: WorkingGroupFieldsFragment,
+): WorkingGroup => {
   return {
     id: group.id,
     image: undefined,
@@ -46,6 +57,13 @@ export const asWorkingGroup = (group: WorkingGroupFieldsFragment): WorkingGroup 
     averageStake: getAverageStake(group.workers),
     leadId: group.leader?.membershipId,
     isActive: group.leader?.isActive ?? false,
+    leader: group.leader?.membership.handle,
+    slashed: group.stakeslashedeventgroup.length,
+    fireExited: group.workerexitedeventgroup.length,
+    fireTerminated: group.terminatedworkereventgroup.length,
+    hire: group.openingfilledeventgroup.length,
+    spendingBudget: group.budgetspendingeventgroup.reduce((a: number, b) => { return a + Number(b.amount) }, 0),
+    spendingReward: group.rewardpaideventgroup.reduce((a: number, b) => { return a + Number(b.amount) }, 0)
   };
 };
 

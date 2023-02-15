@@ -2,12 +2,14 @@ import { LeaderNameFragment, LeaderFragment, PostOfLeaderFragment } from '@/quer
 
 export interface Leader {
   groupId: string,
-  leader: Array<LeaderNameFragment>
+  leader: Array<LeaderNameFragment>,
+  type: string
 }
 
 export const asLeader = (data: LeaderFragment): Leader => ({
   groupId: data.groupId,
   leader: data.workersHired,
+  type: data.opening.type
 })
 
 

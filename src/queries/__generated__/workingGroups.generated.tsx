@@ -17,7 +17,27 @@ export type FireTerminatedFieldsFragment = { __typename: "TerminatedWorkerEvent"
 export type FireExitedFieldsFragment = { __typename: "WorkerExitedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
 export type SlashStakeFieldsFragment = { __typename: "StakeSlashedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
 
-export type WorkingGroupFieldsFragment = { __typename: 'WorkingGroup', id: string, name: string, budget: string, metadata?: { __typename: 'WorkingGroupMetadata', about?: string | null, description?: string | null, status?: string | null, statusMessage?: string | null } | null, rewardpaideventgroup: Array<SpendingRewardFieldsFragment>, budgetspendingeventgroup: Array<SpendingBudgetFieldsFragment>, openingfilledeventgroup: Array<HireOpeningFillFieldsFragment>, terminatedworkereventgroup: Array<FireTerminatedFieldsFragment>, workerexitedeventgroup: Array<FireExitedFieldsFragment>, stakeslashedeventgroup: Array<SlashStakeFieldsFragment>, workers: Array<{ __typename: 'Worker', stake: string }>, leader?: { __typename: 'Worker', membershipId: string, isActive: boolean } | null };
+export type WorkingGroupFieldsFragment = {
+  __typename: 'WorkingGroup',
+  id: string,
+  name: string,
+  budget: string,
+  metadata?: {
+    __typename: 'WorkingGroupMetadata',
+    about?: string | null,
+    description?: string | null,
+    status?: string | null,
+    statusMessage?: string | null
+  } | null,
+  rewardpaideventgroup: Array<SpendingRewardFieldsFragment>,
+  budgetspendingeventgroup: Array<SpendingBudgetFieldsFragment>,
+  openingfilledeventgroup: Array<HireOpeningFillFieldsFragment>,
+  terminatedworkereventgroup: Array<FireTerminatedFieldsFragment>,
+  workerexitedeventgroup: Array<FireExitedFieldsFragment>,
+  stakeslashedeventgroup: Array<SlashStakeFieldsFragment>,
+  workers: Array<{ __typename: 'Worker', stake: string }>,
+  leader: { __typename: 'Worker', membershipId: string, isActive: boolean, membership: { handle: string } } | null
+};
 
 export const SpendingRewardFieldsFragmentDoc = gql`
 fragment SpendingRewardFields on RewardPaidEvent {
@@ -133,6 +153,9 @@ export const WorkingGroupFieldsFragmentDoc = gql`
   leader {
     membershipId
     isActive
+    membership {
+      handle
+    }
   }
 }
     ${WorkingGroupMetadataFieldsFragmentDoc}
