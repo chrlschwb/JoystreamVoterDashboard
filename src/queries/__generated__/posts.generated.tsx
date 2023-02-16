@@ -3,13 +3,23 @@ import * as Types from './baseTypes.generated';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
+
 export type GetForumPostsCountQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.ForumPostWhereInput>;
 }>;
 
+export type ForumPostFragment = {
+  node: {
+    createdAt: string,
+    text: string,
+    author: {
+      handle: string
+    }
+  }
+}
 
 export type GetForumPostsCountQuery = {
-  __typename: 'Query', forumPostsConnection: { __typename: 'ForumPostConnection', totalCount: number }, forumPosts: Array<{
+  __typename: 'Query', forumPostsConnection: { __typename: 'ForumPostConnection', totalCount: number, edges: Array<ForumPostFragment> }, forumPosts: Array<{
     __typename: 'ForumPost', createdAt: any, author: {
       handle: string
     }, text: string
@@ -19,8 +29,17 @@ export type GetForumPostsCountQuery = {
 
 export const GetForumPostsCountDocument = gql`
     query GetForumPostsCount($where: ForumPostWhereInput) {
-  forumPostsConnection(first: 0, where: $where) {
+  forumPostsConnection(where: $where) {
     totalCount
+    edges{      
+      node{
+        createdAt
+        text
+        author{
+          handle
+        }
+      }
+    }
   }
   forumPosts {
     createdAt

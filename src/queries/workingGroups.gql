@@ -123,6 +123,13 @@ fragment RewardPaidEventFields on RewardPaidEvent {
   rewardAccount
   createdAt
   groupId
+  group {
+    leader {
+      membership {
+        handle
+      }
+    }
+  }
 }
 
 query GetWorkingGroups(
@@ -143,7 +150,22 @@ query GetWorkers($where: WorkerWhereInput, $offset: Int, $limit: Int) {
 }
 
 query GetRewards($where: RewardPaidEventWhereInput) {
-  rewardPaidEvents(where: $where) {
+  rewardPaidEvents(where: $where, limit: 10000) {
     ...RewardPaidEventFields
+  }
+}
+
+query GetBudgetSpending($where: BudgetSpendingEventWhereInput) {
+  budgetSpendingEvents(where: $where) {
+    amount
+    createdAt
+    groupId
+    group {
+      leader {
+        membership {
+          handle
+        }
+      }
+    }
   }
 }

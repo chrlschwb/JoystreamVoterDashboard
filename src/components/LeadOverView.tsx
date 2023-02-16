@@ -13,10 +13,10 @@ export interface LeaderProps {
 export function Leaders({ Leader }: LeaderProps) {
 
   const { council } = useSelectedCouncil();
-  const { postOfLeaders } = useLeader({ council })
+  const { postOfLeaders, terminated, exited, slashed, hair } = useLeader({ council })
   const { proposals } = useProposals({ council });
-  const { forum } = usePostTokenData({ council })
-  const { workingGroups } = useWorkingGroups({ council });
+  const { forumPost } = usePostTokenData({ council })
+  const { budgetSpending, rewardToken } = useWorkingGroups({ council });
 
   if (Leader.type !== "LEADER") return <></>;
 
@@ -29,25 +29,21 @@ export function Leaders({ Leader }: LeaderProps) {
 
         const createProposals = proposals?.filter(data => data.creator === d.membership.handle).length;
 
-        const hireValue = workingGroups?.filter(dataV => dataV.leader === d.membership.handle)
-          .reduce((a: number, b) => { return a + b.hire! }, 0);
-        const fireValue1 = workingGroups?.filter(data => data.leader === d.membership.handle)
-          .reduce((a: number, b) => { return a + b.fireExited! }, 0)
-        const fireValue2 = workingGroups?.filter(data => data.leader === d.membership.handle)
-          .reduce((a: number, b) => { return a + b.fireTerminated! }, 0)
+        const hairValue = hair?.find(dataV => (dataV.groupId === Leader.groupId && dataV.type === "REGULAR"))?.leader.length;
+        const fireValue1 = exited?.filter(data => data.leader === d.membership.handle).length;
+        const fireValue2 = terminated?.filter(data => data.leader === d.membership.handle).length;
         const fireValue = fireValue1! + fireValue2!;
 
-        const spending1 = workingGroups?.filter(data => data.leader === d.membership.handle)
-          .reduce((a: number, b) => { return a + b.spendingBudget! }, 0);
-        const spending2 = workingGroups?.filter(data => data.leader === d.membership.handle)
-          .reduce((a: number, b) => { return a + b.spendingReward! }, 0);
+        const spending1 = budgetSpending?.filter(data => data.leader === d.membership.handle)
+          .reduce((a: number, b) => { return a + Number(b.amount) }, 0);
+        const spending2 = rewardToken?.filter(data => data.leader === d.membership.handle)
+          .reduce((a: number, b) => { return a + Number(b.amount) }, 0);
 
         const spending = (spending1! + spending2!) / 10000000000;
 
-        const slashValue = workingGroups?.filter(data => data.leader === d.membership.handle)
-          .reduce((a: number, b) => { return a + b.slashed! }, 0)
+        const slashValue = slashed?.filter(data => data.worker === d.membership.handle).length
 
-        const forumText = forum?.filter(data => data.author.handle === d.membership.handle);
+        const forumText = forumPost?.filter(data => data.auth === d.membership.handle);
         var buffer = forumText?.reduce((a: number, b) => { return a + b.text.length }, 0);
         const forumAverageValue: number = forumText?.length !== 0 ? buffer! / forumText?.length! : 0
         const forumMaxvalue: number = forumText?.length === 0 ? 0 : isDefined(forumText) ? Math.max(...forumText.map(d => d.text.length)) : 0;
@@ -68,7 +64,7 @@ export function Leaders({ Leader }: LeaderProps) {
             <td>{spending.toFixed(0)}</td>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={<Tooltip> length of openingFilledEvent of workingGroups </Tooltip>}>
-            <td>{hireValue}</td>
+            <td>{isDefined(hairValue) ? hairValue : 0}</td>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={<Tooltip> length of terminatedworkereventgroup add lenth of  of workingGroups  </Tooltip>}>
             <td>{fireValue}</td>

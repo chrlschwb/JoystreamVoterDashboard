@@ -6,3 +6,4 @@ export * from './Proposal';
 export * from './Worker';
 export * from './WorkingGroup';
 export * from './Leader';
+export * from './Post';

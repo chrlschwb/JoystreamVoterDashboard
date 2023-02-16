@@ -258,8 +258,25 @@ export type GetWorkersQueryResult = Apollo.QueryResult<GetWorkersQuery, GetWorke
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////            worker reward             //////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
-//
-export type GetRewardsQuery = { __typename: 'Query', rewardPaidEvents: Array<{ __typename: 'RewardPaidEvent', id: string, amount: number, rewardAccount: string, createdAt: any, groupId: string }> };
+export type RewardPaidFragment = {
+  _typename: 'RewardPaidEvent',
+  id: string,
+  amount: number,
+  rewardAccount: string,
+  createdAt: any,
+  groupId: string,
+  group: {
+    leader: {
+      membership: {
+        handle: string
+      }
+    }
+
+  }
+}
+export type GetRewardsQuery = {
+  __typename: 'Query', rewardPaidEvents: Array<RewardPaidFragment>
+};
 
 export type GetRewardsQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.RewardPaidEventWhereInput>;
@@ -272,12 +289,19 @@ export const RewardPaidEventFieldsFragmentDoc = gql`
     rewardAccount
     createdAt
     groupId
+    group {
+      leader {
+        membership {
+          handle
+        }
+      }
+    },
   }
   `;
 
 export const GetRewardsDocument = gql`
       query GetRewards($where: RewardPaidEventWhereInput) {
-    rewardPaidEvents(where: $where) {
+    rewardPaidEvents(where: $where, limit:100000) {
       ...RewardPaidEventFields
     }
   }
@@ -294,4 +318,60 @@ export function useGetRewardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetRewardsQueryHookResult = ReturnType<typeof useGetRewardsQuery>;
 export type GetRewardsLazyQueryHookResult = ReturnType<typeof useGetRewardsLazyQuery>;
 export type GetRewardsQueryResult = Apollo.QueryResult<GetRewardsQuery, GetRewardsQueryVariables>;
-//
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////      get budget spending       ////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+export type BudgetSpendingFragment = {
+  __typename: 'BudgetSpendingEvents',
+  amount: number,
+  createdAt: any,
+  groupId: string,
+  group: {
+    leader: {
+      membership: {
+        handle: string
+      }
+    }
+  }
+}
+export type GetBudgetSpendingQuery = {
+  __typename: 'Query',
+  budgetSpendingEvents: Array<BudgetSpendingFragment>
+};
+
+export type GetBudgetSpendingQueryVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.BudgetSpendingEventWhereInput>;
+}>;
+
+
+export const GetBudgetSpendingDocument = gql`
+query GetBudgetSpending($where: BudgetSpendingEventWhereInput) {
+  budgetSpendingEvents(where: $where,limit:100000) {
+    amount
+    createdAt
+    groupId
+    group{
+      leader{
+        membership{
+          handle
+        }
+      }
+    }
+  }
+}
+
+`;
+
+export function useGetBudgetSpendingQuery(baseOptions?: Apollo.QueryHookOptions<GetBudgetSpendingQuery, GetBudgetSpendingQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetBudgetSpendingQuery, GetBudgetSpendingQueryVariables>(GetBudgetSpendingDocument, options);
+}
+export function useGetBudgetSpendingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBudgetSpendingQuery, GetBudgetSpendingQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetBudgetSpendingQuery, GetBudgetSpendingQueryVariables>(GetBudgetSpendingDocument, options);
+}
+export type GetBudgetSpendingQueryHookResult = ReturnType<typeof useGetBudgetSpendingQuery>;
+export type GetBudgetSpendingLazyQueryHookResult = ReturnType<typeof useGetBudgetSpendingLazyQuery>;
+export type GetBudgetSpendingQueryResult = Apollo.QueryResult<GetBudgetSpendingQuery, GetBudgetSpendingQueryVariables>;

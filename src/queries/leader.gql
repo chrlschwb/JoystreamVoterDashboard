@@ -1,26 +1,76 @@
-query getLead($where:OpeningFilledEventWhereInput){
-    openingFilledEvents(where:$where){
-      createdAt
-      groupId
-      workersHired{
-        membership{
+query getLead($where: OpeningFilledEventWhereInput) {
+  openingFilledEvents(where: $where) {
+    createdAt
+    groupId
+    workersHired {
+      membership {
+        handle
+      }
+    }
+    opening {
+      type
+    }
+  }
+}
+
+query getTerminatedWorker($where: TerminatedWorkerEventWhereInput) {
+  terminatedWorkerEvents(where: $where) {
+    createdAt
+    groupId
+    group {
+      leader {
+        membership {
           handle
         }
       }
-      opening{
-        type     
-      }
     }
+    worker {
+      membership {
+        handle
+      }
+      isLead
+    }
+  }
 }
 
-query getPostOfLead($where:ProposalDiscussionPostWhereInput){
-  proposalDiscussionPosts(where:$where){ #count, average, max
+query getExitedWorker($where: WorkerExitedEventWhereInput) {
+  workerExitedEvents(where: $where) {
     createdAt
-    author{
+    groupId
+    group {
+      leader {
+        membership {
+          handle
+        }
+      }
+    }
+    worker {
+      membership {
+        handle
+      }
+      isLead
+    }
+  }
+}
+
+query getSlashWorker($where: WorkEntrySlashedEventWhereInput) {
+  workEntrySlashedEvents(where: $where) {
+    createdAt
+    entry {
+      worker {
+        handle
+      }
+    }
+  }
+}
+
+query getPostOfLead($where: ProposalDiscussionPostWhereInput) {
+  proposalDiscussionPosts(where: $where) {
+    #count, average, max
+    createdAt
+    author {
       handle
     }
     text
   }
 }
-
-
