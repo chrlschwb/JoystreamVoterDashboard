@@ -29,22 +29,23 @@ fragment ProposalFields on Proposal {
   createdAt
   councilApprovals
   exactExecutionBlock
-  votes{
-    voter{
+  creator {
+    handle
+  }
+  votes {
+    voter {
       handle
     }
     voteKind
     votingRound
   }
-  discussionThread{
-      proposalId
-
-      posts{
-        author{
-          handle
-        }
-        text
-
+  discussionThread {
+    proposalId
+    posts {
+      author {
+        handle
       }
+      text
     }
+  }
 }

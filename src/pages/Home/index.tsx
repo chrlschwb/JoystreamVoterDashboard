@@ -17,7 +17,8 @@ import {
   Validation,
   Videos,
   WorkingGroups,
-  CouncilVotes
+  CouncilVotes,
+  ProposalGroups
 } from '@/components';
 import { useSelectedCouncil } from '@/store';
 
@@ -26,6 +27,8 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: 'black' }}>
+      <h1 className='text-white'>Joystream Council Voter Dashboard</h1>
+      <hr className='text-white' />
       <CouncilSelect council={council} onChange={setCouncil} />
       <hr style={{ height: '3px', color: 'white' }} />
       <Row>
@@ -57,13 +60,14 @@ export default function Home() {
         </Col>
       </Row>
       <Row style={{ marginTop: '20px' }}>
-        <Col md={5}>
+        <Col md={6}>
           <TokenMinted />
         </Col>
-        <Col md={7}>
+        <Col md={6}>
           <NumberProposal />
         </Col>
       </Row>
+      <ProposalGroups />
       <CouncilVotes />
       <WorkingGroups />
       <ListProposal />

@@ -1,7 +1,11 @@
 import BN from 'bn.js';
 
 import { sumStakes } from '@/helpers';
-import { WorkerFieldsFragment, WorkingGroupFieldsFragment, GetWorkingGroupTokenQuery } from '@/queries';
+import {
+  BudgetSpendingFragment,
+  RewardPaidFragment,
+  WorkerFieldsFragment, WorkingGroupFieldsFragment,
+} from '@/queries';
 
 export const GroupIdToGroupParam = {
   contentWorkingGroup: 'Content',
@@ -29,11 +33,21 @@ export interface WorkingGroup {
   budget?: BN;
   averageStake?: BN;
   isActive?: boolean;
+  leader?: string;
+  spendingReward?: number,
+  spendingBudget?: number,
+  hire?: number,
+  fireExited?: number,
+  fireTerminated?: number,
+  slashed?: number,
+  debt: number
 }
 
 
 
-export const asWorkingGroup = (group: WorkingGroupFieldsFragment): WorkingGroup => {
+export const asWorkingGroup = (
+  group: WorkingGroupFieldsFragment,
+): WorkingGroup => {
   return {
     id: group.id,
     image: undefined,
@@ -46,6 +60,14 @@ export const asWorkingGroup = (group: WorkingGroupFieldsFragment): WorkingGroup 
     averageStake: getAverageStake(group.workers),
     leadId: group.leader?.membershipId,
     isActive: group.leader?.isActive ?? false,
+    leader: group.leader?.membership.handle,
+    slashed: group.stakeslashedeventgroup.length,
+    fireExited: group.workerexitedeventgroup.length,
+    fireTerminated: group.terminatedworkereventgroup.length,
+    hire: group.openingfilledeventgroup.length,
+    spendingBudget: group.budgetspendingeventgroup.reduce((a: number, b) => { return a + Number(b.amount) }, 0),
+    spendingReward: group.rewardpaideventgroup.reduce((a: number, b) => { return a + Number(b.amount) }, 0),
+    debt: group.workers.reduce((a: number, b) => { return a + Number(b.missingRewardAmount) }, 0)
   };
 };
 
@@ -58,3 +80,32 @@ export const asWorkingGroupName = (name: string) =>
 
 export const getAverageStake = (workers: Pick<WorkerFieldsFragment, 'stake'>[]) =>
   sumStakes(workers).divn(workers.length);
+
+
+export interface BudgetSpending {
+  amount: number,
+  create: string,
+  groupId: string,
+  leader: string
+}
+
+export const asBudgetSpending = (data: BudgetSpendingFragment): BudgetSpending => ({
+  amount: data.amount,
+  create: data.createdAt,
+  groupId: data.groupId,
+  leader: data.group.leader.membership.handle
+})
+
+export interface RewardPaid {
+  amount: number,
+  groupId: string,
+  leader: string,
+  create: string
+}
+
+export const asRewardPaid = (data: RewardPaidFragment): RewardPaid => ({
+  amount: data.amount,
+  groupId: data.groupId,
+  leader: data.group.leader.membership.handle,
+  create: data.createdAt
+})

@@ -39,25 +39,7 @@ export const GetElectionsDocument = gql`
 }
     ${ElectionRoundFieldsFragmentDoc}`;
 
-/**
- * __useGetElectionsQuery__
- *
- * To run a query within a React component, call `useGetElectionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetElectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetElectionsQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      offset: // value for 'offset'
- *      limit: // value for 'limit'
- *   },
- * });
- */
+
 export function useGetElectionsQuery(baseOptions?: Apollo.QueryHookOptions<GetElectionsQuery, GetElectionsQueryVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetElectionsQuery, GetElectionsQueryVariables>(GetElectionsDocument, options);

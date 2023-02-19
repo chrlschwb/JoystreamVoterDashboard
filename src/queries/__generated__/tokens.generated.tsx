@@ -41,22 +41,7 @@ query mintedTokens($where:RewardPaymentEventWhereInput) {
 }
     `;
 
-/**
- * __useGetMintedTokenCountQuery__
- *
- * To run a query within a React component, call `useGetMintedTokenCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMintedTokenCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMintedTokenCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
+
 export function useGetMintedTokenCountQuery(baseOptions?: Apollo.QueryHookOptions<GetMintedTokenCountQuery, GetMintedTokenQueryVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetMintedTokenCountQuery, GetMintedTokenQueryVariables>(GetMintedTokenCountDocument, options);
@@ -83,22 +68,7 @@ query workingGroupToken($where:BudgetUpdatedEventWhereInput) {
 }
     `;
 
-/**
- * __useGetNftSaleCountQuery__
- *
- * To run a query within a React component, call `useGetNftSaleCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetNftSaleCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetNftSaleCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
+
 export function useGetWorkingGroupTokenQuery(baseOptions?: Apollo.QueryHookOptions<GetWorkingGroupTokenQuery, GetWorkingGroupsTokenVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetWorkingGroupTokenQuery, GetWorkingGroupsTokenVariables>(GetWorkingGroupTokenDocument, options);
@@ -134,3 +104,36 @@ export function useGetCouncilTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetCouncilQueryHookResult = ReturnType<typeof useGetCouncilTokenQuery>;
 export type GetCouncilLazyQueryHookResult = ReturnType<typeof useGetCouncilTokenLazyQuery>;
 export type GetCouncilQueryResult = Apollo.QueryResult<GetCouncilTokenQuery, GetCouncilTokenVariables>;
+
+
+export type GetFundedTokenQuery = {
+  __typename: 'Query',
+  requestFundedEvents:
+  Array<{ __typename: 'RequestFundedEvents', amount: number, id: string }>
+};
+
+export type GetFundedVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.RequestFundedEventWhereInput>;
+}>;
+
+
+export const GetFundedTokenDocument = gql`
+  query getFunded($where: RequestFundedEventWhereInput) {
+    requestFundedEvents(where: $where) {
+      id
+      amount
+    }
+  }
+`;
+
+export function useGetFundedTokenQuery(baseOptions?: Apollo.QueryHookOptions<GetFundedTokenQuery, GetFundedVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetFundedTokenQuery, GetFundedVariables>(GetFundedTokenDocument, options);
+}
+export function useGetFundedTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFundedTokenQuery, GetFundedVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetFundedTokenQuery, GetFundedVariables>(GetFundedTokenDocument, options);
+}
+export type GetFundedTokenQueryHookResult = ReturnType<typeof useGetFundedTokenQuery>;
+export type GetFundedTokenLazyQueryHookResult = ReturnType<typeof useGetFundedTokenLazyQuery>;
+export type GetFundedTokenQueryResult = Apollo.QueryResult<GetFundedTokenQuery, GetFundedVariables>;

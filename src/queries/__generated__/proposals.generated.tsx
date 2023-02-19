@@ -79,22 +79,7 @@ export const GetCreatedProposalsCountDocument = gql`
 }
     `;
 
-/**
- * __useGetCreatedProposalsCountQuery__
- *
- * To run a query within a React component, call `useGetCreatedProposalsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCreatedProposalsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCreatedProposalsCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
+
 export function useGetCreatedProposalsCountQuery(baseOptions?: Apollo.QueryHookOptions<GetCreatedProposalsCountQuery, GetCreatedProposalsCountQueryVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetCreatedProposalsCountQuery, GetCreatedProposalsCountQueryVariables>(GetCreatedProposalsCountDocument, options);
@@ -114,22 +99,7 @@ export const GetExecutedProposalsCountDocument = gql`
 }
     `;
 
-/**
- * __useGetExecutedProposalsCountQuery__
- *
- * To run a query within a React component, call `useGetExecutedProposalsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetExecutedProposalsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetExecutedProposalsCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
+
 export function useGetExecutedProposalsCountQuery(baseOptions?: Apollo.QueryHookOptions<GetExecutedProposalsCountQuery, GetExecutedProposalsCountQueryVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetExecutedProposalsCountQuery, GetExecutedProposalsCountQueryVariables>(GetExecutedProposalsCountDocument, options);
@@ -149,25 +119,7 @@ export const GetProposalsDocument = gql`
 }
     ${ProposalFieldsFragmentDoc}`;
 
-/**
- * __useGetProposalsQuery__
- *
- * To run a query within a React component, call `useGetProposalsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetProposalsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetProposalsQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *   },
- * });
- */
+
 export function useGetProposalsQuery(baseOptions?: Apollo.QueryHookOptions<GetProposalsQuery, GetProposalsQueryVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetProposalsQuery, GetProposalsQueryVariables>(GetProposalsDocument, options);

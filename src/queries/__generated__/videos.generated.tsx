@@ -39,30 +39,15 @@ export const GetVideoCountDocument = gql`
 }
     `;
 
-/**
- * __useGetVideoCountQuery__
- *
- * To run a query within a React component, call `useGetVideoCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetVideoCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetVideoCountQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
+
 export function useGetVideoCountQuery(baseOptions?: Apollo.QueryHookOptions<GetVideoCountQuery, GetVideoCountQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetVideoCountQuery, GetVideoCountQueryVariables>(GetVideoCountDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetVideoCountQuery, GetVideoCountQueryVariables>(GetVideoCountDocument, options);
+}
 export function useGetVideoCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVideoCountQuery, GetVideoCountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetVideoCountQuery, GetVideoCountQueryVariables>(GetVideoCountDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetVideoCountQuery, GetVideoCountQueryVariables>(GetVideoCountDocument, options);
+}
 export type GetVideoCountQueryHookResult = ReturnType<typeof useGetVideoCountQuery>;
 export type GetVideoCountLazyQueryHookResult = ReturnType<typeof useGetVideoCountLazyQuery>;
 export type GetVideoCountQueryResult = Apollo.QueryResult<GetVideoCountQuery, GetVideoCountQueryVariables>;
@@ -90,34 +75,15 @@ export const GetVideosDocument = gql`
     ${BasicChannelFieldsFragmentDoc}
 ${BasicVideoFieldsFragmentDoc}`;
 
-/**
- * __useGetVideosQuery__
- *
- * To run a query within a React component, call `useGetVideosQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetVideosQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetVideosQuery({
- *   variables: {
- *      whereVideo: // value for 'whereVideo'
- *      whereChannel: // value for 'whereChannel'
- *      skip: // value for 'skip'
- *      limit: // value for 'limit'
- *      text: // value for 'text'
- *   },
- * });
- */
+
 export function useGetVideosQuery(baseOptions: Apollo.QueryHookOptions<GetVideosQuery, GetVideosQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetVideosQuery, GetVideosQueryVariables>(GetVideosDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetVideosQuery, GetVideosQueryVariables>(GetVideosDocument, options);
+}
 export function useGetVideosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVideosQuery, GetVideosQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetVideosQuery, GetVideosQueryVariables>(GetVideosDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetVideosQuery, GetVideosQueryVariables>(GetVideosDocument, options);
+}
 export type GetVideosQueryHookResult = ReturnType<typeof useGetVideosQuery>;
 export type GetVideosLazyQueryHookResult = ReturnType<typeof useGetVideosLazyQuery>;
 export type GetVideosQueryResult = Apollo.QueryResult<GetVideosQuery, GetVideosQueryVariables>;

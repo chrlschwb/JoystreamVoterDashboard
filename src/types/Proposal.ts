@@ -57,6 +57,7 @@ export interface Proposal {
   exactExecutionBlock?: number;
   votes: Array<VoteFieldsFragment>;
   posts: Array<ProposalPostFragment>;
+  creator: string
 }
 
 export const typenameToProposalStatus = (typename: string): ProposalStatus => {
@@ -86,7 +87,8 @@ export const asProposal = (fields: ProposalFieldsFragment): Proposal => {
     councilApprovals: fields.councilApprovals,
     exactExecutionBlock: fields.exactExecutionBlock ?? undefined,
     votes: fields.votes,
-    posts: fields.discussionThread.posts
+    posts: fields.discussionThread.posts,
+    creator: fields.creator.handle
   };
 
   if (!isProposalActive(proposal.status)) {

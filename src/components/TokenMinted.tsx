@@ -7,7 +7,7 @@ import { isDefined } from '@/types';
 
 export default function TokenMinted() {
   const { council } = useSelectedCouncil();
-  const { minted, councildata, proposal, loading, error } = useTokenMinted({ council });
+  const { minted, councildata, proposal, councilBudget, loading, error } = useTokenMinted({ council });
 
   // Add some
 
@@ -24,6 +24,14 @@ export default function TokenMinted() {
       <h4>Token Minted</h4>
       <Row>
         <Col>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>minted - councilReward - WGBudget - amount of requestFundedEvents</Tooltip>}>
+            <div className="input_box" style={{ marginLeft: '30px' }}>
+              {isDefined(councilBudget) ? councilBudget.toFixed(0) : '-'}
+            </div>
+          </OverlayTrigger>
+          <h6>council total</h6>
+        </Col>
+        <Col>
           <OverlayTrigger placement="bottom" overlay={<Tooltip> sum balance of budgetRefillEvents</Tooltip>}>
             <div className="input_box" style={{ marginLeft: '30px' }}>
               {isDefined(minted) ? minted.toFixed(0) : '-'}
@@ -37,7 +45,7 @@ export default function TokenMinted() {
               {isDefined(councildata) ? councildata.toFixed(0) : '-'}
             </div>
           </OverlayTrigger>
-          <h6>council</h6>
+          <h6>council reward</h6>
         </Col>
         <Col>
           <OverlayTrigger placement="bottom" overlay={<Tooltip> sum budgetChangeAmount of budgetUpdatedEvents</Tooltip>}>
@@ -46,7 +54,7 @@ export default function TokenMinted() {
               {isDefined(proposal) ? proposal.toFixed(0) : '-'}
             </div>
           </OverlayTrigger>
-          <h6>WG budget</h6>
+          <h6>WG spending</h6>
         </Col>
       </Row>
     </div>
