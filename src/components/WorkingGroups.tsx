@@ -13,11 +13,10 @@ export interface WorkingGroupProps {
 export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
 
   const { council } = useSelectedCouncil();
-  const { workingTokens, rewardToken, workingTokensReward } = useWorkingGroups({ council });
+  const { workingTokens, rewardToken, workingTokensReward, budgetSpending } = useWorkingGroups({ council });
   const { exitedWorker, filledWorker, terminatedWorker } = useWorker({ council });
 
 
-  var budget: number = 0;
   var debt: number = 0;
   var token = workingTokens?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
     return a + (b.budgetChangeAmount / 10000000000);
@@ -31,9 +30,11 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
     return a + (b.budgetChangeAmount / 10000000000);
   }, 0)
 
-  var budgetbuffer = updateReward! - reward!;
+  var spendingEvent = budgetSpending?.filter(data => workingGroup.name === data.groupId).reduce((a: number, b) => {
+    return a + (b.amount / 10000000000);
+  }, 0)
 
-  budgetbuffer < 0 ? budget = budgetbuffer : debt = budgetbuffer;
+  var budget: number = updateReward! - reward! - spendingEvent!;
 
   var exited = exitedWorker?.filter(data => workingGroup.name === data.groupId).reduce((a: number, b) => {
     return isNaN(a + b.worker.length) ? 0 : a + b.worker.length;
