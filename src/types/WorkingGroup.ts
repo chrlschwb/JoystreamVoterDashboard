@@ -67,7 +67,7 @@ export const asWorkingGroup = (
     hire: group.openingfilledeventgroup.length,
     spendingBudget: group.budgetspendingeventgroup.reduce((a: number, b) => { return a + Number(b.amount) }, 0),
     spendingReward: group.rewardpaideventgroup.reduce((a: number, b) => { return a + Number(b.amount) }, 0),
-    debt: group.workers.reduce((a: number, b) => { return a + b.missingRewardAmount }, 0)
+    debt: group.workers.reduce((a: number, b) => { return a + Number(b.missingRewardAmount) }, 0)
   };
 };
 

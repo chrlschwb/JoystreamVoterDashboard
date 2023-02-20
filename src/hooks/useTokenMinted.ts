@@ -10,7 +10,12 @@ export function useTokenMinted({ council }: ForSelectedCouncil) {
   const [fetchCouncilToken, CouncilTokenQuery] = useGetCouncilTokenLazyQuery();
   const [fetchWorkingGroupToken, WorkingGroupTokenQuery] = useGetWorkingGroupTokenLazyQuery();
   const [fetchMintedToken, MintedTokenQuery] = useGetMintedTokenLazyQuery();
+
   const [fetchFundedToken, FundedTokenQuery] = useGetFundedTokenLazyQuery();
+  const [fetchCouncilTokens, CouncilTokensQuery] = useGetCouncilTokenLazyQuery();
+  const [fetchWorkingGroupTokens, WorkingGroupTokensQuery] = useGetWorkingGroupTokenLazyQuery();
+  const [fetchMintedTokens, MintedTokensQuery] = useGetMintedTokenLazyQuery();
+
 
   useEffect(() => {
     if (!council) return;
@@ -31,6 +36,20 @@ export function useTokenMinted({ council }: ForSelectedCouncil) {
       variables,
     });
 
+    var variables = {
+      where: { createdAt_gt: "1970-01-01T00:00:00.000Z", createdAt_lt: council.endedAt?.timestamp },
+    };
+    fetchCouncilTokens({
+      variables,
+    });
+
+    fetchWorkingGroupTokens({
+      variables,
+    });
+
+    fetchMintedTokens({
+      variables,
+    });
     fetchFundedToken({
       variables
     })
@@ -48,11 +67,23 @@ export function useTokenMinted({ council }: ForSelectedCouncil) {
     return a + (b.balance / 10000000000);
   }, 0), [CouncilTokenQuery.data]);
 
+  const proposals = useMemo(() => WorkingGroupTokensQuery.data?.budgetUpdatedEvents.reduce((a: number, b) => {
+    return a + (b.budgetChangeAmount / 10000000000);
+  }, 0), [WorkingGroupTokensQuery.data]);
+
+  const councildatas = useMemo(() => MintedTokensQuery.data?.rewardPaymentEvents.reduce((a: number, b) => {
+    return a + (b.paidBalance / 10000000000);
+  }, 0), [MintedTokensQuery.data]);
+
+  const minteds = useMemo(() => CouncilTokensQuery.data?.budgetRefillEvents.reduce((a: number, b) => {
+    return a + (b.balance / 10000000000);
+  }, 0), [CouncilTokensQuery.data]);
+
   const buffer = useMemo(() => FundedTokenQuery.data?.requestFundedEvents.reduce((a: number, b) => {
     return a + (b.amount / 10000000000);
   }, 0), [FundedTokenQuery.data]);
 
-  const councilBudget = minted! - councildata! - proposal! - buffer!;
+  const councilBudget = minteds! - councildatas! - proposals! - buffer!;
 
   return {
     proposal,

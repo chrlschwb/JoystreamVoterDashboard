@@ -29,7 +29,7 @@ export default function TokenMinted() {
               {isDefined(councilBudget) ? councilBudget.toFixed(0) : '-'}
             </div>
           </OverlayTrigger>
-          <h6>council budget</h6>
+          <h6>council total</h6>
         </Col>
         <Col>
           <OverlayTrigger placement="bottom" overlay={<Tooltip> sum balance of budgetRefillEvents</Tooltip>}>
@@ -54,7 +54,7 @@ export default function TokenMinted() {
               {isDefined(proposal) ? proposal.toFixed(0) : '-'}
             </div>
           </OverlayTrigger>
-          <h6>WG budget</h6>
+          <h6>WG spending</h6>
         </Col>
       </Row>
     </div>
