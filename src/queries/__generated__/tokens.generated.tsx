@@ -104,3 +104,36 @@ export function useGetCouncilTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetCouncilQueryHookResult = ReturnType<typeof useGetCouncilTokenQuery>;
 export type GetCouncilLazyQueryHookResult = ReturnType<typeof useGetCouncilTokenLazyQuery>;
 export type GetCouncilQueryResult = Apollo.QueryResult<GetCouncilTokenQuery, GetCouncilTokenVariables>;
+
+
+export type GetFundedTokenQuery = {
+  __typename: 'Query',
+  requestFundedEvents:
+  Array<{ __typename: 'RequestFundedEvents', amount: number, id: string }>
+};
+
+export type GetFundedVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.RequestFundedEventWhereInput>;
+}>;
+
+
+export const GetFundedTokenDocument = gql`
+  query getFunded($where: RequestFundedEventWhereInput) {
+    requestFundedEvents(where: $where) {
+      id
+      amount
+    }
+  }
+`;
+
+export function useGetFundedTokenQuery(baseOptions?: Apollo.QueryHookOptions<GetFundedTokenQuery, GetFundedVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetFundedTokenQuery, GetFundedVariables>(GetFundedTokenDocument, options);
+}
+export function useGetFundedTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFundedTokenQuery, GetFundedVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetFundedTokenQuery, GetFundedVariables>(GetFundedTokenDocument, options);
+}
+export type GetFundedTokenQueryHookResult = ReturnType<typeof useGetFundedTokenQuery>;
+export type GetFundedTokenLazyQueryHookResult = ReturnType<typeof useGetFundedTokenLazyQuery>;
+export type GetFundedTokenQueryResult = Apollo.QueryResult<GetFundedTokenQuery, GetFundedVariables>;

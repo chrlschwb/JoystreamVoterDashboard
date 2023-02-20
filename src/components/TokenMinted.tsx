@@ -7,7 +7,7 @@ import { isDefined } from '@/types';
 
 export default function TokenMinted() {
   const { council } = useSelectedCouncil();
-  const { minted, councildata, proposal, loading, error } = useTokenMinted({ council });
+  const { minted, councildata, proposal, councilBudget, loading, error } = useTokenMinted({ council });
 
   // Add some
 
@@ -24,9 +24,9 @@ export default function TokenMinted() {
       <h4>Token Minted</h4>
       <Row>
         <Col>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> sum balance of budgetRefillEvents</Tooltip>}>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip>minted - councilReward - WGBudget - amount of requestFundedEvents</Tooltip>}>
             <div className="input_box" style={{ marginLeft: '30px' }}>
-              {isDefined(minted) ? minted.toFixed(0) : '-'}
+              {isDefined(councilBudget) ? councilBudget.toFixed(0) : '-'}
             </div>
           </OverlayTrigger>
           <h6>council budget</h6>
