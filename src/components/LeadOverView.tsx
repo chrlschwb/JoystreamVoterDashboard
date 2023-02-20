@@ -60,25 +60,25 @@ export function Leaders({ Leader }: LeaderProps) {
           <OverlayTrigger placement="bottom" overlay={<Tooltip> lenghth of WorkersHired.membership.handle of openingFilledEvents === creator.handle of proposals </Tooltip>}>
             <td>{createProposals}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> sum of rewardPaidEvent.amount of workingGroups and budgetSpendingEvent.amount of workingGoruops </Tooltip>}>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> sum of amount of rewardPaidEvent and amount of budgetSpendingEvent </Tooltip>}>
             <td>{spending.toFixed(0)}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of openingFilledEvent of workingGroups </Tooltip>}>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of noLead state of openingFilledEvent of openingFilledEvents </Tooltip>}>
             <td>{isDefined(hairValue) ? hairValue : 0}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of terminatedworkereventgroup add lenth of  of workingGroups  </Tooltip>}>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of terminatedWorkerEvents add lenth of workerExitedEvents  </Tooltip>}>
             <td>{fireValue}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of stakeslashedeventgroup of workingGroups </Tooltip>}>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> length  of workEntrySlashedEvents </Tooltip>}>
             <td>{slashValue}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of forumPost  </Tooltip>}>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> length of forumPostsConnection  </Tooltip>}>
             <td>{forumText?.length}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of text of forumPosts </Tooltip>}>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of text of forumPostsConnection </Tooltip>}>
             <td>{forumAverageValue.toFixed(0)}</td>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of text of forumPosts  </Tooltip>}>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of text of forumPostsConnection  </Tooltip>}>
             <td>{forumMaxvalue}</td>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={<Tooltip> length  of proposalDiscussionPosts </Tooltip>}>

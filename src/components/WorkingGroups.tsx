@@ -17,7 +17,8 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
   const { exitedWorker, filledWorker, terminatedWorker } = useWorker({ council });
 
 
-
+  var budget: number = 0;
+  var debt: number = 0;
   var token = workingTokens?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
     return a + (b.budgetChangeAmount / 10000000000);
   }, 0)
@@ -30,8 +31,9 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
     return a + (b.budgetChangeAmount / 10000000000);
   }, 0)
 
-  var budget = updateReward! - reward!;
+  var budgetbuffer = updateReward! - reward!;
 
+  budgetbuffer < 0 ? budget = budgetbuffer : debt = budgetbuffer;
 
   var exited = exitedWorker?.filter(data => workingGroup.name === data.groupId).reduce((a: number, b) => {
     return isNaN(a + b.worker.length) ? 0 : a + b.worker.length;
@@ -46,6 +48,8 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
   }, 0)
 
   var worker = filled! - exited! - terminated!;
+
+
 
   return (
     <tr>
@@ -96,7 +100,8 @@ export default function WorkingGroups() {
             <td style={{ borderWidth: '3px', borderColor: 'black' }}>Working Groups</td>
             <td style={{ borderWidth: '3px', borderColor: 'black' }}>Workers</td>
             <td style={{ borderWidth: '3px', borderColor: 'black' }}>Minted Tokens during Term</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Budget / Debt at  end of Term</td>
+            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Budget at  end of Term</td>
+            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Debt at  end of Term</td>
           </tr>
         </thead>
         <tbody>

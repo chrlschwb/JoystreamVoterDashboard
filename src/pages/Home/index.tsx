@@ -60,10 +60,10 @@ export default function Home() {
         </Col>
       </Row>
       <Row style={{ marginTop: '20px' }}>
-        <Col md={5}>
+        <Col md={6}>
           <TokenMinted />
         </Col>
-        <Col md={7}>
+        <Col md={6}>
           <NumberProposal />
         </Col>
       </Row>

@@ -29,6 +29,14 @@ export default function TokenMinted() {
               {isDefined(minted) ? minted.toFixed(0) : '-'}
             </div>
           </OverlayTrigger>
+          <h6>council budget</h6>
+        </Col>
+        <Col>
+          <OverlayTrigger placement="bottom" overlay={<Tooltip> sum balance of budgetRefillEvents</Tooltip>}>
+            <div className="input_box" style={{ marginLeft: '30px' }}>
+              {isDefined(minted) ? minted.toFixed(0) : '-'}
+            </div>
+          </OverlayTrigger>
           <h6>minted</h6>
         </Col>
         <Col>
@@ -37,7 +45,7 @@ export default function TokenMinted() {
               {isDefined(councildata) ? councildata.toFixed(0) : '-'}
             </div>
           </OverlayTrigger>
-          <h6>council</h6>
+          <h6>council reward</h6>
         </Col>
         <Col>
           <OverlayTrigger placement="bottom" overlay={<Tooltip> sum budgetChangeAmount of budgetUpdatedEvents</Tooltip>}>
