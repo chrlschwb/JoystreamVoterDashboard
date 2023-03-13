@@ -1,10 +1,8 @@
-import React from 'react';
 import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useProposals, useLeader, useWorkingGroups, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined, Leader } from '@/types';
-import { compactAddLength, isNumber } from '@polkadot/util';
 
 export interface LeaderProps {
   Leader: Leader;

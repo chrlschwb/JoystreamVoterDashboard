@@ -93,7 +93,7 @@ export const asBudgetSpending = (data: BudgetSpendingFragment): BudgetSpending =
   amount: data.amount,
   create: data.createdAt,
   groupId: data.groupId,
-  leader: data.group.leader.membership.handle
+  leader: data.group.leader?.membership.handle
 })
 
 export interface RewardPaid {
@@ -106,6 +106,6 @@ export interface RewardPaid {
 export const asRewardPaid = (data: RewardPaidFragment): RewardPaid => ({
   amount: data.amount,
   groupId: data.groupId,
-  leader: data.group.leader.membership.handle,
+  leader: data.group.leader?.membership.handle,
   create: data.createdAt
 })

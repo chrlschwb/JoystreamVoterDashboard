@@ -13,7 +13,7 @@ export interface WorkingGroupProps {
 export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
 
   const { council } = useSelectedCouncil();
-  const { workingTokens, rewardToken, workingTokensReward, budgetSpending, workingGroups } = useWorkingGroups({ council });
+  const { workingTokens, rewardToken, workingTokensRewardNow, budgetSpending, workingGroups } = useWorkingGroups({ council });
   const { exitedWorker, filledWorker, terminatedWorker } = useWorker({ council });
 
 
@@ -25,7 +25,7 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
     return a + (b.amount / 10000000000);
   }, 0)
 
-  var updateReward = workingTokensReward?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
+  var updateReward = workingTokensRewardNow?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
     return a + (b.budgetChangeAmount / 10000000000);
   }, 0)
 
@@ -81,7 +81,7 @@ export default function WorkingGroups() {
   const { council } = useSelectedCouncil();
   const { workingGroups, loading, error } = useWorkingGroups({ council });
 
-
+  console.log(workingGroups)
   if (loading) {
     return (
       <div className="sub_panel loading" style={{ marginTop: '20px' }}>

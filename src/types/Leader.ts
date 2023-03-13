@@ -34,9 +34,9 @@ export interface TerminatedWorker {
 export const asTerminatedWorker = (data: TerminatedWorkerFragment): TerminatedWorker => ({
   create: data?.createdAt,
   groupId: data.groupId,
-  worker: data.worker.membership.handle,
+  worker: data.worker?.membership.handle,
   isLead: data.worker.isLead,
-  leader: data.group.leader.membership.handle
+  leader: data.group.leader?.membership.handle
 })
 export interface ExitedWorker {
   create: string,
@@ -48,9 +48,9 @@ export interface ExitedWorker {
 export const asExitedWorker = (data: ExitedWorkerFragment): ExitedWorker => ({
   create: data?.createdAt,
   groupId: data.groupId,
-  worker: data.worker.membership.handle,
-  isLead: data.worker.isLead,
-  leader: data.group.leader.membership.handle
+  worker: data.worker?.membership.handle,
+  isLead: data.worker?.isLead,
+  leader: data.group.leader?.membership.handle
 })
 
 export interface SlashedWorker {
