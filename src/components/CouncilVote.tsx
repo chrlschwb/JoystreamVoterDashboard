@@ -12,7 +12,6 @@ export interface CouncilMemberProps {
 
 
 export function Member({ CouncilMember }: CouncilMemberProps) {
-
   const { council } = useSelectedCouncil();
   const { proposals } = useProposals({ council });
   const { forum } = usePostTokenData({ council });
@@ -26,37 +25,45 @@ export function Member({ CouncilMember }: CouncilMemberProps) {
   var averagePostLength: number = 0;
   var maxPostLength: number = 0;
 
-  proposals?.map(data => {
-    approve += data.votes.filter(d => (d.voteKind === "APPROVE" && d.voter.handle === CouncilMember.handler)).length
-    rejected += data.votes.filter(d => (d.voteKind === "REJECT" && d.voter.handle === CouncilMember.handler)).length;
-    abstained += data.votes.filter(d => (d.voteKind === "ABSTAIN" && d.voter.handle === CouncilMember.handler)).length;
-    createPost += data.posts?.filter(d => d.author.handle === CouncilMember.handler).length;
-    buffer = data.posts?.filter(d => d.author.handle === CouncilMember.handler).reduce((a: number, b) => {
-      return a + b.text.length
-    }, buffer);
+  proposals?.map((data) => {
+    approve += data.votes.filter((d) => d.voteKind === 'APPROVE' && d.voter.handle === CouncilMember.handler).length;
+    rejected += data.votes.filter((d) => d.voteKind === 'REJECT' && d.voter.handle === CouncilMember.handler).length;
+    abstained += data.votes.filter((d) => d.voteKind === 'ABSTAIN' && d.voter.handle === CouncilMember.handler).length;
+    createPost += data.posts?.filter((d) => d.author.handle === CouncilMember.handler).length;
 
-    textLenght = data.posts?.filter(d => d.author.handle === CouncilMember.handler).map(d => {
-      maxPostLength = maxPostLength < d.text.length ? d.text.length : maxPostLength;
-      return d.text.length
-    })
-  })
+    buffer = data.posts
+      ?.filter((d) => d.author.handle === CouncilMember.handler)
+      .reduce((a: number, b) => {
+        return a + b.text.length;
+      }, buffer);
+
+    textLenght = data.posts
+      ?.filter((d) => d.author.handle === CouncilMember.handler)
+      .map((d) => {
+        maxPostLength = maxPostLength < d.text.length ? d.text.length : maxPostLength;
+        return d.text.length;
+      });
+  });
 
   const ignored = proposals?.length! - approve! - rejected! - abstained!;
 
   averagePostLength = buffer / createPost;
 
-  var createForum = forum?.filter(d => d.author.handle === CouncilMember.handler).length;
-  var val1 = forum?.filter(d => d.author.handle === CouncilMember.handler).reduce((a: number, b) => {
-    return a + b.text.length
-  }, 0);
+  var createForum = forum?.filter((d) => d.author.handle === CouncilMember.handler).length;
+
+  var val1 = forum
+    ?.filter((d) => d.author.handle === CouncilMember.handler)
+    .reduce((a: number, b) => {
+      return a + b.text.length;
+    }, 0);
 
   var averageForumLength: number = createForum === 0 ? 0 : val1! / createForum!;
 
   var maxForumLength: number = 0;
 
-  var val3 = forum?.filter(d => d.author.handle === CouncilMember.handler);
+  var val3 = forum?.filter((d) => d.author.handle === CouncilMember.handler);
 
-  maxForumLength = createForum === 0 ? 0 : (isDefined(val3) ? Math.max(...val3.map(d => d.text.length)) : 0);
+  maxForumLength = createForum === 0 ? 0 : isDefined(val3) ? Math.max(...val3.map((d) => d.text.length)) : 0;
 
   return (
     <tr>
@@ -72,19 +79,28 @@ export function Member({ CouncilMember }: CouncilMemberProps) {
       <OverlayTrigger placement="bottom" overlay={<Tooltip> proposals.votes.votekind = "abstained" </Tooltip>}>
         <td>{abstained}</td>
       </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> ignored = total - approved - rejected - abstained </Tooltip>}>
+      <OverlayTrigger
+        placement="bottom"
+        overlay={<Tooltip> ignored = total - approved - rejected - abstained </Tooltip>}
+      >
         <td>{ignored}</td>
       </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> proposals.posts.length where author.handle=council.handle  </Tooltip>}>
+      <OverlayTrigger
+        placement="bottom"
+        overlay={<Tooltip> proposals.posts.length where author.handle=council.handle </Tooltip>}
+      >
         <td>{createPost}</td>
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of proposals.posts.text of CM </Tooltip>}>
         <td>{averagePostLength.toFixed(0)}</td>
       </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of proposals.posts.text of CM  </Tooltip>}>
+      <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of proposals.posts.text of CM </Tooltip>}>
         <td>{maxPostLength}</td>
       </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> forumPosts.length where author.handle=council.handle </Tooltip>}>
+      <OverlayTrigger
+        placement="bottom"
+        overlay={<Tooltip> forumPosts.length where author.handle=council.handle </Tooltip>}
+      >
         <td>{createForum}</td>
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of forumPosts.text of CM </Tooltip>}>
