@@ -29,7 +29,7 @@ export type GetForumPostsCountQuery = {
 
 export const GetForumPostsCountDocument = gql`
     query GetForumPostsCount($where: ForumPostWhereInput) {
-  forumPostsConnection(where: $where) {
+  forumPostsConnection(where: $where ) {
     totalCount
     edges{      
       node{
@@ -41,7 +41,7 @@ export const GetForumPostsCountDocument = gql`
       }
     }
   }
-  forumPosts {
+  forumPosts (limit:10000){
     createdAt
     author{
       handle
