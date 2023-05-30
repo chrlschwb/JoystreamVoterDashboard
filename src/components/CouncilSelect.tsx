@@ -1,5 +1,5 @@
 import React from 'react';
-import Select, { components, OptionProps, SingleValueProps, StylesConfig } from 'react-select';
+import Select, { components, OptionProps, SingleValueProps } from 'react-select';
 
 import { useElectedCouncils } from '@/hooks';
 import { ElectedCouncil } from '@/types';
