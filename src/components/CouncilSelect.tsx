@@ -1,5 +1,5 @@
 import React from 'react';
-import Select, { components, OptionProps, SingleValueProps, StylesConfig } from 'react-select';
+import Select, { components, OptionProps, SingleValueProps } from 'react-select';
 
 import { useElectedCouncils } from '@/hooks';
 import { ElectedCouncil } from '@/types';
@@ -16,17 +16,18 @@ const SingleValue = (singleValueProps: SingleValueProps<ElectedCouncil>) => {
     data: { id },
   } = singleValueProps;
 
-  return <components.SingleValue {...singleValueProps}>{id}</components.SingleValue>;
+  return <components.SingleValue {...singleValueProps}>{parseInt(id,16)}</components.SingleValue>;
 };
+
 
 const Option = (optionProps: OptionProps<ElectedCouncil>) => {
   const { data } = optionProps;
-  return <components.Option {...optionProps}>{data.id}</components.Option>;
+  const councilDisplayData = parseInt(String(data.id), 16);
+  return <components.Option {...optionProps}>{councilDisplayData}</components.Option>;
 };
 
 export default function CouncilSelect({ council, onChange }: CouncilSelectProps) {
   const { data } = useElectedCouncils({});
-
   return (
     <div>
       <div className="justify-content-center">

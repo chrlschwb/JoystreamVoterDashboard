@@ -36,7 +36,7 @@ export type WorkingGroupFieldsFragment = {
   terminatedworkereventgroup: Array<FireTerminatedFieldsFragment>,
   workerexitedeventgroup: Array<FireExitedFieldsFragment>,
   stakeslashedeventgroup: Array<SlashStakeFieldsFragment>,
-  workers: Array<WorkerMemberFragment>,
+  workers: Array<{ __typename: 'Worker', stake: string }>,
   leader: { __typename: 'Worker', membershipId: string, isActive: boolean, membership: { handle: string } } | null
 };
 
@@ -135,6 +135,7 @@ export const WorkingGroupFieldsFragmentDoc = gql`
       handle
     }
     stake
+    missingRewardAmount
   }
   rewardpaideventgroup{
     ...SpendingRewardFields

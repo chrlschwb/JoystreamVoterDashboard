@@ -95,6 +95,7 @@ fragment WorkingGroupFields on WorkingGroup {
   }
   workers {
     stake
+    missingRewardAmount
   }
   rewardpaideventgroup {
     ...SpendingRewardFields

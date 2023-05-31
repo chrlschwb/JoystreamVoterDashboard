@@ -14,12 +14,10 @@ export interface WorkingGroupProps {
 export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
 
   const { council } = useSelectedCouncil();
-  const { workingTokens, rewardToken, workingTokensReward } = useWorkingGroups({ council });
+  const { workingTokens, rewardToken, workingTokensReward, budgetSpending, workingGroups } = useWorkingGroups({ council });
   const { exitedWorker, filledWorker, terminatedWorker } = useWorker({ council });
 
 
-  var budget: number = 0;
-  var debt: number = 0;
   var token = workingTokens?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
     return a + (b.budgetChangeAmount / 10000000000);
   }, 0)
@@ -32,9 +30,15 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
     return a + (b.budgetChangeAmount / 10000000000);
   }, 0)
 
-  var budgetbuffer = updateReward! - reward!;
+  var spendingEvent = budgetSpending?.filter(data => workingGroup.name === data.groupId).reduce((a: number, b) => {
+    return a + (b.amount / 10000000000);
+  }, 0)
 
-  budgetbuffer < 0 ? budget = budgetbuffer : debt = budgetbuffer;
+  var debt = workingGroups?.filter((data) => workingGroup.name === data.id).reduce((a: number, b) => {
+    return a + (b.debt / 10000000000);
+  }, 0)
+
+  var budget: number = updateReward! - reward! - spendingEvent!;
 
   var exited = exitedWorker?.filter(data => workingGroup.name === data.groupId).reduce((a: number, b) => {
     return isNaN(a + b.worker.length) ? 0 : a + b.worker.length;
@@ -66,8 +70,11 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
         <td>{token?.toFixed(0)}</td>
       </OverlayTrigger>
       {/* <td>{isDefined(workingGroup) ? workingGroup.budget?.div(new BN(10000000000)).toString() : ""}</td> */}
-      <OverlayTrigger placement="bottom" overlay={<Tooltip>reward = (sum budgetChangeAmount of budgetUpdatedEvents) -(sum amount of RewardPaidEvent)  </Tooltip>}>
+      <OverlayTrigger placement="bottom" overlay={<Tooltip>reward = (sum budgetChangeAmount of budgetUpdatedEvents) -(sum amount of RewardPaidEvent) -(sum amount of spendingEvent) </Tooltip>}>
         <td>{budget.toFixed(0)}</td>
+      </OverlayTrigger>
+      <OverlayTrigger placement="bottom" overlay={<Tooltip>reward = sum debt amount of workers in workinggroup  </Tooltip>}>
+        <td>{debt?.toFixed(0)}</td>
       </OverlayTrigger>
     </tr>
   );
@@ -104,7 +111,7 @@ export default function WorkingGroups() {
             <td style={{ borderWidth: '3px', borderColor: 'black' }}>Workers</td>
             <td style={{ borderWidth: '3px', borderColor: 'black' }}>Minted Tokens during Term</td>
             <td style={{ borderWidth: '3px', borderColor: 'black' }}>Budget at  end of Term</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Debt at  end of Term</td>
+            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Current debt</td>
           </tr>
         </thead>
         <tbody>
