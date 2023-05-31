@@ -16,6 +16,7 @@ export type HireOpeningFillFieldsFragment = { __typename: "OpeningFilledEvent", 
 export type FireTerminatedFieldsFragment = { __typename: "TerminatedWorkerEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
 export type FireExitedFieldsFragment = { __typename: "WorkerExitedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
 export type SlashStakeFieldsFragment = { __typename: "StakeSlashedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
+export type WorkerMemberFragment = { __typename: 'Worker',membership:{handle:string}, stake: string };
 
 export type WorkingGroupFieldsFragment = {
   __typename: 'WorkingGroup',
@@ -35,7 +36,7 @@ export type WorkingGroupFieldsFragment = {
   terminatedworkereventgroup: Array<FireTerminatedFieldsFragment>,
   workerexitedeventgroup: Array<FireExitedFieldsFragment>,
   stakeslashedeventgroup: Array<SlashStakeFieldsFragment>,
-  workers: Array<{ __typename: 'Worker', stake: string }>,
+  workers: Array<WorkerMemberFragment>,
   leader: { __typename: 'Worker', membershipId: string, isActive: boolean, membership: { handle: string } } | null
 };
 
@@ -130,6 +131,9 @@ export const WorkingGroupFieldsFragmentDoc = gql`
     ...WorkingGroupMetadataFields
   }
   workers {
+    membership{
+      handle
+    }
     stake
   }
   rewardpaideventgroup{

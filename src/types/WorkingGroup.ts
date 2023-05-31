@@ -4,7 +4,7 @@ import { sumStakes } from '@/helpers';
 import {
   BudgetSpendingFragment,
   RewardPaidFragment,
-  WorkerFieldsFragment, WorkingGroupFieldsFragment,
+  WorkerFieldsFragment, WorkerMemberFragment, WorkingGroupFieldsFragment,
 } from '@/queries';
 
 export const GroupIdToGroupParam = {
@@ -39,7 +39,8 @@ export interface WorkingGroup {
   hire?: number,
   fireExited?: number,
   fireTerminated?: number,
-  slashed?: number
+  slashed?: number,
+  workers:WorkerMemberFragment[]
 }
 
 
@@ -65,7 +66,8 @@ export const asWorkingGroup = (
     fireTerminated: group.terminatedworkereventgroup.length,
     hire: group.openingfilledeventgroup.length,
     spendingBudget: group.budgetspendingeventgroup.reduce((a: number, b) => { return a + Number(b.amount) }, 0),
-    spendingReward: group.rewardpaideventgroup.reduce((a: number, b) => { return a + Number(b.amount) }, 0)
+    spendingReward: group.rewardpaideventgroup.reduce((a: number, b) => { return a + Number(b.amount) }, 0),
+    workers:group.workers
   };
 };
 

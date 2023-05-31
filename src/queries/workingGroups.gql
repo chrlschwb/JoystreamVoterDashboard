@@ -84,6 +84,12 @@ fragment WorkingGroupFields on WorkingGroup {
   id
   name
   budget
+  workers {
+    membership{
+      handle
+    }
+    stake
+  }
   metadata {
     ...WorkingGroupMetadataFields
   }

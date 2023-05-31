@@ -4,6 +4,7 @@ import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { useWorkingGroups, useWorker } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined, WorkingGroup } from '@/types';
+import { Link } from 'react-router-dom';
 
 export interface WorkingGroupProps {
   workingGroup: WorkingGroup;
@@ -54,7 +55,9 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
   return (
     <tr>
       <OverlayTrigger placement="bottom" overlay={<Tooltip> workingGroup.name of workingGroups</Tooltip>}>
-        <td>{workingGroup.name}</td>
+      <Link to="/workers">
+       <td>{workingGroup.name}</td>
+      </Link>       
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip>worker = (workersHired.length of openingFilledEvents) -(worker.length of workerExitedEvents) - (worker.length of terminatedWorkerEvents); </Tooltip>}>
         <td>{worker}</td>
