@@ -1,7 +1,7 @@
 import './home.css';
 
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 
 import {
   Channels,
@@ -18,17 +18,19 @@ import {
   Videos,
   WorkingGroups,
   CouncilVotes,
-  ProposalGroups
+  ProposalGroups,
 } from '@/components';
 import { useSelectedCouncil } from '@/store';
+import WorkerRewards from '@/components/WorkerRewardTable';
+
 
 export default function Home() {
   const { council, setCouncil } = useSelectedCouncil();
 
   return (
     <div style={{ backgroundColor: 'black' }}>
-      <h1 className='text-white'>Joystream Council Voter Dashboard</h1>
-      <hr className='text-white' />
+      <h1 className="text-white">Joystream Council Voter Dashboard</h1>
+      <hr className="text-white" />
       <CouncilSelect council={council} onChange={setCouncil} />
       <hr style={{ height: '3px', color: 'white' }} />
       <Row>
@@ -71,6 +73,8 @@ export default function Home() {
       <CouncilVotes />
       <WorkingGroups />
       <ListProposal />
+      <h1 className='text-center text-white'>Workers Rewards</h1>
+      <WorkerRewards />
     </div>
   );
 }

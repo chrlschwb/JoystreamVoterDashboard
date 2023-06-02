@@ -20,7 +20,6 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
       where: { createdAt_gt: council.electedAt.timestamp, createdAt_lt: council.endedAt?.timestamp },
     };
 
-
     fetch();
     fetchToken({
       variables
@@ -49,6 +48,7 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
   const workingTokensReward = useMemo(() => tokenQueryReward.data?.budgetUpdatedEvents, [tokenQueryReward.data]);
   const rewardToken = useMemo(() => tokenReward.data?.rewardPaidEvents.map(asRewardPaid), [tokenReward.data]);
   const budgetSpending = useMemo(() => budgetSpendingQuery.data?.budgetSpendingEvents.map(asBudgetSpending), [budgetSpendingQuery.data]);
+
 
   return {
     workingGroups,

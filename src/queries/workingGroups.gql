@@ -37,6 +37,7 @@ fragment SpendingRewardFields on RewardPaidEvent {
 fragment SpendingBudgetFields on BudgetSpendingEvent {
   createdAt
   deletedAt
+  receiver
   amount
 }
 
@@ -85,7 +86,7 @@ fragment WorkingGroupFields on WorkingGroup {
   name
   budget
   workers {
-    membership{
+    membership {
       handle
     }
     stake
@@ -127,9 +128,17 @@ fragment WorkingGroupFields on WorkingGroup {
 fragment RewardPaidEventFields on RewardPaidEvent {
   id
   amount
+  roleAccount
   rewardAccount
   createdAt
   groupId
+  worker {
+    membership {
+      handle
+      rootAccount
+      controllerAccount
+    }
+  }
   group {
     leader {
       membership {
