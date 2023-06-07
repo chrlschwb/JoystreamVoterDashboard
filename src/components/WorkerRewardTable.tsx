@@ -36,6 +36,7 @@ function WorkderRewardTableBody({ Workers }: WorkerRewardTableBody) {
 
 export function WorkerRewardTable({ WorkingGroups, RewardPaid, budget }: WorkerRewardTable) {
 
+
   var test = RewardPaid?.filter((data) => WorkingGroups.name === data.groupId);
   if (!test) return <></>;
 
@@ -96,7 +97,9 @@ export function WorkerRewardTable({ WorkingGroups, RewardPaid, budget }: WorkerR
 
 export default function WorkerRewardsData() {
   const { council } = useSelectedCouncil();
-  const { workingGroups, loading, error, budgetSpending, rewardToken } = useWorkingGroups({ council });
+  const { workingGroups, loading, error, budgetSpending, rewardToken, workers } = useWorkingGroups({ council });
+
+  console.log(workers);
 
   if (loading) {
     return (

@@ -1,10 +1,11 @@
 import { useEffect, useMemo } from 'react';
 
-import { useGetWorkingGroupsLazyQuery, useGetWorkingGroupTokenLazyQuery, useGetRewardsLazyQuery, useGetBudgetSpendingLazyQuery } from '@/queries';
-import { asBudgetSpending,  asRewardPaid,  asWorkingGroup } from '@/types';
+import { useGetWorkingGroupsLazyQuery, useGetWorkingGroupTokenLazyQuery, useGetRewardsLazyQuery, useGetBudgetSpendingLazyQuery,  WorkingGroupFieldsFragment } from '@/queries';
+import {  asBudgetSpending,  asRewardPaid,  asWorkingGroup } from '@/types';
 
 import { ForSelectedCouncil } from './types';
 
+var worker:WorkingGroupFieldsFragment[]=[];
 export function useWorkingGroups({ council }: ForSelectedCouncil) {
 
   const [fetch, query] = useGetWorkingGroupsLazyQuery();
@@ -44,6 +45,25 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
   }, [council]);
 
   const workingGroups = useMemo(() => query.data?.workingGroups.map(asWorkingGroup), [query.data]);
+
+  const workers = useMemo(() =>{ 
+    worker=[];
+    query.data?.workingGroups.map(d=>{
+      d.workers.map(k=>{
+        const endAt = council?.endedAt ? council?.endedAt : Date.now();
+        const startAt = council?.electedAt ? council.electedAt : new Date("1970-01-01T00:00:00.000Z")
+        if(k.entry.createdAt < endAt){
+          if(!k.terminatedworkereventworker.createdAt && !k.workerexitedeventworker.createAt ){            
+            worker.push(d);     
+        }else if (k.terminatedworkereventworker.createdAt > startAt || k.workerexitedeventworker.createAt >startAt){
+            worker.push(d);
+        }       
+      }
+        return worker
+      })
+    } )
+
+    return (worker)}, [query.data]);
   const workingTokens = useMemo(() => tokenQuery.data?.budgetUpdatedEvents, [tokenQuery.data]);
   const workingTokensReward = useMemo(() => tokenQueryReward.data?.budgetUpdatedEvents, [tokenQueryReward.data]);
   const rewardToken = useMemo(() => tokenReward.data?.rewardPaidEvents.map(asRewardPaid), [tokenReward.data]);
@@ -56,6 +76,7 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
     workingTokensReward,
     budgetSpending,
     rewardToken,
+    workers,
     loading: query.loading || tokenQuery.loading || tokenReward.loading || tokenQueryReward.loading || budgetSpendingQuery.loading,
     error: query.error || tokenQuery.error || tokenReward.error || tokenQueryReward.error || budgetSpendingQuery.error,
   };

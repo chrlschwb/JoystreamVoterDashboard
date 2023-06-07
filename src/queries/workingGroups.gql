@@ -85,16 +85,7 @@ fragment WorkingGroupFields on WorkingGroup {
   id
   name
   budget
-  workers {
-    roleAccount
-    rewardAccount
-    membership {
-      handle
-      rootAccount
-      controllerAccount
-    }
-    stake
-  }
+
   metadata {
     ...WorkingGroupMetadataFields
   }
@@ -102,34 +93,35 @@ fragment WorkingGroupFields on WorkingGroup {
     stake
     missingRewardAmount
     createdAt
-    payouts{
+    roleAccount
+    rewardAccount
+    membership {
+      handle
+      rootAccount
+      controllerAccount
+    }
+    payouts {
       amount
       paymentType
       createdAt
     }
-    status{
+    status {
       __typename
     }
-    entry{
+    entry {
       createdAt
     }
-    
-    terminatedworkereventworker{
+
+    terminatedworkereventworker {
       createdAt
     }
-    workerexitedeventworker{
+    workerexitedeventworker {
       createdAt
     }
-    
-    workerstartedleavingeventworker{
+
+    workerstartedleavingeventworker {
       createdAt
-      worker{
-        membership{
-          handle
-        }
-      }
     }
-    
   }
   rewardpaideventgroup {
     ...SpendingRewardFields
@@ -161,7 +153,7 @@ fragment WorkingGroupFields on WorkingGroup {
 fragment RewardPaidEventFields on RewardPaidEvent {
   id
   amount
-  
+
   rewardAccount
   createdAt
   groupId

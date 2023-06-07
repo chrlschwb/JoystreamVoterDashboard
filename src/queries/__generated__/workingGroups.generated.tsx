@@ -24,7 +24,8 @@ export type WorkerMemberFragment = {
   roleAccount: string,
   payouts: { amount: number, paymentType: string, createAt: any | undefined },
   entry: { createdAt: any | undefined },
-  terminatedworkereventworker: { createdAt: any | undefined }
+  terminatedworkereventworker: { createdAt: any | undefined },
+  workerexitedeventworker: { createAt: any | undefined }
 };
 
 export type WorkingGroupFieldsFragment = {
