@@ -16,7 +16,16 @@ export type HireOpeningFillFieldsFragment = { __typename: "OpeningFilledEvent", 
 export type FireTerminatedFieldsFragment = { __typename: "TerminatedWorkerEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
 export type FireExitedFieldsFragment = { __typename: "WorkerExitedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
 export type SlashStakeFieldsFragment = { __typename: "StakeSlashedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
-export type WorkerMemberFragment = { __typename: 'Worker',membership:{handle:string}, stake: string };
+export type WorkerMemberFragment = {
+  __typename: 'Worker',
+  membership: { handle: string, rootAccount: string, controllerAccount: string },
+  stake: string,
+  rewardAccount: string,
+  roleAccount: string,
+  payouts: { amount: number, paymentType: string, createAt: any | undefined },
+  entry: { createdAt: any | undefined },
+  terminatedworkereventworker: { createdAt: any | undefined }
+};
 
 export type WorkingGroupFieldsFragment = {
   __typename: 'WorkingGroup',
@@ -131,8 +140,26 @@ export const WorkingGroupFieldsFragmentDoc = gql`
     ...WorkingGroupMetadataFields
   }
   workers {
+    roleAccount
+    rewardAccount
     membership{
       handle
+      rootAccount
+      controllerAccount
+    }
+    payouts{
+      amount
+      paymentType
+      createdAt
+    }
+    entry{
+      createdAt
+    }
+    terminatedworkereventworker{
+      createdAt
+    }
+    workerexitedeventworker{
+      createdAt
     }
     stake
     missingRewardAmount
@@ -275,15 +302,15 @@ export type RewardPaidFragment = {
         handle: string,
       }
     }
-    
+
   }
-  worker:{
+  worker: {
     rewardAccount: string,
-    roleAccount:string,
-    membership:{
-      handle:string
-      rootAccount:string,
-      controllerAccount:string,
+    roleAccount: string,
+    membership: {
+      handle: string
+      rootAccount: string,
+      controllerAccount: string,
     }
   }
 }
@@ -349,7 +376,7 @@ export type BudgetSpendingFragment = {
   amount: number,
   createdAt: any,
   groupId: string,
-  reciever:string,
+  reciever: string,
   group: {
     leader: {
       membership: {

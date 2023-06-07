@@ -73,7 +73,7 @@ export default function Home() {
       <CouncilVotes />
       <WorkingGroups />
       <ListProposal />
-      <h1 className='text-center text-white'>Workers Rewards</h1>
+      <h1 className='text-center text-white mt-3'>Workers Rewards</h1>
       <WorkerRewards />
     </div>
   );

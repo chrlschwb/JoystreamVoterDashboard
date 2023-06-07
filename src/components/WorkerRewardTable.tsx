@@ -1,6 +1,6 @@
 import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-import { useWorkingGroups } from '@/hooks';
+import { useWorker, useWorkingGroups } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { BudgetSpending, isDefined, RewardPaid, WorkingGroup } from '@/types';
 import { WorkerMemberFragment } from '@/queries';
@@ -35,6 +35,7 @@ function WorkderRewardTableBody({ Workers }: WorkerRewardTableBody) {
 }
 
 export function WorkerRewardTable({ WorkingGroups, RewardPaid, budget }: WorkerRewardTable) {
+
   var test = RewardPaid?.filter((data) => WorkingGroups.name === data.groupId);
   if (!test) return <></>;
 
@@ -117,8 +118,8 @@ export default function WorkerRewardsData() {
     <div>
       {isDefined(workingGroups)
         ? workingGroups.map((data, i) => (
-            <WorkerRewardTable key={i} WorkingGroups={data} RewardPaid={rewardToken!} budget={budgetSpending!} />
-          ))
+          <WorkerRewardTable key={i} WorkingGroups={data} RewardPaid={rewardToken!} budget={budgetSpending!} />
+        ))
         : null}
     </div>
   );
