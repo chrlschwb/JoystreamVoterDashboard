@@ -1,4 +1,3 @@
-import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useProposals, useLeader, useWorkingGroups, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
@@ -19,7 +18,7 @@ export function Leaders({ Leader }: LeaderProps) {
 
   return (
     <tr>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> groupId of openingFilledEvents</Tooltip>}>
+      {/* <OverlayTrigger placement="bottom" overlay={<Tooltip> groupId of openingFilledEvents</Tooltip>}>
         <td rowSpan={Leader.leader.length}>{Leader.groupId}</td>
       </OverlayTrigger>
       {Leader.leader.map((d) => {
@@ -134,7 +133,7 @@ export function Leaders({ Leader }: LeaderProps) {
             </OverlayTrigger>
           </>
         );
-      })}
+      })} */}
     </tr>
   );
 }
@@ -162,7 +161,7 @@ export default function LeaderOverView() {
   return (
     <div style={{ marginTop: '20px' }} className="table_background">
       <h4>Lead OverView</h4>
-      <Table style={{ marginTop: '10px' }}>
+      {/* <Table style={{ marginTop: '10px' }}>
         <thead style={{ backgroundColor: '#0080ff' }}>
           <tr>
             <td style={{ borderWidth: '3px', borderColor: 'black' }}>WorkingGroup</td>
@@ -181,7 +180,7 @@ export default function LeaderOverView() {
           </tr>
         </thead>
         <tbody>{isDefined(leaders) ? leaders.map((data, i) => <Leaders key={i} Leader={data} />) : null}</tbody>
-      </Table>
+      </Table> */}
     </div>
   );
 }

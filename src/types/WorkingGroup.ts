@@ -95,13 +95,8 @@ export const asBudgetSpending = (data: BudgetSpendingFragment): BudgetSpending =
   amount: data.amount,
   create: data.createdAt,
   groupId: data.groupId,
-<<<<<<< HEAD
   leader: data.group.leader?.membership.handle
 })
-=======
-  leader: data.group.leader?.membership.handle,
-});
->>>>>>> d010f02c16445e1e9d56ef9849e0c0d150cbdcb7
 
 export interface RewardPaid {
   amount: number;
@@ -114,10 +109,5 @@ export const asRewardPaid = (data: RewardPaidFragment): RewardPaid => ({
   amount: data.amount,
   groupId: data.groupId,
   leader: data.group.leader?.membership.handle,
-<<<<<<< HEAD
-  create: data.createdAt
-})
-=======
   create: data.createdAt,
-});
->>>>>>> d010f02c16445e1e9d56ef9849e0c0d150cbdcb7
+  });

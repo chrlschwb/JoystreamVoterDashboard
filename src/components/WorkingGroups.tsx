@@ -1,5 +1,4 @@
 import React from 'react';
-import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useWorkingGroups, useWorker } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
@@ -57,7 +56,7 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
 
   return (
     <tr>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> workingGroup.name of workingGroups</Tooltip>}>
+      {/* <OverlayTrigger placement="bottom" overlay={<Tooltip> workingGroup.name of workingGroups</Tooltip>}>
         <td>{workingGroup.name}</td>
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip>worker = (workersHired.length of openingFilledEvents) -(worker.length of workerExitedEvents) - (worker.length of terminatedWorkerEvents); </Tooltip>}>
@@ -65,14 +64,14 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip>sum budgetChangeAmount of budgetUpdatedEvents </Tooltip>}>
         <td>{token?.toFixed(0)}</td>
-      </OverlayTrigger>
+      </OverlayTrigger> */}
       {/* <td>{isDefined(workingGroup) ? workingGroup.budget?.div(new BN(10000000000)).toString() : ""}</td> */}
-      <OverlayTrigger placement="bottom" overlay={<Tooltip>reward = (sum budgetChangeAmount of budgetUpdatedEvents) -(sum amount of RewardPaidEvent) -(sum amount of spendingEvent) </Tooltip>}>
+      {/* <OverlayTrigger placement="bottom" overlay={<Tooltip>reward = (sum budgetChangeAmount of budgetUpdatedEvents) -(sum amount of RewardPaidEvent) -(sum amount of spendingEvent) </Tooltip>}>
         <td>{budget.toFixed(0)}</td>
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip>reward = sum debt amount of workers in workinggroup  </Tooltip>}>
         <td>{debt?.toFixed(0)}</td>
-      </OverlayTrigger>
+      </OverlayTrigger> */}
     </tr>
   );
 }
@@ -101,7 +100,7 @@ export default function WorkingGroups() {
   return (
     <div style={{ marginTop: '20px' }} className="table_background">
       <h4>Working Groups</h4>
-      <Table style={{ marginTop: '10px' }}>
+      {/* <Table style={{ marginTop: '10px' }}>
         <thead style={{ backgroundColor: '#0080ff' }}>
           <tr>
             <td style={{ borderWidth: '3px', borderColor: 'black' }}>Working Groups</td>
@@ -116,7 +115,7 @@ export default function WorkingGroups() {
             ? workingGroups.map((workingGroup) => <GroupWorkers key={workingGroup.id} workingGroup={workingGroup} />)
             : null}
         </tbody>
-      </Table>
+      </Table> */}
     </div>
   );
 }

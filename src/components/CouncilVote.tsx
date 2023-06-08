@@ -1,5 +1,4 @@
 import React from 'react';
-import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useProposals, useCouncilMembers, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
@@ -67,7 +66,7 @@ export function Member({ CouncilMember }: CouncilMemberProps) {
 
   return (
     <tr>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> member.handle of councilMembers</Tooltip>}>
+      {/* <OverlayTrigger placement="bottom" overlay={<Tooltip> member.handle of councilMembers</Tooltip>}>
         <td>{CouncilMember.handler}</td>
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip> proposals.votes.votekind = "approve" </Tooltip>}>
@@ -108,7 +107,7 @@ export function Member({ CouncilMember }: CouncilMemberProps) {
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of forumPosts.text of CM </Tooltip>}>
         <td>{maxForumLength}</td>
-      </OverlayTrigger>
+      </OverlayTrigger> */}
     </tr>
   );
 }
@@ -137,7 +136,7 @@ export default function CouncilVote() {
   return (
     <div style={{ marginTop: '20px' }} className="table_background">
       <h4>CouncilMember OverView</h4>
-      <Table style={{ marginTop: '10px' }}>
+      {/* <Table style={{ marginTop: '10px' }}>
         <thead style={{ backgroundColor: '#0080ff' }}>
           <tr>
             <td style={{ borderWidth: '3px', borderColor: 'black' }}>Council Member</td>
@@ -158,7 +157,7 @@ export default function CouncilVote() {
             isDefined(member) ? member.map((data, i) => <Member key={i} CouncilMember={data} />) : null
           }
         </tbody>
-      </Table>
+      </Table> */}
     </div>
   );
 }
