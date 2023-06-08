@@ -1,5 +1,5 @@
 
-import { WorkerFieldsFragment } from '@/queries';
+import { WorkerFieldsFragment, WorkerMemberFragment } from '@/queries';
 
 import { Block } from './common';
 import { asMember, Member } from './Member';
@@ -29,7 +29,6 @@ export const asWorkerBaseInfo = (fields: WorkerFieldsFragment): WorkerBaseInfo =
   member: asMember(fields.membership),
   applicationId: fields.applicationId,
 });
-
 
 
 
