@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from 'react';
 
-import { useGetWorkingGroupsLazyQuery, useGetWorkingGroupTokenLazyQuery, useGetRewardsLazyQuery, useGetBudgetSpendingLazyQuery,  WorkingGroupFieldsFragment } from '@/queries';
-import {  asBudgetSpending,  asRewardPaid,  asWorkingGroup } from '@/types';
+import { useGetWorkingGroupsLazyQuery, useGetWorkingGroupTokenLazyQuery, useGetRewardsLazyQuery, useGetBudgetSpendingLazyQuery, WorkingGroupFieldsFragment, WorkerMemberFragment } from '@/queries';
+import { asBudgetSpending, asRewardPaid, asWorkingGroup } from '@/types';
 
 import { ForSelectedCouncil } from './types';
 
-var worker:WorkingGroupFieldsFragment[]=[];
+var worker: WorkerMemberFragment[] = [];
 export function useWorkingGroups({ council }: ForSelectedCouncil) {
 
   const [fetch, query] = useGetWorkingGroupsLazyQuery();
@@ -46,24 +46,36 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
 
   const workingGroups = useMemo(() => query.data?.workingGroups.map(asWorkingGroup), [query.data]);
 
-  const workers = useMemo(() =>{ 
-    worker=[];
-    query.data?.workingGroups.map(d=>{
-      d.workers.map(k=>{
-        const endAt = council?.endedAt ? council?.endedAt : Date.now();
-        const startAt = council?.electedAt ? council.electedAt : new Date("1970-01-01T00:00:00.000Z")
-        if(k.entry.createdAt < endAt){
-          if(!k.terminatedworkereventworker.createdAt && !k.workerexitedeventworker.createAt ){            
-            worker.push(d);     
-        }else if (k.terminatedworkereventworker.createdAt > startAt || k.workerexitedeventworker.createAt >startAt){
-            worker.push(d);
-        }       
-      }
-        return worker
-      })
-    } )
+  const workers = useMemo(() => {
+    worker = [];
+    query.data?.workingGroups.map(d => {
+      d.workers.map(k => {
 
-    return (worker)}, [query.data]);
+        const endAt = council?.endedAt ? (council.endedAt).timestamp : Date.now();
+        const endAtDate = new Date(endAt);
+        const startAt = council?.electedAt ? council.electedAt.timestamp : new Date("1970-01-01T00:00:00.000Z")
+        const startAtDate = new Date(startAt);
+
+        const entry = new Date(k.entry.createdAt)
+        const terminate = new Date(k.terminatedworkereventworker.length === 0 ? "1970-01-01T00:00:00.000Z": k.terminatedworkereventworker[k.terminatedworkereventworker.length-1].createdAt );
+        const exited = new Date(k.workerexitedeventworker.length === 0 ? "1970-01-01T00:00:00.000Z":
+          k.workerexitedeventworker[k.workerexitedeventworker.length-1].createdAt
+           );
+
+        if (entry.getTime() < endAtDate.getTime()) {
+
+          if (k.terminatedworkereventworker.length===0 && k.workerexitedeventworker.length===0) {
+            worker.push(k);
+          } else if (terminate.getTime() > startAtDate.getTime() || exited.getTime() > startAtDate.getTime()) {
+            worker.push(k);
+          }
+        }
+      })
+    })
+
+    return (worker)
+  }, [worker]);
+
   const workingTokens = useMemo(() => tokenQuery.data?.budgetUpdatedEvents, [tokenQuery.data]);
   const workingTokensReward = useMemo(() => tokenQueryReward.data?.budgetUpdatedEvents, [tokenQueryReward.data]);
   const rewardToken = useMemo(() => tokenReward.data?.rewardPaidEvents.map(asRewardPaid), [tokenReward.data]);

@@ -2,79 +2,78 @@ import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useWorker, useWorkingGroups } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { BudgetSpending, isDefined, RewardPaid, WorkingGroup } from '@/types';
-import { WorkerMemberFragment } from '@/queries';
+import { BudgetSpending, ElectedCouncil, isDefined, RewardPaid, WorkingGroup } from '@/types';
+import { WorkerMemberFragment, WorkerPaymentType } from '@/queries';
 
 export interface WorkerRewardTableBody {
-  Workers: RewardPaid;
+  Workers: WorkerMemberFragment;
+  council?: ElectedCouncil;
+  budget: BudgetSpending[];
 }
 
 export interface WorkerRewardTable {
   WorkingGroups: WorkingGroup;
-  RewardPaid: RewardPaid[];
   budget: BudgetSpending[];
+  worker: WorkerMemberFragment[];
+  council?: ElectedCouncil;
 }
 
-function WorkderRewardTableBody({ Workers }: WorkerRewardTableBody) {
+
+function WorkderRewardTableBody({ Workers, council, budget }: WorkerRewardTableBody) {
+
+  const endAt = council?.endedAt ? (council.endedAt).timestamp : Date.now();
+  const endAtDate = new Date(endAt);
+  const startAt = council?.electedAt ? council.electedAt.timestamp : new Date("1970-01-01T00:00:00.000Z")
+  const startAtDate = new Date(startAt);
+
+  var rewardValue: number = 0
+
+  Workers.payouts.map((k) => {
+    const enter = new Date(k.createdAt ? k.createdAt : "1970-01-01T00:00:00.000Z")
+
+    if (enter.getTime() > startAtDate.getTime() && enter.getTime() < endAtDate.getTime()) {
+      rewardValue += Number(k.amount);
+    }
+  })
+
+  var budgetValue: string = "0";
+
+  const bug = budget?.find((d) => {
+    return (
+      (d.receive === Workers.membership.controllerAccount ||
+        d.receive === Workers.membership.rootAccount ||
+        d.receive === Workers.roleAccount ||
+        d.receive === Workers.rewardAccount)
+    );
+  });
+
+  if (bug) {
+    budgetValue = bug.amount.toString();
+  } else {
+    budgetValue = '0';
+  }
+
   return (
     <tr>
       <OverlayTrigger placement="bottom" overlay={<Tooltip> Worker Handle</Tooltip>}>
-        <td>{Workers.worker}</td>
+        <td>{Workers.membership.handle}</td>
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip> Regular Reward</Tooltip>}>
-        <td>{((Workers.amount * 15!) / 10000000000).toFixed(0)}</td>
+        <td>{((rewardValue) / 10000000000).toFixed(0)}</td>
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip> Discretionary Reward</Tooltip>}>
-        <td>{(Number(Workers.create) / 10000000000).toFixed(0)}</td>
+        <td>{(Number(budgetValue) / 10000000000).toFixed(0)}</td>
       </OverlayTrigger>
       <OverlayTrigger placement="bottom" overlay={<Tooltip> Total Reward</Tooltip>}>
-        <td>{((Number(Workers.amount * 15) + Number(Workers.create)) / 10000000000).toFixed(0)}</td>
+        <td>{((rewardValue + Number(budgetValue)) / 10000000000).toFixed(0)}</td>
       </OverlayTrigger>
     </tr>
   );
 }
 
-export function WorkerRewardTable({ WorkingGroups, RewardPaid, budget }: WorkerRewardTable) {
-
-
-  var test = RewardPaid?.filter((data) => WorkingGroups.name === data.groupId);
-  if (!test) return <></>;
-
-  // console.log(reward);
-  var reward = test.reduce((acc: RewardPaid[], item) => {
-    const found = acc.find((d) => {
-      return d.worker === item.worker;
-    });
-
-    if (found) {
-      var buf: number = Number(found.amount);
-
-      buf = Number(item.amount);
-
-      found.amount = buf;
-
-      const bug = budget?.find((d) => {
-        return (
-          (d.receive === found.controlAccount ||
-            d.receive === found.rootAccount ||
-            d.receive === found.roleAccount ||
-            d.receive === found.rewardAccount) &&
-          d.groupId === WorkingGroups.name
-        );
-      });
-
-      if (bug) {
-        found.create = bug.amount.toString();
-      } else {
-        found.create = '0';
-      }
-    } else {
-      acc.push(item);
-    }
-
-    return acc;
-  }, []);
-
+export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: WorkerRewardTable) {
+  const members = worker.filter((data) => WorkingGroups.name === data.groupId);
+  if (!members) return <></>
   return (
     <div style={{ marginTop: '20px' }} className="table_background">
       <h4>{WorkingGroups.name}</h4>
@@ -88,7 +87,7 @@ export function WorkerRewardTable({ WorkingGroups, RewardPaid, budget }: WorkerR
           </tr>
         </thead>
         <tbody>
-          {isDefined(reward) ? reward.map((data, i) => <WorkderRewardTableBody key={i} Workers={data} />) : null}
+          {isDefined(members) ? members.map((data, i) => <WorkderRewardTableBody key={i} Workers={data} council={council} budget={budget} />) : null}
         </tbody>
       </Table>
     </div>
@@ -97,9 +96,7 @@ export function WorkerRewardTable({ WorkingGroups, RewardPaid, budget }: WorkerR
 
 export default function WorkerRewardsData() {
   const { council } = useSelectedCouncil();
-  const { workingGroups, loading, error, budgetSpending, rewardToken, workers } = useWorkingGroups({ council });
-
-  console.log(workers);
+  const { workingGroups, loading, error, budgetSpending, workers } = useWorkingGroups({ council });
 
   if (loading) {
     return (
@@ -121,7 +118,7 @@ export default function WorkerRewardsData() {
     <div>
       {isDefined(workingGroups)
         ? workingGroups.map((data, i) => (
-          <WorkerRewardTable key={i} WorkingGroups={data} RewardPaid={rewardToken!} budget={budgetSpending!} />
+          <WorkerRewardTable key={i} WorkingGroups={data} budget={budgetSpending!} worker={workers} council={council} />
         ))
         : null}
     </div>

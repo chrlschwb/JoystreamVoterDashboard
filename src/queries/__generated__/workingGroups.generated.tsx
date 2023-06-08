@@ -22,11 +22,16 @@ export type WorkerMemberFragment = {
   stake: string,
   rewardAccount: string,
   roleAccount: string,
-  payouts: { amount: number, paymentType: string, createAt: any | undefined },
+  groupId: string,
+  payouts: Array<WorkerPaymentType>,
   entry: { createdAt: any | undefined },
-  terminatedworkereventworker: { createdAt: any | undefined },
-  workerexitedeventworker: { createAt: any | undefined }
+  terminatedworkereventworker: Array<{ createdAt: any | undefined }>,
+  workerexitedeventworker: Array<{ createdAt: any | undefined }>
 };
+
+export type WorkerPaymentType = {
+  amount: number, paymentType: string, createdAt: any | undefined
+}
 
 export type WorkingGroupFieldsFragment = {
   __typename: 'WorkingGroup',
@@ -141,6 +146,7 @@ export const WorkingGroupFieldsFragmentDoc = gql`
     ...WorkingGroupMetadataFields
   }
   workers {
+    groupId
     roleAccount
     rewardAccount
     membership{
