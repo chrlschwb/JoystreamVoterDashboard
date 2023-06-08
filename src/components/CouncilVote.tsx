@@ -4,6 +4,7 @@ import { useProposals, useCouncilMembers, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined, CouncilMember, propsEquals } from '@/types';
 import { compactAddLength, isNumber } from '@polkadot/util';
+import { Error, Spinner, TableBodyCol, TableHeaderCol } from './common';
 
 export interface CouncilMemberProps {
   CouncilMember: CouncilMember;
@@ -66,48 +67,17 @@ export function Member({ CouncilMember }: CouncilMemberProps) {
 
   return (
     <tr>
-      {/* <OverlayTrigger placement="bottom" overlay={<Tooltip> member.handle of councilMembers</Tooltip>}>
-        <td>{CouncilMember.handler}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> proposals.votes.votekind = "approve" </Tooltip>}>
-        <td>{approve}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip>proposals.votes.votekind = "rejected" </Tooltip>}>
-        <td>{rejected}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> proposals.votes.votekind = "abstained" </Tooltip>}>
-        <td>{abstained}</td>
-      </OverlayTrigger>
-      <OverlayTrigger
-        placement="bottom"
-        overlay={<Tooltip> ignored = total - approved - rejected - abstained </Tooltip>}
-      >
-        <td>{ignored}</td>
-      </OverlayTrigger>
-      <OverlayTrigger
-        placement="bottom"
-        overlay={<Tooltip> proposals.posts.length where author.handle=council.handle </Tooltip>}
-      >
-        <td>{createPost}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of proposals.posts.text of CM </Tooltip>}>
-        <td>{averagePostLength.toFixed(0)}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of proposals.posts.text of CM </Tooltip>}>
-        <td>{maxPostLength}</td>
-      </OverlayTrigger>
-      <OverlayTrigger
-        placement="bottom"
-        overlay={<Tooltip> forumPosts.length where author.handle=council.handle </Tooltip>}
-      >
-        <td>{createForum}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> average length of forumPosts.text of CM </Tooltip>}>
-        <td>{averageForumLength.toFixed(0)}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> maximum length of forumPosts.text of CM </Tooltip>}>
-        <td>{maxForumLength}</td>
-      </OverlayTrigger> */}
+      <TableBodyCol value={CouncilMember.handler} tooltip=' member.handle of councilMembers' />
+      <TableBodyCol value={approve.toString()} tooltip='proposals.votes.votekind = "approve" ' />
+      <TableBodyCol value={rejected.toString()} tooltip='proposals.votes.votekind = "rejected"' />
+      <TableBodyCol value={abstained.toString()} tooltip='proposals.votes.votekind = "abstained"' />
+      <TableBodyCol value={ignored.toString()} tooltip='ignored = total - approved - rejected - abstained' />
+      <TableBodyCol value={createPost.toString()} tooltip='proposals.posts.length where author.handle=council.handle ' />
+      <TableBodyCol value={averagePostLength.toFixed(0)} tooltip=' average length of proposals.posts.text of CM ' />
+      <TableBodyCol value={maxPostLength.toString()} tooltip='  maximum length of proposals.posts.text of CM' />
+      <TableBodyCol value={createForum?.toString() ?? "-"} tooltip='orumPosts.length where author.handle=council.handle ' />
+      <TableBodyCol value={averageForumLength.toFixed(0)} tooltip='average length of forumPosts.text of CM ' />
+      <TableBodyCol value={maxForumLength.toString()} tooltip='maximum length of forumPosts.text of CM ' />
     </tr>
   );
 }
@@ -116,40 +86,36 @@ export default function CouncilVote() {
   const { council } = useSelectedCouncil();
 
   const { loading, error, member } = useCouncilMembers({ council });
-
   if (loading) {
-    return (
-      <div className="sub_panel loading" style={{ marginTop: '20px' }}>
-        loading...
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (error) {
-    return (
-      <div className="sub_panel loading" style={{ marginTop: '20px' }}>
-        error
-      </div>
-    );
+    return <Error />;
   }
+  const header = [
+    { hd: "Council Member" },
+    { hd: "Approved Proposals" },
+    { hd: "Rejected Proposals" },
+    { hd: "Abstained Proposals" },
+    { hd: "Ignored Proposals" },
+    { hd: "Created Proposal Posts" },
+    { hd: "Average Post Length" },
+    { hd: "Max Post Length" },
+    { hd: "Created Forum Posts" },
+    { hd: "Average Post Length" },
+    { hd: "Max Post Length" },
+  ]
+
+  const headerHd = header.map(d => <TableHeaderCol value={d.hd} />)
 
   return (
-    <div style={{ marginTop: '20px' }} className="table_background">
-      <h4>CouncilMember OverView</h4>
-      {/* <Table style={{ marginTop: '10px' }}>
-        <thead style={{ backgroundColor: '#0080ff' }}>
+    <div className='bg-black mt-5 border-2 border-collapse shadow-md rounded shadow-gray-300'>
+      <div className='text-3xl mt-5 mb-2 font-bold'>CouncilMember OverView</div>
+      <table className='mt-3 border-collapse border border-slate-400 '>
+        <thead className='bg-gray-800 rounded-sm border border-gray-400 text-lg '>
           <tr>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Council Member</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Approved Proposals</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Rejected Proposals</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Abstained Proposals</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Ignored Proposals</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Created Proposal Posts</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Average Post Length</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Max Post Length</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Created Forum Posts</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Average Post Length</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Max Post Length</td>
+            {headerHd}
           </tr>
         </thead>
         <tbody>
@@ -157,7 +123,7 @@ export default function CouncilVote() {
             isDefined(member) ? member.map((data, i) => <Member key={i} CouncilMember={data} />) : null
           }
         </tbody>
-      </Table> */}
+      </table>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import './home.css';
-import { CouncilSelect } from '@/components';
+import { CouncilSelect, CouncilVotes, ProposalGroups, WorkerReward, WorkingGroups } from '@/components';
+import ListProposal from '@/components/ListProposal';
 import SubPannel, { PanelProps } from '@/components/common/SubPannel';
 import { sumStakes } from '@/helpers';
 import { useChannels, useElection, useMemberships, useNFTs, useNumberProposal, usePostTokenData, useThreadData, useTokenMinted, useValidation, useVideos } from '@/hooks';
@@ -164,7 +165,7 @@ export default function Home() {
   }]
 
   return (
-    <div className='bg-black'>
+    <div className='bg-black text-center'>
       <div className='text-white text-5xl font-serif font-bold'>Joystream Council Voter Dashboard</div>
       <hr className='text-gray-300 mt-4 mb-3' />
       <CouncilSelect council={council} onChange={setCouncil} />
@@ -183,11 +184,11 @@ export default function Home() {
         <SubPannel data={tokenData} title='Token Minted' error={tokenError} loading={tokenLoading} />
         <SubPannel data={numberData} title='Number of Proposal' error={numberError} loading={numberLoading} />
       </div>
-      {/*
       <ProposalGroups />
       <CouncilVotes />
       <WorkingGroups />
-      <ListProposal /> */}
+      <ListProposal />
+      <WorkerReward />
     </div>
   );
 }

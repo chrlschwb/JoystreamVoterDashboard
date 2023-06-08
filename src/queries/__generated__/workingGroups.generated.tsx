@@ -16,6 +16,22 @@ export type HireOpeningFillFieldsFragment = { __typename: "OpeningFilledEvent", 
 export type FireTerminatedFieldsFragment = { __typename: "TerminatedWorkerEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
 export type FireExitedFieldsFragment = { __typename: "WorkerExitedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
 export type SlashStakeFieldsFragment = { __typename: "StakeSlashedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
+export type WorkerMemberFragment = {
+  __typename: 'Worker',
+  membership: { handle: string, rootAccount: string, controllerAccount: string },
+  stake: string,
+  rewardAccount: string,
+  roleAccount: string,
+  groupId: string,
+  payouts: Array<WorkerPaymentType>,
+  entry: { createdAt: any | undefined },
+  terminatedworkereventworker: Array<{ createdAt: any | undefined }>,
+  workerexitedeventworker: Array<{ createdAt: any | undefined }>
+};
+
+export type WorkerPaymentType = {
+  amount: number, paymentType: string, createdAt: any | undefined
+}
 
 export type WorkingGroupFieldsFragment = {
   __typename: 'WorkingGroup',
@@ -35,7 +51,7 @@ export type WorkingGroupFieldsFragment = {
   terminatedworkereventgroup: Array<FireTerminatedFieldsFragment>,
   workerexitedeventgroup: Array<FireExitedFieldsFragment>,
   stakeslashedeventgroup: Array<SlashStakeFieldsFragment>,
-  workers: Array<{ __typename: 'Worker', stake: string, missingRewardAmount: number }>,
+  workers: Array<WorkerMemberFragment>,
   leader: { __typename: 'Worker', membershipId: string, isActive: boolean, membership: { handle: string } } | null
 };
 
@@ -130,6 +146,28 @@ export const WorkingGroupFieldsFragmentDoc = gql`
     ...WorkingGroupMetadataFields
   }
   workers {
+    groupId
+    roleAccount
+    rewardAccount
+    membership{
+      handle
+      rootAccount
+      controllerAccount
+    }
+    payouts{
+      amount
+      paymentType
+      createdAt
+    }
+    entry{
+      createdAt
+    }
+    terminatedworkereventworker{
+      createdAt
+    }
+    workerexitedeventworker{
+      createdAt
+    }
     stake
     missingRewardAmount
   }
@@ -263,16 +301,24 @@ export type RewardPaidFragment = {
   _typename: 'RewardPaidEvent',
   id: string,
   amount: number,
-  rewardAccount: string,
   createdAt: any,
   groupId: string,
   group: {
     leader: {
       membership: {
-        handle: string
+        handle: string,
       }
     }
 
+  }
+  worker: {
+    rewardAccount: string,
+    roleAccount: string,
+    membership: {
+      handle: string
+      rootAccount: string,
+      controllerAccount: string,
+    }
   }
 }
 export type GetRewardsQuery = {
@@ -287,9 +333,17 @@ export const RewardPaidEventFieldsFragmentDoc = gql`
       fragment RewardPaidEventFields on RewardPaidEvent {
     id
     amount
-    rewardAccount
     createdAt
     groupId
+    worker{
+      roleAccount
+      rewardAccount
+      membership{
+        handle
+        rootAccount
+        controllerAccount
+      }
+    }
     group {
       leader {
         membership {
@@ -329,6 +383,7 @@ export type BudgetSpendingFragment = {
   amount: number,
   createdAt: any,
   groupId: string,
+  reciever: string,
   group: {
     leader: {
       membership: {
@@ -349,10 +404,11 @@ export type GetBudgetSpendingQueryVariables = Types.Exact<{
 
 export const GetBudgetSpendingDocument = gql`
 query GetBudgetSpending($where: BudgetSpendingEventWhereInput) {
-  budgetSpendingEvents(where: $where,limit:100000) {
+  budgetSpendingEvents(where: $where, limit:100000) {
     amount
     createdAt
     groupId
+    reciever
     group{
       leader{
         membership{

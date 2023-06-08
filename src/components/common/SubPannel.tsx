@@ -4,6 +4,8 @@ import { useThreadData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined } from '@/types';
 import Tooltip from './Tooltip';
+import Spinner from './Spinner';
+import Error from './Error';
 
 export interface SubPannelProps {
     title: string,
@@ -20,21 +22,21 @@ export interface PanelProps {
 export default function SubPannel({ data, loading, error, title }: SubPannelProps) {
 
     if (loading) {
-        return <div className="sub_panel loading">loading...</div>;
+        return <Spinner />;
     }
 
     if (error) {
-        return <div className="sub_panel loading">error</div>;
+        return <Error />;
     }
 
     const items = data.map((d: PanelProps) => {
         return (
-            <div>
-                <Tooltip content={d.tooltip} position="top">
-                    <div >{isDefined(d.value) ? isNaN(d.value) ? '-' : d.value : '-'}</div>
-                </Tooltip>
-                <h6>{d.subtitle}</h6>
-            </div>
+            <Tooltip content={d.tooltip} position="top">
+                <div className='text-center'>
+                    <div className='border-b border-gray-800'>{isDefined(d.value) ? isNaN(d.value) ? '-' : d.value : '-'}</div>
+                    <div className='mt-1'>{d.subtitle}</div>
+                </div>
+            </Tooltip>
         )
     })
 
