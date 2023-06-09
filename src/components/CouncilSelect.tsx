@@ -16,7 +16,7 @@ const SingleValue = (singleValueProps: SingleValueProps<ElectedCouncil>) => {
     data: { id },
   } = singleValueProps;
 
-  return <components.SingleValue {...singleValueProps}>{parseInt(id,16)}</components.SingleValue>;
+  return <components.SingleValue {...singleValueProps}>{parseInt(id, 16)}</components.SingleValue>;
 };
 
 
@@ -34,7 +34,7 @@ export default function CouncilSelect({ council, onChange }: CouncilSelectProps)
         <span style={{ fontSize: '30px', color: 'white' }}>COUNCIL PERIOD : &nbsp;</span>
         <Select
           id="council"
-          className="select_input"
+          className="select_input text-gray-900"
           // styles={styles}
           isMulti={false}
           options={data}

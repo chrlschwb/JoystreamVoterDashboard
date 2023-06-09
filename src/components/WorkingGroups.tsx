@@ -1,49 +1,38 @@
 import React from 'react';
-import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useWorkingGroups, useWorker } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined, WorkingGroup } from '@/types';
+import { Error, Spinner, TableBodyCol, TableHeaderCol } from './common';
 export interface WorkingGroupProps {
   workingGroup: WorkingGroup;
 }
 
 export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
   const { council } = useSelectedCouncil();
-  const { workingTokens, rewardToken, workingTokensReward, budgetSpending, workingGroups } = useWorkingGroups({
-    council,
-  });
+  const { workingTokens, rewardToken, workingTokensRewardNow, budgetSpending, workingGroups } = useWorkingGroups({ council });
   const { exitedWorker, filledWorker, terminatedWorker } = useWorker({ council });
 
-  var token = workingTokens
-    ?.filter((data) => workingGroup.name === data.groupId)
-    .reduce((a: number, b) => {
-      return a + b.budgetChangeAmount / 10000000000;
-    }, 0);
 
-  var reward = rewardToken
-    ?.filter((data) => workingGroup.name === data.groupId)
-    .reduce((a: number, b) => {
-      return a + b.amount / 10000000000;
-    }, 0);
+  var token = workingTokens?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
+    return a + (b.budgetChangeAmount / 10000000000);
+  }, 0)
 
-  var updateReward = workingTokensReward
-    ?.filter((data) => workingGroup.name === data.groupId)
-    .reduce((a: number, b) => {
-      return a + b.budgetChangeAmount / 10000000000;
-    }, 0);
+  var reward = rewardToken?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
+    return a + (b.amount / 10000000000);
+  }, 0)
 
-  var spendingEvent = budgetSpending
-    ?.filter((data) => workingGroup.name === data.groupId)
-    .reduce((a: number, b) => {
-      return a + b.amount / 10000000000;
-    }, 0);
+  var updateReward = workingTokensRewardNow?.filter((data) => workingGroup.name === data.groupId).reduce((a: number, b) => {
+    return a + (b.budgetChangeAmount / 10000000000);
+  }, 0)
 
-  var debt = workingGroups
-    ?.filter((data) => workingGroup.name === data.id)
-    .reduce((a: number, b) => {
-      return a + b.debt / 10000000000;
-    }, 0);
+  var spendingEvent = budgetSpending?.filter(data => workingGroup.name === data.groupId).reduce((a: number, b) => {
+    return a + (b.amount / 10000000000);
+  }, 0)
+
+  var debt = workingGroups?.filter((data) => workingGroup.name === data.id).reduce((a: number, b) => {
+    return a + (b.debt / 10000000000);
+  }, 0)
 
   var budget: number = updateReward! - reward! - spendingEvent!;
 
@@ -69,41 +58,15 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
 
   return (
     <tr>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> workingGroup.name of workingGroups</Tooltip>}>
-        <td>{workingGroup.name}</td>
-      </OverlayTrigger>
-      <OverlayTrigger
-        placement="bottom"
-        overlay={
-          <Tooltip>
-            worker = (workersHired.length of openingFilledEvents) -(worker.length of workerExitedEvents) -
-            (worker.length of terminatedWorkerEvents);{' '}
-          </Tooltip>
-        }
-      >
-        <td>{worker}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip>sum budgetChangeAmount of budgetUpdatedEvents </Tooltip>}>
-        <td>{token?.toFixed(0)}</td>
-      </OverlayTrigger>
+      <TableBodyCol value={workingGroup.name} tooltip='orkingGroup.name of workingGroups' />
+      <TableBodyCol value={worker.toString() ?? "-"} tooltip='worker = (workersHired.length of openingFilledEvents) -(worker.length of workerExitedEvents) -
+            (worker.length of terminatedWorkerEvents);' />
+      <TableBodyCol value={token?.toFixed(0) ?? "-"} tooltip='budgetChangeAmount of budgetUpdatedEvents' />
+      <TableBodyCol value={budget.toFixed(0) ?? "-"} tooltip='reward = (sum budgetChangeAmount of budgetUpdatedEvents) -(sum amount of RewardPaidEvent) -(sum amount of spendingEvent)' />
+      <TableBodyCol value={debt?.toFixed(0) ?? ""} tooltip='sum debt amount of workers in workinggroup' />
+
       {/* <td>{isDefined(workingGroup) ? workingGroup.budget?.div(new BN(10000000000)).toString() : ""}</td> */}
-      <OverlayTrigger
-        placement="bottom"
-        overlay={
-          <Tooltip>
-            reward = (sum budgetChangeAmount of budgetUpdatedEvents) -(sum amount of RewardPaidEvent) -(sum amount of
-            spendingEvent){' '}
-          </Tooltip>
-        }
-      >
-        <td>{budget.toFixed(0)}</td>
-      </OverlayTrigger>
-      <OverlayTrigger
-        placement="bottom"
-        overlay={<Tooltip>reward = sum debt amount of workers in workinggroup </Tooltip>}
-      >
-        <td>{debt?.toFixed(0)}</td>
-      </OverlayTrigger>
+
     </tr>
   );
 }
@@ -113,32 +76,30 @@ export default function WorkingGroups() {
   const { workingGroups, loading, error } = useWorkingGroups({ council });
 
   if (loading) {
-    return (
-      <div className="sub_panel loading" style={{ marginTop: '20px' }}>
-        loading...
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (error) {
-    return (
-      <div className="sub_panel loading" style={{ marginTop: '20px' }}>
-        error
-      </div>
-    );
+    return <Error />;
   }
 
+  const header = [
+    { hd: "Working Groups" },
+    { hd: "Workers" },
+    { hd: "Minted Tokens during Term" },
+    { hd: "Budget at end of Term " },
+    { hd: "Current debt" },
+  ]
+
+  const headerHd = header.map(d => <TableHeaderCol value={d.hd} />)
   return (
-    <div style={{ marginTop: '20px' }} className="table_background">
-      <h4>Working Groups</h4>
-      <Table style={{ marginTop: '10px' }}>
-        <thead style={{ backgroundColor: '#0080ff' }}>
+    <div className='bg-black mt-5 border-2 border-collapse shadow-md rounded shadow-gray-300'>
+      <div className='text-3xl mt-5 mb-2 font-bold '>Working Groups</div>
+      <table className='mt-3 border-collapse border border-slate-400  table-auto
+      w-full  '>
+        <thead className='bg-gray-800 rounded-sm border border-gray-400 text-lg '>
           <tr>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Working Groups</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Workers</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Minted Tokens during Term</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Budget at end of Term</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Current debt</td>
+            {headerHd}
           </tr>
         </thead>
         <tbody>
@@ -146,7 +107,7 @@ export default function WorkingGroups() {
             ? workingGroups.map((workingGroup) => <GroupWorkers key={workingGroup.id} workingGroup={workingGroup} />)
             : null}
         </tbody>
-      </Table>
+      </table>
     </div>
   );
 }

@@ -11,6 +11,7 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
   const [fetch, query] = useGetWorkingGroupsLazyQuery();
   const [fetchToken, tokenQuery] = useGetWorkingGroupTokenLazyQuery();
   const [fetchTokenReward, tokenQueryReward] = useGetWorkingGroupTokenLazyQuery();
+  const [fetchTokenRewardNow, tokenQueryRewardNow] = useGetWorkingGroupTokenLazyQuery();
   const [fetchReward, tokenReward] = useGetRewardsLazyQuery();
   const [fetchBudgetSpending, budgetSpendingQuery] = useGetBudgetSpendingLazyQuery();
 
@@ -35,9 +36,14 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
       variables
     })
 
+    fetchTokenRewardNow({
+      variables
+    })
+
     variables = {
       where: { createdAt_gt: "1970-01-01T00:00:00.000Z", createdAt_lt: council.endedAt?.timestamp },
     };
+
     fetchTokenReward({
       variables
     })
@@ -78,6 +84,7 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
 
   const workingTokens = useMemo(() => tokenQuery.data?.budgetUpdatedEvents, [tokenQuery.data]);
   const workingTokensReward = useMemo(() => tokenQueryReward.data?.budgetUpdatedEvents, [tokenQueryReward.data]);
+  const workingTokensRewardNow = useMemo(() => tokenQueryRewardNow.data?.budgetUpdatedEvents, [tokenQueryRewardNow.data]);
   const rewardToken = useMemo(() => tokenReward.data?.rewardPaidEvents.map(asRewardPaid), [tokenReward.data]);
   const budgetSpending = useMemo(() => budgetSpendingQuery.data?.budgetSpendingEvents.map(asBudgetSpending), [budgetSpendingQuery.data]);
 
@@ -86,10 +93,11 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
     workingGroups,
     workingTokens,
     workingTokensReward,
+    workingTokensRewardNow,
     budgetSpending,
     rewardToken,
     workers,
-    loading: query.loading || tokenQuery.loading || tokenReward.loading || tokenQueryReward.loading || budgetSpendingQuery.loading,
-    error: query.error || tokenQuery.error || tokenReward.error || tokenQueryReward.error || budgetSpendingQuery.error,
+    loading: query.loading || tokenQuery.loading || tokenReward.loading || tokenQueryReward.loading || budgetSpendingQuery.loading || tokenQueryRewardNow.loading,
+    error: query.error || tokenQuery.error || tokenReward.error || tokenQueryReward.error || budgetSpendingQuery.error || tokenQueryRewardNow.error,
   };
 }

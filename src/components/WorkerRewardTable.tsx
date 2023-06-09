@@ -1,9 +1,9 @@
-import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-import { useWorker, useWorkingGroups } from '@/hooks';
+import { useWorkingGroups } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { BudgetSpending, ElectedCouncil, isDefined, RewardPaid, WorkingGroup } from '@/types';
-import { WorkerMemberFragment, WorkerPaymentType } from '@/queries';
+import { BudgetSpending, ElectedCouncil, isDefined, WorkingGroup } from '@/types';
+import { WorkerMemberFragment } from '@/queries';
+import { Error, Spinner, TableBodyCol, TableHeaderCol } from './common';
 
 export interface WorkerRewardTableBody {
   Workers: WorkerMemberFragment;
@@ -55,18 +55,10 @@ function WorkderRewardTableBody({ Workers, council, budget }: WorkerRewardTableB
 
   return (
     <tr>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> Worker Handle</Tooltip>}>
-        <td>{Workers.membership.handle}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> Regular Reward</Tooltip>}>
-        <td>{((rewardValue) / 10000000000).toFixed(0)}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> Discretionary Reward</Tooltip>}>
-        <td>{(Number(budgetValue) / 10000000000).toFixed(0)}</td>
-      </OverlayTrigger>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> Total Reward</Tooltip>}>
-        <td>{((rewardValue + Number(budgetValue)) / 10000000000).toFixed(0)}</td>
-      </OverlayTrigger>
+      <TableBodyCol value={Workers.membership.handle} tooltip='Worker Handle' />
+      <TableBodyCol value={((rewardValue) / 10000000000).toFixed(0)} tooltip='Regular Reward' />
+      <TableBodyCol value={(Number(budgetValue) / 10000000000).toFixed(0)} tooltip='Discretionary Reward' />
+      <TableBodyCol value={((rewardValue + Number(budgetValue)) / 10000000000).toFixed(0)} tooltip='Total Reward' />
     </tr>
   );
 }
@@ -74,22 +66,31 @@ function WorkderRewardTableBody({ Workers, council, budget }: WorkerRewardTableB
 export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: WorkerRewardTable) {
   const members = worker.filter((data) => WorkingGroups.name === data.groupId);
   if (!members) return <></>
+
+
+  const header = [
+    { hd: "Worker" },
+    { hd: "Reward Amount" },
+    { hd: "Discretionary Amount" },
+    { hd: "Sum Amount" },
+  ]
+
+  const headerHd = header.map(d => <TableHeaderCol value={d.hd} />)
+
   return (
-    <div style={{ marginTop: '20px' }} className="table_background">
-      <h4>{WorkingGroups.name}</h4>
-      <Table style={{ marginTop: '10px' }}>
-        <thead style={{ backgroundColor: '#0080ff' }}>
+    <div >
+      <div className='text-2xl mt-5  '>{WorkingGroups.name}</div>
+      <table className='border-collapse border border-slate-400  table-auto
+      w-full  mt-1'>
+        <thead className='bg-gray-800 rounded-sm border border-gray-400 text-lg '>
           <tr>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Worker</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Reward Amount</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Discretionary Amount</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Sum Amount</td>
+            {headerHd}
           </tr>
         </thead>
         <tbody>
           {isDefined(members) ? members.map((data, i) => <WorkderRewardTableBody key={i} Workers={data} council={council} budget={budget} />) : null}
         </tbody>
-      </Table>
+      </table>
     </div>
   );
 }
@@ -99,23 +100,16 @@ export default function WorkerRewardsData() {
   const { workingGroups, loading, error, budgetSpending, workers } = useWorkingGroups({ council });
 
   if (loading) {
-    return (
-      <div className="sub_panel loading" style={{ marginTop: '20px' }}>
-        loading...
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (error) {
-    return (
-      <div className="sub_panel loading" style={{ marginTop: '20px' }}>
-        error
-      </div>
-    );
+    return <Error />;
   }
-
   return (
-    <div>
+    <div className='bg-black mt-5 border-2 border-collapse shadow-md rounded shadow-gray-300'>
+      <div className='text-4xl mt-5 mb-2 font-bold '>Workers Rewards</div>
+      <hr className='border border-gray-600' />
       {isDefined(workingGroups)
         ? workingGroups.map((data, i) => (
           <WorkerRewardTable key={i} WorkingGroups={data} budget={budgetSpending!} worker={workers} council={council} />

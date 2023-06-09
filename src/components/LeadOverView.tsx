@@ -1,8 +1,8 @@
-import { Table, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { useProposals, useLeader, useWorkingGroups, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { isDefined, Leader } from '@/types';
+import { Spinner, TableBodyCol, TableHeaderCol } from './common';
 
 export interface LeaderProps {
   Leader: Leader;
@@ -19,9 +19,7 @@ export function Leaders({ Leader }: LeaderProps) {
 
   return (
     <tr>
-      <OverlayTrigger placement="bottom" overlay={<Tooltip> groupId of openingFilledEvents</Tooltip>}>
-        <td rowSpan={Leader.leader.length}>{Leader.groupId}</td>
-      </OverlayTrigger>
+      <TableBodyCol value={Leader.groupId} tooltip='groupId of openingFilledEvents' />
       {Leader.leader.map((d) => {
         const createProposals = proposals?.filter((data) => data.creator === d.membership.handle).length;
 
@@ -64,74 +62,18 @@ export function Leaders({ Leader }: LeaderProps) {
 
         return (
           <>
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip> WorkersHired.membership.handle of openingFilledEvents </Tooltip>}
-            >
-              <td>{d.membership.handle}</td>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement="bottom"
-              overlay={
-                <Tooltip>
-                  {' '}
-                  lenghth of WorkersHired.membership.handle of openingFilledEvents === creator.handle of proposals{' '}
-                </Tooltip>
-              }
-            >
-              <td>{createProposals}</td>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip> sum of amount of rewardPaidEvent and amount of budgetSpendingEvent </Tooltip>}
-            >
-              <td>{spending.toFixed(0)}</td>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip> length of noLead state of openingFilledEvent of openingFilledEvents </Tooltip>}
-            >
-              <td>{isDefined(hairValue) ? hairValue : 0}</td>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip> length of terminatedWorkerEvents add lenth of workerExitedEvents </Tooltip>}
-            >
-              <td>{fireValue}</td>
-            </OverlayTrigger>
-            <OverlayTrigger placement="bottom" overlay={<Tooltip> length of workEntrySlashedEvents </Tooltip>}>
-              <td>{slashValue}</td>
-            </OverlayTrigger>
-            <OverlayTrigger placement="bottom" overlay={<Tooltip> length of forumPostsConnection </Tooltip>}>
-              <td>{forumText?.length}</td>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip> average length of text of forumPostsConnection </Tooltip>}
-            >
-              <td>{forumAverageValue.toFixed(0)}</td>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip> maximum length of text of forumPostsConnection </Tooltip>}
-            >
-              <td>{forumMaxvalue}</td>
-            </OverlayTrigger>
-            <OverlayTrigger placement="bottom" overlay={<Tooltip> length of proposalDiscussionPosts </Tooltip>}>
-              <td>{postText?.length}</td>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip> average length of text of proposalDiscussionPosts </Tooltip>}
-            >
-              <td>{postAverageValue.toFixed(0)}</td>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip> Max value of text of proposalDiscussionPosts </Tooltip>}
-            >
-              <td>{postMaxValue}</td>
-            </OverlayTrigger>
+            <TableBodyCol value={d.membership.handle} tooltip='WorkersHired.membership.handle of openingFilledEvents' />
+            <TableBodyCol value={createProposals?.toString() ?? "-"} tooltip='lenghth of WorkersHired.membership.handle of openingFilledEvents === creator.handle of proposals' />
+            <TableBodyCol value={spending.toFixed(0)} tooltip='sum of amount of rewardPaidEvent and amount of budgetSpendingEvent' />
+            <TableBodyCol value={hairValue?.toString() ?? "-"} tooltip='length of noLead state of openingFilledEvent of openingFilledEvents' />
+            <TableBodyCol value={fireValue.toString()} tooltip='length of terminatedWorkerEvents add lenth of workerExitedEvents' />
+            <TableBodyCol value={slashValue?.toString() ?? "-"} tooltip='length of workEntrySlashedEvents' />
+            <TableBodyCol value={forumText?.length.toString() ?? "-"} tooltip='length of forumPostsConnection' />
+            <TableBodyCol value={forumAverageValue.toFixed(0)} tooltip='average length of text of forumPostsConnection ' />
+            <TableBodyCol value={forumMaxvalue.toString()} tooltip='maximum length of text of forumPostsConnection ' />
+            <TableBodyCol value={postText?.length.toString() ?? "-"} tooltip='length of proposalDiscussionPosts' />
+            <TableBodyCol value={postAverageValue.toFixed(0)} tooltip='average length of text of proposalDiscussionPosts' />
+            <TableBodyCol value={postMaxValue.toFixed(0)} tooltip='Max value of text of proposalDiscussionPosts ' />
           </>
         );
       })}
@@ -145,9 +87,7 @@ export default function LeaderOverView() {
   const { loading, error, leaders } = useLeader({ council });
   if (loading) {
     return (
-      <div className="sub_panel loading" style={{ marginTop: '20px' }}>
-        loading...
-      </div>
+      <Spinner />
     );
   }
 
@@ -159,29 +99,34 @@ export default function LeaderOverView() {
     );
   }
 
+  const header = [
+    { hd: "WorkingGroup" },
+    { hd: "Leader" },
+    { hd: "Created Proposal" },
+    { hd: "WorkingGroup Spending" },
+    { hd: "Hire" },
+    { hd: "Fire" },
+    { hd: "Slash" },
+    { hd: "Forum Posts" },
+    { hd: "Average Post Length" },
+    { hd: "Max Post Length" },
+    { hd: "Proposal Posts" },
+    { hd: "Average Post Length" },
+    { hd: "Max Post Length" },
+  ]
+
+  const headerHd = header.map(d => <TableHeaderCol value={d.hd} />)
   return (
-    <div style={{ marginTop: '20px' }} className="table_background">
-      <h4>Lead OverView</h4>
-      <Table style={{ marginTop: '10px' }}>
-        <thead style={{ backgroundColor: '#0080ff' }}>
+    <div className='bg-black mt-5 border-2 border-collapse shadow-md rounded shadow-gray-300'>
+      <div className='text-3xl mt-5 mb-2 font-bold '>Lead OverView</div>
+      <table className='mt-3 border-collapse border border-slate-400'>
+        <thead className='bg-gray-800 rounded-sm border border-gray-400 text-lg '>
           <tr>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>WorkingGroup</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Leader</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Created Proposal</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>WorkingGroup Spending</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Hire</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Fire</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Slash</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Forum Posts</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Average Post Length</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Max Post Length</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Proposal Posts</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Average Post Length</td>
-            <td style={{ borderWidth: '3px', borderColor: 'black' }}>Max Post Length</td>
+            {headerHd}
           </tr>
         </thead>
-        <tbody>{isDefined(leaders) ? leaders.map((data, i) => <Leaders key={i} Leader={data} />) : null}</tbody>
-      </Table>
-    </div>
+        <tbody className='text-center'>{isDefined(leaders) ? leaders.map((data, i) => <Leaders key={i} Leader={data} />) : null}</tbody>
+      </table>
+    </div >
   );
 }

@@ -25,7 +25,7 @@ export function useNFTs({ council }: ForSelectedCouncil) {
 
   const issued = useMemo(() => IssuedQuery.data?.nftIssuedEventsConnection.totalCount, [IssuedQuery.data]);
   const sale = useMemo(() => SaleQuery.data?.nftBoughtEventsConnection.totalCount, [SaleQuery.data]);
-  const fee = '-'; //// ???------
+  const fee = 0; //// ???------
   return {
     issued,
     sale,
