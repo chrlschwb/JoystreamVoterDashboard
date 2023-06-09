@@ -36,22 +36,25 @@ function WorkderRewardTableBody({ Workers, council, budget }: WorkerRewardTableB
     }
   })
 
-  var budgetValue: string = "0";
+  var budgetValue: number = 0;
 
-  const bug = budget?.find((d) => {
+  const bug = budget?.map((d) => {
+    if ((d.receive === Workers.membership.controllerAccount) ||
+      (d.receive === Workers.membership.rootAccount) ||
+      (d.receive === Workers.roleAccount) ||
+      (d.receive === Workers.rewardAccount)) {
+      budgetValue += Number(d.amount);
+    }
     return (
-      (d.receive === Workers.membership.controllerAccount ||
-        d.receive === Workers.membership.rootAccount ||
-        d.receive === Workers.roleAccount ||
-        d.receive === Workers.rewardAccount)
+      ((d.receive === Workers.membership.controllerAccount) ||
+        (d.receive === Workers.membership.rootAccount) ||
+        (d.receive === Workers.roleAccount) ||
+        (d.receive === Workers.rewardAccount))
     );
   });
 
-  if (bug) {
-    budgetValue = bug.amount.toString();
-  } else {
-    budgetValue = '0';
-  }
+
+
 
   return (
     <tr>
@@ -63,10 +66,22 @@ function WorkderRewardTableBody({ Workers, council, budget }: WorkerRewardTableB
   );
 }
 
+function removeDuplicates(jsonArray: WorkerMemberFragment[]): WorkerMemberFragment[] {
+  const uniqueNames = new Set<string>();
+  return jsonArray.filter((item) => {
+    if (!uniqueNames.has(item.membership.handle)) {
+      uniqueNames.add(item.membership.handle);
+      return true;
+    }
+    return false;
+  });
+}
+
 export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: WorkerRewardTable) {
   const members = worker.filter((data) => WorkingGroups.name === data.groupId);
   if (!members) return <></>
 
+  const removeDupleMemeer: WorkerMemberFragment[] = removeDuplicates(members);
 
   const header = [
     { hd: "Worker" },
@@ -88,7 +103,7 @@ export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: Wo
           </tr>
         </thead>
         <tbody>
-          {isDefined(members) ? members.map((data, i) => <WorkderRewardTableBody key={i} Workers={data} council={council} budget={budget} />) : null}
+          {isDefined(removeDupleMemeer) ? removeDupleMemeer.map((data, i) => <WorkderRewardTableBody key={i} Workers={data} council={council} budget={budget} />) : null}
         </tbody>
       </table>
     </div>
