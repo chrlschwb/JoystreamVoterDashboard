@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useWorkingGroups, useWorker } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { isDefined, WorkingGroup } from '@/types';
+import { GroupIdToGroupParam, isDefined, WorkingGroup } from '@/types';
 import { Error, Spinner, TableBodyCol, TableHeaderCol } from './common';
 export interface WorkingGroupProps {
   workingGroup: WorkingGroup;
@@ -58,7 +58,7 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
 
   return (
     <tr>
-      <TableBodyCol value={workingGroup.name} tooltip='orkingGroup.name of workingGroups' />
+      <TableBodyCol value={GroupIdToGroupParam[workingGroup.id]} tooltip='WorkingGroup.name of workingGroups' />
       <TableBodyCol value={worker.toString() ?? "-"} tooltip='worker = (workersHired.length of openingFilledEvents) -(worker.length of workerExitedEvents) -
             (worker.length of terminatedWorkerEvents);' />
       <TableBodyCol value={token?.toFixed(0) ?? "-"} tooltip='budgetChangeAmount of budgetUpdatedEvents' />

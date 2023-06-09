@@ -22,7 +22,7 @@ export const GroupIdToGroupParam = {
 export type GroupIdName = keyof typeof GroupIdToGroupParam;
 
 export interface WorkingGroup {
-  id: string;
+  id: GroupIdName;
   name: string;
   image?: string;
   about?: string;

@@ -3,6 +3,7 @@ import * as Types from './baseTypes.generated';
 import { gql } from '@apollo/client';
 import { MemberFieldsFragmentDoc } from './members.generated';
 import * as Apollo from '@apollo/client';
+import { GroupIdName } from '@/types';
 
 const defaultOptions = {} as const;
 
@@ -35,7 +36,7 @@ export type WorkerPaymentType = {
 
 export type WorkingGroupFieldsFragment = {
   __typename: 'WorkingGroup',
-  id: string,
+  id: GroupIdName,
   name: string,
   budget: string,
   metadata?: {
