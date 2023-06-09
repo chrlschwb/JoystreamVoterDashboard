@@ -41,13 +41,11 @@ export default function SubPannel({ data, loading, error, title }: SubPannelProp
         )
     })
 
-    console.log(data.length)
-
     return (
         <div className="border-2 border-gray-400 bg-black rounded shadow-md shadow-white">
             <div className='text-2xl text-gray-300 mb-2 mt-2 font-bold '>{title}</div>
             <hr className='border-gray-500' />
-            <div className={`grid grid-cols-${data.length} gap-${4 - data?.length} font-normal mt-3 mb-2 text-gray-400`}>
+            <div className={`grid grid-flow-col grid-cols-${data.length} gap-${4 - data?.length} font-normal mt-3 mb-2 text-gray-400`}>
                 {items}
             </div>
         </div>
