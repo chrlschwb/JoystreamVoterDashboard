@@ -170,7 +170,7 @@ export default function Home() {
       <hr className='text-gray-300 mt-4 mb-3' />
       <CouncilSelect council={council} onChange={setCouncil} />
       <hr className='border-gray-600 border mt-2' />
-      <div className='grid  md:grid-cols-4 text-gray-400 gap-2 mt-3'>
+      <div className='grid  md:grid-cols-4 text-gray-400 gap-4 mt-3'>
         <SubPannel data={memberData} title='Memberships' error={memberError} loading={memberLoading} />
         <SubPannel data={channelsData} title='Channels' error={channelsError} loading={channelsLoading} />
         <SubPannel data={videosData} title='Videos' error={videosError} loading={videosLoading} />

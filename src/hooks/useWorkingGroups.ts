@@ -19,7 +19,7 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
     if (!council) return;
 
     var variables = {
-      where: { createdAt_gt: council.electedAt.timestamp, createdAt_lt: council.endedAt?.timestamp },
+      where: { inBlock_gt: council.electedAt.number, inBlock_lt: council.endedAt?.number },
     };
 
     fetch();
@@ -41,7 +41,7 @@ export function useWorkingGroups({ council }: ForSelectedCouncil) {
     })
 
     variables = {
-      where: { createdAt_gt: "1970-01-01T00:00:00.000Z", createdAt_lt: council.endedAt?.timestamp },
+      where: {inBlock_gt: council.electedAt.number, inBlock_lt: council.endedAt?.number },
     };
 
     fetchTokenReward({

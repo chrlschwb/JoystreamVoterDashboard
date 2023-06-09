@@ -119,7 +119,8 @@ export default function LeaderOverView() {
   return (
     <div className='bg-black mt-5 border-2 border-collapse shadow-md rounded shadow-gray-300'>
       <div className='text-3xl mt-5 mb-2 font-bold '>Lead OverView</div>
-      <table className='mt-3 border-collapse border border-slate-400'>
+      <table className='mt-3 border-collapse border border-slate-400  table-auto
+      w-full '>
         <thead className='bg-gray-800 rounded-sm border border-gray-400 text-lg '>
           <tr>
             {headerHd}
