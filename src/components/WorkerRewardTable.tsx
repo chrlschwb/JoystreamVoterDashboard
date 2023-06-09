@@ -56,9 +56,9 @@ function WorkderRewardTableBody({ Workers, council, budget }: WorkerRewardTableB
   return (
     <tr>
       <TableBodyCol value={Workers.membership.handle} tooltip='Worker Handle' />
-      <TableBodyCol value={((rewardValue) / 10000000000).toFixed(0)} tooltip='Regular Reward' />
-      <TableBodyCol value={(Number(budgetValue) / 10000000000).toFixed(0)} tooltip='Discretionary Reward' />
-      <TableBodyCol value={((rewardValue + Number(budgetValue)) / 10000000000).toFixed(0)} tooltip='Total Reward' />
+      <TableBodyCol value={((rewardValue) / 10000000000).toFixed(0)} tooltip='Sum of WorkingGroups.payout for given handle during term' />
+      <TableBodyCol value={(Number(budgetValue) / 10000000000).toFixed(0)} tooltip='Sum of budgetSpendingEvent.amount for handle root, controller, role, reward accounts' />
+      <TableBodyCol value={((rewardValue + Number(budgetValue)) / 10000000000).toFixed(0)} tooltip='Sum of former two values' />
     </tr>
   );
 }
@@ -70,9 +70,9 @@ export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: Wo
 
   const header = [
     { hd: "Worker" },
-    { hd: "Reward Amount" },
-    { hd: "Discretionary Amount" },
-    { hd: "Sum Amount" },
+    { hd: "Regular Reward" },
+    { hd: "Discretionary Reward" },
+    { hd: "Total Reward" },
   ]
 
   const headerHd = header.map(d => <TableHeaderCol value={d.hd} />)

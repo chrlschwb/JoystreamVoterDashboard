@@ -180,7 +180,7 @@ export default function Home() {
         <SubPannel data={electionData} title='Elections' error={electionError} loading={electionLoading} />
         <SubPannel data={validationData} title='Validations' error={validationError} loading={validationLoading} />
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-3'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
         <SubPannel data={tokenData} title='Token Minted' error={tokenError} loading={tokenLoading} />
         <SubPannel data={numberData} title='Number of Proposal' error={numberError} loading={numberLoading} />
       </div>
