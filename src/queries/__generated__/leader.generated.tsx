@@ -1,3 +1,4 @@
+import { GroupIdName } from '@/types';
 import * as Types from './baseTypes.generated';
 
 import { gql } from '@apollo/client';
@@ -15,7 +16,7 @@ export type GetLeaderQueryVariables = Types.Exact<{
 
 
 export type LeaderNameFragment = { __typename: 'Leader', membership: { handle: string } };
-export type LeaderFragment = { createdAt: any | undefined, groupId: string, workersHired: Array<LeaderNameFragment>, opening: { type: string } }
+export type LeaderFragment = { createdAt: any | undefined, groupId: GroupIdName, workersHired: Array<LeaderNameFragment>, opening: { type: string } }
 
 export type GetLeaderQuery = { __typename: 'Query', openingFilledEvents: Array<LeaderFragment> };
 

@@ -1,7 +1,7 @@
 
 import { useWorkingGroups } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { BudgetSpending, ElectedCouncil, isDefined, WorkingGroup } from '@/types';
+import { BudgetSpending, ElectedCouncil, GroupIdToGroupParam, isDefined, WorkingGroup } from '@/types';
 import { WorkerMemberFragment } from '@/queries';
 import { Error, Spinner, TableBodyCol, TableHeaderCol } from './common';
 
@@ -79,7 +79,7 @@ export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: Wo
 
   return (
     <div >
-      <div className='text-2xl mt-5  '>{WorkingGroups.name}</div>
+      <div className='text-2xl mt-5  '>{GroupIdToGroupParam[WorkingGroups.id]}</div>
       <table className='border-collapse border border-slate-400  table-auto
       w-full  mt-1'>
         <thead className='bg-gray-800 rounded-sm border border-gray-400 text-lg '>

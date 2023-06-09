@@ -1,7 +1,7 @@
 
 import { useProposals, useLeader, useWorkingGroups, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { isDefined, Leader } from '@/types';
+import { GroupIdToGroupParam, isDefined, Leader } from '@/types';
 import { Spinner, TableBodyCol, TableHeaderCol } from './common';
 
 export interface LeaderProps {
@@ -19,7 +19,7 @@ export function Leaders({ Leader }: LeaderProps) {
 
   return (
     <tr>
-      <TableBodyCol value={Leader.groupId} tooltip='groupId of openingFilledEvents' />
+      <TableBodyCol value={GroupIdToGroupParam[Leader.groupId]} tooltip='groupId of openingFilledEvents' />
       {Leader.leader.map((d) => {
         const createProposals = proposals?.filter((data) => data.creator === d.membership.handle).length;
 

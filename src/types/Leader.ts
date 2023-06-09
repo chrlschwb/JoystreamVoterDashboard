@@ -1,7 +1,8 @@
 import { LeaderNameFragment, LeaderFragment, PostOfLeaderFragment, TerminatedWorkerFragment, ExitedWorkerFragment, SlashedWorkerFragment } from '@/queries'
+import { GroupIdName } from './WorkingGroup'
 
 export interface Leader {
-  groupId: string,
+  groupId: GroupIdName,
   leader: Array<LeaderNameFragment>,
   type: string
 }
