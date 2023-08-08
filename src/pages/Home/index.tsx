@@ -53,12 +53,12 @@ export default function Home() {
 
   const { issued, sale, fee, loading: nftLoading, error: nftError } = useNFTs({ council });
   const nftData: PanelProps[] = [{
-    subtitle: "total issued",
-    tooltip: "totalCount of nftIssuedEventsConnection",
+    subtitle: "issued",
+    tooltip: "Count of nftIssuedEventsConnection",
     value: issued
   }, {
-    subtitle: "total sold",
-    tooltip: "totalCount of nftBoughtEventsConnection",
+    subtitle: "sold",
+    tooltip: "Count of nftBoughtEventsConnection",
     value: sale
 
   }, {
