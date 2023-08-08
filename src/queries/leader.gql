@@ -74,3 +74,16 @@ query getPostOfLead($where: ProposalDiscussionPostWhereInput) {
     text
   }
 }
+
+query getTerminatedLead($where: TerminatedLeaderEventWhereInput) {
+  terminatedLeaderEvents(where: $where) {
+    createdAt
+    __typename
+    groupId
+    worker {
+      membership {
+        handle
+      }
+    }
+  }
+}
