@@ -266,3 +266,61 @@ export function useSlashedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetSlashedWorkerQueryHookResult = ReturnType<typeof useSlashedQuery>;
 export type GetslashedWorkerLazyQueryHookResult = ReturnType<typeof useSlashedLazyQuery>;
 export type GetSlashedWorkderQueryResult = Apollo.QueryResult<GetSlashedWorkerQuery, GetSlasheddWorkerQueryVariables>;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////               get leader terminated      /////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+export type GetTerminatedLeadQueryVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.TerminatedLeaderEventWhereInput>;
+}>;
+
+export type TerminatedLeadagment = {
+  __typename: 'TerminatedLeaderEvent';
+  createdAt: any | undefined;
+  groupId: string;
+  worker: {
+    membership: {
+      handle: string;
+    };
+  };
+};
+
+export type GetTerminatedLeadQuery = {
+  __typename: 'Query';
+  TerminatedLeaderEvent: Array<TerminatedLeadagment>
+};
+
+export const GetTerminatedLeadDocument = gql`
+  query getTerminatedLead($where: TerminatedLeaderEventWhereInput) {
+    terminatedLeaderEvents(where: $where) {
+      createdAt
+      __typename
+      groupId
+      worker {
+        membership {
+          handle
+        }
+      }
+    }
+  }
+`;
+
+export function useTermiatedLeadQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetTerminatedLeadQuery, GetTerminatedLeadQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTerminatedLeadQuery, GetTerminatedLeadQueryVariables>(GetTerminatedLeadDocument, options);
+}
+
+
+export function useTerminatedLeadLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTerminatedLeadQuery, GetTerminatedLeadQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTerminatedLeadQuery, GetTerminatedLeadQueryVariables>(GetTerminatedLeadDocument, options);
+}
+
+
+export type GetTerminatedLeadQueryHookResult = ReturnType<typeof useTermiatedLeadQuery>;
+export type GetTerminatedLeadLazyQueryHookResult = ReturnType<typeof useTerminatedLeadLazyQuery>;
+export type GetTerminatedLeadQueryResult = Apollo.QueryResult<GetTerminatedLeadQuery, GetSlasheddWorkerQueryVariables>;

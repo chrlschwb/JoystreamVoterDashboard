@@ -19,10 +19,10 @@ const SingleValue = (singleValueProps: SingleValueProps<ElectedCouncil>) => {
   return <components.SingleValue {...singleValueProps}>{parseInt(id, 16)}</components.SingleValue>;
 };
 
-
 const Option = (optionProps: OptionProps<ElectedCouncil>) => {
   const { data } = optionProps;
-  const councilDisplayData = parseInt(String(data.id), 16);
+
+  const councilDisplayData = parseInt(String(data.id), 36) % 100;
   return <components.Option {...optionProps}>{councilDisplayData}</components.Option>;
 };
 

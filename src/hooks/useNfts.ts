@@ -12,7 +12,7 @@ export function useNFTs({ council }: ForSelectedCouncil) {
     if (!council) return;
 
     const variables = {
-      where: { createdAt_gt: '2013-01-10T22:50:12.000Z', createdAt_lt: council.endedAt?.timestamp },
+      where: { createdAt_gt: council.electedAt?.timestamp, createdAt_lt: council.endedAt?.timestamp },
     };
 
     fetchIssued({
