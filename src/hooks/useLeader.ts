@@ -12,20 +12,6 @@ import {
 import { ForSelectedCouncil } from './types';
 import { asExitedWorker, asLeader, asLeaderPost, asSlashedWorker, asTerminatedWorker, Block } from '@/types';
 
-// const arr1 = [{id: 1, name: 'John'}, {id: 2, name: 'Jane'},{id:5, name: 'test'}];
-// const arr2 = [{id: 1, name: 'John'}, {id: 3, name: 'Bob'},{id:4, name:"Jande"}];
-
-// const str1 = JSON.stringify(arr1);
-// const str2 = JSON.stringify(arr2);
-
-// if (str1!== str2) {
-//   const data1 = JSON.parse(str1);
-//   const data2 = JSON.parse(str2);
-//   const notSameData = data1.filter(item =>!data2.some(otherItem => item.id === otherItem.id));
-//   console.log('The data that is not the same is:', notSameData);
-// } else {
-//   console.log('The two arrays are the same');
-// }
 export function useLeader({ council }: ForSelectedCouncil) {
   const [leader, leaderQuery] = useLeadersLazyQuery();
   const [leaderTerminated, leaderTerminatedQuery] = useTerminatedLeadLazyQuery();
@@ -64,20 +50,48 @@ export function useLeader({ council }: ForSelectedCouncil) {
     fetchFireWorker({ variables });
   }, [council]);
 
-  const leaders = useMemo(() => leaderQuery.data?.openingFilledEvents.map(asLeader), [leaderQuery.data]);
+  const data = useMemo(() => leaderQuery.data?.openingFilledEvents.map(asLeader), [leaderQuery.data]);
 
   const leadersTerminated = useMemo(
-    () => leaderTerminatedQuery.data?.TerminatedLeaderEvent,
+    () => leaderTerminatedQuery.data?.terminatedLeaderEvents,
     [leaderTerminatedQuery.data]
   );
 
-  console.log(leaders);
+  const leadersOpening = data?.filter((i) => i.type === 'LEADER');
+
+  const terminatedLeader = leadersOpening?.filter((obj) => {
+    const obj3 = leadersTerminated?.find((obj2) => {
+      const openingDate = new Date(obj.createAt);
+      const terminatedDate = new Date(obj2.createdAt);
+      return (
+        obj2.groupId === obj.groupId &&
+        terminatedDate > openingDate &&
+        obj.leader[0].membership.handle === obj2.worker.membership.handle
+      );
+    });
+
+    if (obj3) {
+      return false;
+    } else {
+      return true;
+    }
+  });
 
   const leadersExited = useMemo(() => leaderExitedQuery.data?.workerExitedEvents, [leaderExitedQuery.data]);
 
-  // const leaders = leadersOpening?.filter(
-  //   (item) => !leadersTerminated?.some((otherItem) => item.leader === otherItem.worker.membership.handle)
-  // );
+  const leaders = terminatedLeader?.filter(
+    (item) =>
+      !leadersExited?.some((otherItem) => {
+        const exitedDate = new Date(otherItem.createdAt);
+        const openingDate = new Date(item.createAt);
+
+        return (
+          item.leader[0].membership.handle === otherItem.worker.membership.handle &&
+          item.groupId === otherItem.groupId &&
+          exitedDate > openingDate
+        );
+      })
+  );
 
   const postOfLeaders = useMemo(
     () => postOfLeaderQuery.data?.proposalDiscussionPosts.map(asLeaderPost),
@@ -103,8 +117,16 @@ export function useLeader({ council }: ForSelectedCouncil) {
       postOfLeaderQuery.loading ||
       terminatedQuery.loading ||
       exitedQuery.loading ||
-      slashedQuery.loading,
+      slashedQuery.loading ||
+      leaderTerminatedQuery.loading ||
+      leaderExitedQuery.loading,
     error:
-      leaderQuery.error || postOfLeaderQuery.error || terminatedQuery.error || exitedQuery.error || slashedQuery.error,
+      leaderQuery.error ||
+      postOfLeaderQuery.error ||
+      terminatedQuery.error ||
+      exitedQuery.error ||
+      slashedQuery.error ||
+      leaderTerminatedQuery.error ||
+      leaderExitedQuery.error,
   };
 }

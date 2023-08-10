@@ -1,5 +1,5 @@
 query getLead($where: OpeningFilledEventWhereInput) {
-  openingFilledEvents(where: $where) {
+  openingFilledEvents(where: $where, limit: 50000, orderBy: createdAt_DESC) {
     createdAt
     groupId
     workersHired {
@@ -14,7 +14,7 @@ query getLead($where: OpeningFilledEventWhereInput) {
 }
 
 query getTerminatedWorker($where: TerminatedWorkerEventWhereInput) {
-  terminatedWorkerEvents(where: $where) {
+  terminatedWorkerEvents(where: $where, orderBy: createdAt_DESC) {
     createdAt
     groupId
     group {
@@ -34,7 +34,7 @@ query getTerminatedWorker($where: TerminatedWorkerEventWhereInput) {
 }
 
 query getExitedWorker($where: WorkerExitedEventWhereInput) {
-  workerExitedEvents(where: $where) {
+  workerExitedEvents(where: $where, limit: 50000, orderBy: createdAt_DESC) {
     createdAt
     groupId
     group {
@@ -54,7 +54,7 @@ query getExitedWorker($where: WorkerExitedEventWhereInput) {
 }
 
 query getSlashWorker($where: WorkEntrySlashedEventWhereInput) {
-  workEntrySlashedEvents(where: $where) {
+  workEntrySlashedEvents(where: $where, orderBy: createdAt_DESC) {
     createdAt
     entry {
       worker {
@@ -65,7 +65,7 @@ query getSlashWorker($where: WorkEntrySlashedEventWhereInput) {
 }
 
 query getPostOfLead($where: ProposalDiscussionPostWhereInput) {
-  proposalDiscussionPosts(where: $where) {
+  proposalDiscussionPosts(where: $where, orderBy: createdAt_DESC) {
     #count, average, max
     createdAt
     author {

@@ -1,4 +1,3 @@
-
 import { useWorkingGroups } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { BudgetSpending, ElectedCouncil, GroupIdToGroupParam, isDefined, WorkingGroup } from '@/types';
@@ -18,50 +17,56 @@ export interface WorkerRewardTable {
   council?: ElectedCouncil;
 }
 
-
 function WorkderRewardTableBody({ Workers, council, budget }: WorkerRewardTableBody) {
-
-  const endAt = council?.endedAt ? (council.endedAt).timestamp : Date.now();
+  const endAt = council?.endedAt ? council.endedAt.timestamp : Date.now();
   const endAtDate = new Date(endAt);
-  const startAt = council?.electedAt ? council.electedAt.timestamp : new Date("1970-01-01T00:00:00.000Z")
+  const startAt = council?.electedAt ? council.electedAt.timestamp : new Date('1970-01-01T00:00:00.000Z');
   const startAtDate = new Date(startAt);
 
-  var rewardValue: number = 0
+  var rewardValue: number = 0;
 
   Workers.payouts.map((k) => {
-    const enter = new Date(k.createdAt ? k.createdAt : "1970-01-01T00:00:00.000Z")
+    const enter = new Date(k.createdAt ? k.createdAt : '1970-01-01T00:00:00.000Z');
 
     if (enter.getTime() > startAtDate.getTime() && enter.getTime() < endAtDate.getTime()) {
       rewardValue += Number(k.amount);
     }
-  })
+  });
 
   var budgetValue: number = 0;
 
   const bug = budget?.map((d) => {
-    if ((d.receive === Workers.membership.controllerAccount) ||
-      (d.receive === Workers.membership.rootAccount) ||
-      (d.receive === Workers.roleAccount) ||
-      (d.receive === Workers.rewardAccount)) {
+    if (
+      d.receive === Workers.membership.controllerAccount ||
+      d.receive === Workers.membership.rootAccount ||
+      d.receive === Workers.roleAccount ||
+      d.receive === Workers.rewardAccount
+    ) {
       budgetValue += Number(d.amount);
     }
     return (
-      ((d.receive === Workers.membership.controllerAccount) ||
-        (d.receive === Workers.membership.rootAccount) ||
-        (d.receive === Workers.roleAccount) ||
-        (d.receive === Workers.rewardAccount))
+      d.receive === Workers.membership.controllerAccount ||
+      d.receive === Workers.membership.rootAccount ||
+      d.receive === Workers.roleAccount ||
+      d.receive === Workers.rewardAccount
     );
   });
 
-
-
-
   return (
     <tr>
-      <TableBodyCol value={Workers.membership.handle} tooltip='Worker Handle' />
-      <TableBodyCol value={((rewardValue) / 10000000000).toFixed(0)} tooltip='Sum of WorkingGroups.payout for given handle during term' />
-      <TableBodyCol value={(Number(budgetValue) / 10000000000).toFixed(0)} tooltip='Sum of budgetSpendingEvent.amount for handle root, controller, role, reward accounts' />
-      <TableBodyCol value={((rewardValue + Number(budgetValue)) / 10000000000).toFixed(0)} tooltip='Sum of former two values' />
+      <TableBodyCol value={Workers.membership.handle} tooltip="Worker Handle" />
+      <TableBodyCol
+        value={(rewardValue / 10000000000).toFixed(0)}
+        tooltip="Sum of WorkingGroups.payout for given handle during term"
+      />
+      <TableBodyCol
+        value={(Number(budgetValue) / 10000000000).toFixed(0)}
+        tooltip="Sum of budgetSpendingEvent.amount for handle root, controller, role, reward accounts"
+      />
+      <TableBodyCol
+        value={((rewardValue + Number(budgetValue)) / 10000000000).toFixed(0)}
+        tooltip="Sum of former two values"
+      />
     </tr>
   );
 }
@@ -79,31 +84,30 @@ function removeDuplicates(jsonArray: WorkerMemberFragment[]): WorkerMemberFragme
 
 export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: WorkerRewardTable) {
   const members = worker.filter((data) => WorkingGroups.name === data.groupId);
-  if (!members) return <></>
+  if (!members) return <></>;
 
   const removeDupleMemeer: WorkerMemberFragment[] = removeDuplicates(members);
 
-  const header = [
-    { hd: "Worker" },
-    { hd: "Regular Reward" },
-    { hd: "Discretionary Reward" },
-    { hd: "Total Reward" },
-  ]
+  const header = [{ hd: 'Worker' }, { hd: 'Regular Reward' }, { hd: 'Discretionary Reward' }, { hd: 'Total Reward' }];
 
-  const headerHd = header.map(d => <TableHeaderCol value={d.hd} />)
+  const headerHd = header.map((d, i) => <TableHeaderCol key={i} value={d.hd} />);
 
   return (
-    <div >
-      <div className='text-2xl mt-5  '>{GroupIdToGroupParam[WorkingGroups.id]}</div>
-      <table className='border-collapse border border-slate-400  table-auto
-      w-full  mt-1'>
-        <thead className='bg-gray-800 rounded-sm border border-gray-400 text-lg '>
-          <tr>
-            {headerHd}
-          </tr>
+    <div>
+      <div className="mt-5 text-2xl  ">{GroupIdToGroupParam[WorkingGroups.id]}</div>
+      <table
+        className="mt-1 w-full table-auto  border-collapse
+      border  border-slate-400"
+      >
+        <thead className="rounded-sm border border-gray-400 bg-gray-800 text-lg ">
+          <tr>{headerHd}</tr>
         </thead>
         <tbody>
-          {isDefined(removeDupleMemeer) ? removeDupleMemeer.map((data, i) => <WorkderRewardTableBody key={i} Workers={data} council={council} budget={budget} />) : null}
+          {isDefined(removeDupleMemeer)
+            ? removeDupleMemeer.map((data, i) => (
+                <WorkderRewardTableBody key={i} Workers={data} council={council} budget={budget} />
+              ))
+            : null}
         </tbody>
       </table>
     </div>
@@ -122,13 +126,19 @@ export default function WorkerRewardsData() {
     return <Error />;
   }
   return (
-    <div className='bg-black mt-5 border-2 border-collapse shadow-md rounded shadow-gray-300'>
-      <div className='text-4xl mt-5 mb-2 font-bold '>Workers Rewards</div>
-      <hr className='border border-gray-600' />
+    <div className="mt-5 border-collapse rounded border-2 bg-black shadow-md shadow-gray-300">
+      <div className="mb-2 mt-5 text-4xl font-bold ">Workers Rewards</div>
+      <hr className="border border-gray-600" />
       {isDefined(workingGroups)
         ? workingGroups.map((data, i) => (
-          <WorkerRewardTable key={i} WorkingGroups={data} budget={budgetSpending!} worker={workers} council={council} />
-        ))
+            <WorkerRewardTable
+              key={i}
+              WorkingGroups={data}
+              budget={budgetSpending!}
+              worker={workers}
+              council={council}
+            />
+          ))
         : null}
     </div>
   );

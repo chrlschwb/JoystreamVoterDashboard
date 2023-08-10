@@ -12,12 +12,14 @@ export interface Leader {
   groupId: GroupIdName;
   leader: Array<LeaderNameFragment>;
   type: string;
+  createAt: any | undefined;
 }
 
 export const asLeader = (data: LeaderFragment): Leader => ({
   groupId: data.groupId,
   leader: data.workersHired,
   type: data.opening.type,
+  createAt: data.createdAt,
 });
 
 export interface LeaderPost {

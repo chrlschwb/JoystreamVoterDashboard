@@ -16,7 +16,7 @@ const SingleValue = (singleValueProps: SingleValueProps<ElectedCouncil>) => {
     data: { id },
   } = singleValueProps;
 
-  return <components.SingleValue {...singleValueProps}>{parseInt(id, 16)}</components.SingleValue>;
+  return <components.SingleValue {...singleValueProps}>{parseInt(id, 36) % 100}</components.SingleValue>;
 };
 
 const Option = (optionProps: OptionProps<ElectedCouncil>) => {

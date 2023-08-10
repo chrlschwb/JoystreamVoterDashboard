@@ -22,7 +22,7 @@ export type GetLeaderQuery = { __typename: 'Query', openingFilledEvents: Array<L
 
 export const GetLeaderDocument = gql`
 query getLead($where:OpeningFilledEventWhereInput){
-  openingFilledEvents(where:$where){
+  openingFilledEvents(where:$where,limit:50000){
     createdAt
     groupId
     workersHired{
@@ -118,7 +118,7 @@ export type GetTerminatedWorkerQuery = {
 
 export const GetTerminatedDocument = gql`
 query getTerminatedWorker($where: TerminatedWorkerEventWhereInput) {
-  terminatedWorkerEvents(where: $where) {
+  terminatedWorkerEvents(where: $where,  limit:50000) {
     createdAt
     groupId
     group{
@@ -184,7 +184,7 @@ export type GetExitedWorkerQuery = {
 
 export const GetExitedDocument = gql`
 query getExitedWorker($where: WorkerExitedEventWhereInput) {
-  workerExitedEvents(where: $where) {
+  workerExitedEvents(where: $where,limit:50000) {
     createdAt
     groupId
     group {
@@ -242,7 +242,7 @@ export type GetSlashedWorkerQuery = {
 
 export const GetSlashedDocument = gql`
 query getSlashWorker($where: WorkEntrySlashedEventWhereInput) {
-  workEntrySlashedEvents(where: $where) {
+  workEntrySlashedEvents(where: $where,limit:50000) {
     createdAt
     entry {
       worker {
@@ -275,7 +275,6 @@ export type GetTerminatedLeadQueryVariables = Types.Exact<{
 }>;
 
 export type TerminatedLeadagment = {
-  __typename: 'TerminatedLeaderEvent';
   createdAt: any | undefined;
   groupId: string;
   worker: {
@@ -286,15 +285,15 @@ export type TerminatedLeadagment = {
 };
 
 export type GetTerminatedLeadQuery = {
-  __typename: 'Query';
-  TerminatedLeaderEvent: Array<TerminatedLeadagment>
+  __typename: 'Query',
+  terminatedLeaderEvents: Array<TerminatedLeadagment>
 };
 
 export const GetTerminatedLeadDocument = gql`
   query getTerminatedLead($where: TerminatedLeaderEventWhereInput) {
-    terminatedLeaderEvents(where: $where) {
+    terminatedLeaderEvents(where: $where,limit:50000) {
+
       createdAt
-      __typename
       groupId
       worker {
         membership {
