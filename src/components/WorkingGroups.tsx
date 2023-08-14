@@ -46,12 +46,7 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
     }, 0);
 
   var budget: number = updateReward! - reward! - spendingEvent!;
-
-  var exited = exitedWorker
-    ?.filter((data) => workingGroup.name === data.groupId)
-    .reduce((a: number, b) => {
-      return isNaN(a + b.worker.length) ? 0 : a + b.worker.length;
-    }, 0);
+  console.log(updateReward, reward, spendingEvent);
 
   var filled = filledWorker
     ?.filter((data) => workingGroup.name === data.groupId)
@@ -59,14 +54,15 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
       return isNaN(a + b.workersHired.length) ? 0 : a + b.workersHired.length;
     }, 0);
 
-  var terminated = terminatedWorker
-    ?.filter((data) => workingGroup.name === data.groupId)
-    .reduce((a: number, b) => {
-      return isNaN(a + b.worker.length) ? 0 : a + b.worker.length;
-    }, 0);
+  var exited = exitedWorker?.filter((data) => workingGroup.name === data.groupId);
 
-  console.log(filled, exited, terminated);
-  var worker = filled! - exited! - terminated!;
+  var terminated = terminatedWorker?.filter((data) => workingGroup.name === data.groupId);
+
+  var worker = 0;
+
+  if (exited && terminated) {
+    worker = filled! - exited.length - terminated.length;
+  }
 
   return (
     <tr>

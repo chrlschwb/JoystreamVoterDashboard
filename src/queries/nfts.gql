@@ -3,8 +3,15 @@ query GetNftIssuedCount($where: NftIssuedEventWhereInput) {
     totalCount
   }
 }
+
 query GetNftSaleCount($where: NftBoughtEventWhereInput) {
   nftBoughtEventsConnection(where: $where) {
+    totalCount
+  }
+}
+
+query GetNftAuctionsAcount($where: AuctionWhereInput) {
+  auctionsConnection(where: $where) {
     totalCount
   }
 }

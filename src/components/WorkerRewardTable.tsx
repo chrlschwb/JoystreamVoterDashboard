@@ -8,6 +8,7 @@ export interface WorkerRewardTableBody {
   Workers: WorkerMemberFragment;
   council?: ElectedCouncil;
   budget: BudgetSpending[];
+  workingGroups: string;
 }
 
 export interface WorkerRewardTable {
@@ -17,7 +18,7 @@ export interface WorkerRewardTable {
   council?: ElectedCouncil;
 }
 
-function WorkderRewardTableBody({ Workers, council, budget }: WorkerRewardTableBody) {
+function WorkderRewardTableBody({ Workers, council, budget, workingGroups }: WorkerRewardTableBody) {
   const endAt = council?.endedAt ? council.endedAt.timestamp : Date.now();
   const endAtDate = new Date(endAt);
   const startAt = council?.electedAt ? council.electedAt.timestamp : new Date('1970-01-01T00:00:00.000Z');
@@ -35,22 +36,24 @@ function WorkderRewardTableBody({ Workers, council, budget }: WorkerRewardTableB
 
   var budgetValue: number = 0;
 
-  const bug = budget?.map((d) => {
-    if (
-      d.receive === Workers.membership.controllerAccount ||
-      d.receive === Workers.membership.rootAccount ||
-      d.receive === Workers.roleAccount ||
-      d.receive === Workers.rewardAccount
-    ) {
-      budgetValue += Number(d.amount);
-    }
-    return (
-      d.receive === Workers.membership.controllerAccount ||
-      d.receive === Workers.membership.rootAccount ||
-      d.receive === Workers.roleAccount ||
-      d.receive === Workers.rewardAccount
-    );
-  });
+  budget
+    ?.filter((data) => data.groupId === workingGroups)
+    .map((d) => {
+      if (
+        d.receive === Workers.membership.controllerAccount ||
+        d.receive === Workers.membership.rootAccount ||
+        d.receive === Workers.roleAccount ||
+        d.receive === Workers.rewardAccount
+      ) {
+        budgetValue += Number(d.amount);
+      }
+      return (
+        d.receive === Workers.membership.controllerAccount ||
+        d.receive === Workers.membership.rootAccount ||
+        d.receive === Workers.roleAccount ||
+        d.receive === Workers.rewardAccount
+      );
+    });
 
   return (
     <tr>
@@ -105,7 +108,13 @@ export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: Wo
         <tbody>
           {isDefined(removeDupleMemeer)
             ? removeDupleMemeer.map((data, i) => (
-                <WorkderRewardTableBody key={i} Workers={data} council={council} budget={budget} />
+                <WorkderRewardTableBody
+                  key={i}
+                  Workers={data}
+                  council={council}
+                  budget={budget}
+                  workingGroups={WorkingGroups.name}
+                />
               ))
             : null}
         </tbody>

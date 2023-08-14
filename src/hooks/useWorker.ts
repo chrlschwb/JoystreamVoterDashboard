@@ -1,6 +1,10 @@
 import { useEffect, useMemo } from 'react';
 
-import { useGetTerminatedWorkdersLazyQuery, useGetWorkedExitedLazyQuery, useGetOpeningFilledLazyQuery } from '@/queries';
+import {
+  useGetTerminatedWorkdersLazyQuery,
+  useGetWorkedExitedLazyQuery,
+  useGetOpeningFilledLazyQuery,
+} from '@/queries';
 import { asWorkingGroup } from '@/types';
 
 import { ForSelectedCouncil } from './types';
@@ -14,17 +18,16 @@ export function useWorker({ council }: ForSelectedCouncil) {
     if (!council) return;
 
     var variables = {
-      where: { createdAt_gt: "1970-01-01T00:00:00.000Z", createdAt_lt: council.endedAt?.timestamp },
+      where: { createdAt_gt: '2019-01-01T00:00:00.000Z', createdAt_lt: council.endedAt?.timestamp },
     };
-
 
     fetchTerminated({ variables });
     fetchExited({
-      variables
-    })
+      variables,
+    });
     fetchFilled({
-      variables
-    })
+      variables,
+    });
   }, [council]);
 
   const terminatedWorker = useMemo(() => terminatedQuery.data?.terminatedWorkerEvents, [terminatedQuery.data]);

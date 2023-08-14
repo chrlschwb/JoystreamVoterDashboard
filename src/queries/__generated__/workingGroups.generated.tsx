@@ -405,7 +405,7 @@ export type GetBudgetSpendingQueryVariables = Types.Exact<{
 
 export const GetBudgetSpendingDocument = gql`
 query GetBudgetSpending($where: BudgetSpendingEventWhereInput) {
-  budgetSpendingEvents(where: $where, limit:100000) {
+  budgetSpendingEvents(where: $where, limit:500000) {
     amount
     createdAt
     groupId

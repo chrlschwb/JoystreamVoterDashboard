@@ -24,7 +24,7 @@ export type GetOpeningFilledQuery = { __typename: 'Query', openingFilledEvents: 
 
 export const GetTerminatedWorkersDocument = gql`
 query getTerminatedWorkders($where:TerminatedWorkerEventWhereInput) {
-  terminatedWorkerEvents(where:$where) {
+  terminatedWorkerEvents(where:$where,limit:50000) {
 
         groupId
         workerId
@@ -53,7 +53,7 @@ export type GetTerminatedWorkersQueryResult = Apollo.QueryResult<GetTerminatedWo
 
 export const GetWorkerExitedDocument = gql`
 query getWorkerExited($where:WorkerExitedEventWhereInput) {
-  workerExitedEvents(where:$where) {
+  workerExitedEvents(where:$where, limit:50000) {
      createdAt
     groupId
     workerId
@@ -79,7 +79,7 @@ export type GetWorkedExitedQueryResult = Apollo.QueryResult<GetWorkedExitedQuery
 
 export const GetOpeningFilledDocument = gql`
 query getOpeningFilled($where:OpeningFilledEventWhereInput){
-  openingFilledEvents(where:$where){
+  openingFilledEvents(where:$where, limit:50000){
     createdAt
     groupId
     workersHired{

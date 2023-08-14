@@ -58,8 +58,7 @@ export type GetMintedTokenQueryResult = Apollo.QueryResult<GetMintedTokenCountQu
 export const GetWorkingGroupTokenDocument = gql`
 
 query workingGroupToken($where:BudgetUpdatedEventWhereInput) {
-  budgetUpdatedEvents(where:$where, limit:1000) {
-    
+  budgetUpdatedEvents(where:$where, limit:50000) {    
     groupId
     budgetChangeAmount
     inBlock
@@ -85,7 +84,7 @@ export type GetWorkingGroupTokenQueryResult = Apollo.QueryResult<GetWorkingGroup
 export const GetCouncilDocument = gql`
 
 query councilTokens ($where:BudgetRefillEventWhereInput){
-  budgetRefillEvents(where: $where, limit:1000) {
+  budgetRefillEvents(where: $where, limit:50000) {
     id
     balance
     inBlock
