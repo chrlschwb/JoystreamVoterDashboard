@@ -22,7 +22,7 @@ export type GetLeaderQuery = { __typename: 'Query', openingFilledEvents: Array<L
 
 export const GetLeaderDocument = gql`
 query getLead($where:OpeningFilledEventWhereInput){
-  openingFilledEvents(where:$where){
+  openingFilledEvents(where:$where,limit:50000){
     createdAt
     groupId
     workersHired{
@@ -118,7 +118,7 @@ export type GetTerminatedWorkerQuery = {
 
 export const GetTerminatedDocument = gql`
 query getTerminatedWorker($where: TerminatedWorkerEventWhereInput) {
-  terminatedWorkerEvents(where: $where) {
+  terminatedWorkerEvents(where: $where,  limit:50000) {
     createdAt
     groupId
     group{
@@ -184,7 +184,7 @@ export type GetExitedWorkerQuery = {
 
 export const GetExitedDocument = gql`
 query getExitedWorker($where: WorkerExitedEventWhereInput) {
-  workerExitedEvents(where: $where) {
+  workerExitedEvents(where: $where,limit:50000) {
     createdAt
     groupId
     group {
@@ -242,7 +242,7 @@ export type GetSlashedWorkerQuery = {
 
 export const GetSlashedDocument = gql`
 query getSlashWorker($where: WorkEntrySlashedEventWhereInput) {
-  workEntrySlashedEvents(where: $where) {
+  workEntrySlashedEvents(where: $where,limit:50000) {
     createdAt
     entry {
       worker {
@@ -266,3 +266,60 @@ export function useSlashedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetSlashedWorkerQueryHookResult = ReturnType<typeof useSlashedQuery>;
 export type GetslashedWorkerLazyQueryHookResult = ReturnType<typeof useSlashedLazyQuery>;
 export type GetSlashedWorkderQueryResult = Apollo.QueryResult<GetSlashedWorkerQuery, GetSlasheddWorkerQueryVariables>;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////               get leader terminated      /////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+export type GetTerminatedLeadQueryVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.TerminatedLeaderEventWhereInput>;
+}>;
+
+export type TerminatedLeadagment = {
+  createdAt: any | undefined;
+  groupId: string;
+  worker: {
+    membership: {
+      handle: string;
+    };
+  };
+};
+
+export type GetTerminatedLeadQuery = {
+  __typename: 'Query',
+  terminatedLeaderEvents: Array<TerminatedLeadagment>
+};
+
+export const GetTerminatedLeadDocument = gql`
+  query getTerminatedLead($where: TerminatedLeaderEventWhereInput) {
+    terminatedLeaderEvents(where: $where,limit:50000) {
+
+      createdAt
+      groupId
+      worker {
+        membership {
+          handle
+        }
+      }
+    }
+  }
+`;
+
+export function useTermiatedLeadQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetTerminatedLeadQuery, GetTerminatedLeadQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTerminatedLeadQuery, GetTerminatedLeadQueryVariables>(GetTerminatedLeadDocument, options);
+}
+
+
+export function useTerminatedLeadLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTerminatedLeadQuery, GetTerminatedLeadQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTerminatedLeadQuery, GetTerminatedLeadQueryVariables>(GetTerminatedLeadDocument, options);
+}
+
+
+export type GetTerminatedLeadQueryHookResult = ReturnType<typeof useTermiatedLeadQuery>;
+export type GetTerminatedLeadLazyQueryHookResult = ReturnType<typeof useTerminatedLeadLazyQuery>;
+export type GetTerminatedLeadQueryResult = Apollo.QueryResult<GetTerminatedLeadQuery, GetSlasheddWorkerQueryVariables>;

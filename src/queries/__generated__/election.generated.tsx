@@ -11,9 +11,9 @@ export type GetElectionsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetElectionsQuery = { __typename: 'Query', electionRounds: Array<{ __typename: 'ElectionRound', id: string, cycleId: number, endedAtBlock?: number | null, endedAtTime?: any | null, endedAtNetwork?: Types.Network | null, candidates: Array<{ __typename: 'Candidate', stake: string }>, castVotes: Array<{ __typename: 'CastVote', voteForId?: string | null }> }> };
+export type GetElectionsQuery = { __typename: 'Query', electionRounds: Array<{ __typename: 'ElectionRound', id: string, cycleId: number, endedAtBlock?: number | null, endedAtTime?: any | null, endedAtNetwork?: Types.Network | null, candidates: Array<{ __typename: 'Candidate', stake: string }>, castVotes: Array<{ __typename: 'CastVote', stake: string }> }> };
 
-export type ElectionRoundFieldsFragment = { __typename: 'ElectionRound', id: string, cycleId: number, endedAtBlock?: number | null, endedAtTime?: any | null, endedAtNetwork?: Types.Network | null, candidates: Array<{ __typename: 'Candidate', stake: string }>, castVotes: Array<{ __typename: 'CastVote', voteForId?: string | null }> };
+export type ElectionRoundFieldsFragment = { __typename: 'ElectionRound', id: string, cycleId: number, endedAtBlock?: number | null, endedAtTime?: any | null, endedAtNetwork?: Types.Network | null, candidates: Array<{ __typename: 'Candidate', stake: string }>, castVotes: Array<{ __typename: 'CastVote', stake?: string | null }> };
 
 export const ElectionRoundFieldsFragmentDoc = gql`
     fragment ElectionRoundFields on ElectionRound {
@@ -26,7 +26,7 @@ export const ElectionRoundFieldsFragmentDoc = gql`
     stake
   }
   castVotes {
-    voteForId
+    stake
   }
 }
     `;

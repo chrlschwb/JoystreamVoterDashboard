@@ -3,6 +3,7 @@ import * as Types from './baseTypes.generated';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
+
 export type GetNftIssuedCountQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.NftIssuedEventWhereInput>;
 }>;
@@ -53,6 +54,7 @@ export function useGetNftIssuedCountLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetNftIssuedCountQueryHookResult = ReturnType<typeof useGetNftIssuedCountQuery>;
 export type GetNftIssuedCountLazyQueryHookResult = ReturnType<typeof useGetNftIssuedCountLazyQuery>;
 export type GetNftIssuedCountQueryResult = Apollo.QueryResult<GetNftIssuedCountQuery, GetNftIssuedCountQueryVariables>;
+
 export const GetNftSaleCountDocument = gql`
     query GetNftSaleCount($where: NftBoughtEventWhereInput) {
   nftBoughtEventsConnection(where: $where) {
@@ -88,3 +90,31 @@ export function useGetNftSaleCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetNftSaleCountQueryHookResult = ReturnType<typeof useGetNftSaleCountQuery>;
 export type GetNftSaleCountLazyQueryHookResult = ReturnType<typeof useGetNftSaleCountLazyQuery>;
 export type GetNftSaleCountQueryResult = Apollo.QueryResult<GetNftSaleCountQuery, GetNftSaleCountQueryVariables>;
+
+
+////get auctions count
+export type GetNftAuctionsCountQueryVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.AuctionWhereInput>;
+}>;
+
+export type GetNftAuctionsCountQuery = { __typename: 'Query', auctionsConnection: { __typename: 'AuctionConnection', totalCount: number } };
+
+export const GetNftAuctionsCountDocument = gql`
+  query GetNftAuctionsAcount($where: AuctionWhereInput) {
+    auctionsConnection(where: $where) {
+      totalCount
+    }
+  }
+`;
+    
+export function useGetNftAuctionsCountQuery(baseOptions?: Apollo.QueryHookOptions<GetNftAuctionsCountQuery, GetNftAuctionsCountQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return Apollo.useQuery<GetNftAuctionsCountQuery, GetNftAuctionsCountQueryVariables>(GetNftAuctionsCountDocument, options);
+}
+export function useGetNftAuctionsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNftAuctionsCountQuery, GetNftAuctionsCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useLazyQuery<GetNftAuctionsCountQuery, GetNftAuctionsCountQueryVariables>(GetNftAuctionsCountDocument, options);
+      }
+export type GetNftAuctionsCountQueryHookResult = ReturnType<typeof useGetNftAuctionsCountQuery>;
+export type GetNftAuctionsCountLazyQueryHookResult = ReturnType<typeof useGetNftAuctionsCountLazyQuery>;
+export type GetNftAuctionsCountQueryResult = Apollo.QueryResult<GetNftAuctionsCountQuery, GetNftAuctionsCountQueryVariables>;

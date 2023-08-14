@@ -1,4 +1,3 @@
-
 import { useProposals, useLeader, useWorkingGroups, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
 import { GroupIdToGroupParam, isDefined, Leader } from '@/types';
@@ -6,9 +5,10 @@ import { Spinner, TableBodyCol, TableHeaderCol } from './common';
 
 export interface LeaderProps {
   Leader: Leader;
+  key: number;
 }
 
-export function Leaders({ Leader }: LeaderProps) {
+export function Leaders({ Leader, key }: LeaderProps) {
   const { council } = useSelectedCouncil();
   const { postOfLeaders, terminated, exited, slashed, hair } = useLeader({ council });
   const { proposals } = useProposals({ council });
@@ -18,8 +18,8 @@ export function Leaders({ Leader }: LeaderProps) {
   if (Leader.type !== 'LEADER') return <></>;
 
   return (
-    <tr>
-      <TableBodyCol value={GroupIdToGroupParam[Leader.groupId]} tooltip='groupId of openingFilledEvents' />
+    <tr key={key}>
+      <TableBodyCol value={GroupIdToGroupParam[Leader.groupId]} tooltip="groupId of openingFilledEvents" />
       {Leader.leader.map((d) => {
         const createProposals = proposals?.filter((data) => data.creator === d.membership.handle).length;
 
@@ -62,18 +62,36 @@ export function Leaders({ Leader }: LeaderProps) {
 
         return (
           <>
-            <TableBodyCol value={d.membership.handle} tooltip='WorkersHired.membership.handle of openingFilledEvents' />
-            <TableBodyCol value={createProposals?.toString() ?? "-"} tooltip='lenghth of WorkersHired.membership.handle of openingFilledEvents === creator.handle of proposals' />
-            <TableBodyCol value={spending.toFixed(0)} tooltip='sum of amount of rewardPaidEvent and amount of budgetSpendingEvent' />
-            <TableBodyCol value={hairValue?.toString() ?? "-"} tooltip='length of noLead state of openingFilledEvent of openingFilledEvents' />
-            <TableBodyCol value={fireValue.toString()} tooltip='length of terminatedWorkerEvents add lenth of workerExitedEvents' />
-            <TableBodyCol value={slashValue?.toString() ?? "-"} tooltip='length of workEntrySlashedEvents' />
-            <TableBodyCol value={forumText?.length.toString() ?? "-"} tooltip='length of forumPostsConnection' />
-            <TableBodyCol value={forumAverageValue.toFixed(0)} tooltip='average length of text of forumPostsConnection ' />
-            <TableBodyCol value={forumMaxvalue.toString()} tooltip='maximum length of text of forumPostsConnection ' />
-            <TableBodyCol value={postText?.length.toString() ?? "-"} tooltip='length of proposalDiscussionPosts' />
-            <TableBodyCol value={postAverageValue.toFixed(0)} tooltip='average length of text of proposalDiscussionPosts' />
-            <TableBodyCol value={postMaxValue.toFixed(0)} tooltip='Max value of text of proposalDiscussionPosts ' />
+            <TableBodyCol value={d.membership.handle} tooltip="WorkersHired.membership.handle of openingFilledEvents" />
+            <TableBodyCol
+              value={createProposals?.toString() ?? '-'}
+              tooltip="lenghth of WorkersHired.membership.handle of openingFilledEvents === creator.handle of proposals"
+            />
+            <TableBodyCol
+              value={spending.toFixed(0)}
+              tooltip="sum of amount of rewardPaidEvent and amount of budgetSpendingEvent"
+            />
+            <TableBodyCol
+              value={hairValue?.toString() ?? '-'}
+              tooltip="length of noLead state of openingFilledEvent of openingFilledEvents"
+            />
+            <TableBodyCol
+              value={fireValue.toString()}
+              tooltip="length of terminatedWorkerEvents add lenth of workerExitedEvents"
+            />
+            <TableBodyCol value={slashValue?.toString() ?? '-'} tooltip="length of workEntrySlashedEvents" />
+            <TableBodyCol value={forumText?.length.toString() ?? '-'} tooltip="length of forumPostsConnection" />
+            <TableBodyCol
+              value={forumAverageValue.toFixed(0)}
+              tooltip="average length of text of forumPostsConnection "
+            />
+            <TableBodyCol value={forumMaxvalue.toString()} tooltip="maximum length of text of forumPostsConnection " />
+            <TableBodyCol value={postText?.length.toString() ?? '-'} tooltip="length of proposalDiscussionPosts" />
+            <TableBodyCol
+              value={postAverageValue.toFixed(0)}
+              tooltip="average length of text of proposalDiscussionPosts"
+            />
+            <TableBodyCol value={postMaxValue.toFixed(0)} tooltip="Max value of text of proposalDiscussionPosts " />
           </>
         );
       })}
@@ -86,9 +104,7 @@ export default function LeaderOverView() {
 
   const { loading, error, leaders } = useLeader({ council });
   if (loading) {
-    return (
-      <Spinner />
-    );
+    return <Spinner />;
   }
 
   if (error) {
@@ -100,34 +116,36 @@ export default function LeaderOverView() {
   }
 
   const header = [
-    { hd: "WorkingGroup" },
-    { hd: "Leader" },
-    { hd: "Created Proposal" },
-    { hd: "WorkingGroup Spending" },
-    { hd: "Hire" },
-    { hd: "Fire" },
-    { hd: "Slash" },
-    { hd: "Forum Posts" },
-    { hd: "Average Post Length" },
-    { hd: "Max Post Length" },
-    { hd: "Proposal Posts" },
-    { hd: "Average Post Length" },
-    { hd: "Max Post Length" },
-  ]
+    { hd: 'WorkingGroup' },
+    { hd: 'Leader' },
+    { hd: 'Created Proposal' },
+    { hd: 'WorkingGroup Spending' },
+    { hd: 'Hire' },
+    { hd: 'Fire' },
+    { hd: 'Slash' },
+    { hd: 'Forum Posts' },
+    { hd: 'Average Post Length' },
+    { hd: 'Max Post Length' },
+    { hd: 'Proposal Posts' },
+    { hd: 'Average Post Length' },
+    { hd: 'Max Post Length' },
+  ];
 
-  const headerHd = header.map(d => <TableHeaderCol value={d.hd} />)
+  const headerHd = header.map((d, i) => <TableHeaderCol key={i} value={d.hd} />);
   return (
-    <div className='bg-black mt-5 border-2 border-collapse shadow-md rounded shadow-gray-300'>
-      <div className='text-3xl mt-5 mb-2 font-bold '>Lead OverView</div>
-      <table className='mt-3 border-collapse border border-slate-400  table-auto
-      w-full '>
-        <thead className='bg-gray-800 rounded-sm border border-gray-400 text-lg '>
-          <tr>
-            {headerHd}
-          </tr>
+    <div className="mt-5 border-collapse rounded border-2 bg-black shadow-md shadow-gray-300">
+      <div className="mb-2 mt-5 text-3xl font-bold ">Lead OverView</div>
+      <table
+        className="mt-3 w-full table-auto border-collapse  border
+      border-slate-400 "
+      >
+        <thead className="rounded-sm border border-gray-400 bg-gray-800 text-lg ">
+          <tr>{headerHd}</tr>
         </thead>
-        <tbody className='text-center'>{isDefined(leaders) ? leaders.map((data, i) => <Leaders key={i} Leader={data} />) : null}</tbody>
+        <tbody className="text-center">
+          {isDefined(leaders) ? leaders.map((data, i) => <Leaders key={i} Leader={data} />) : null}
+        </tbody>
       </table>
-    </div >
+    </div>
   );
 }
