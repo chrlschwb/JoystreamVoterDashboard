@@ -93,7 +93,7 @@ export default function Home() {
     },
     {
       subtitle: 'sold',
-      tooltip: 'totalCount of nftBoughtEventsConnection',
+      tooltip: 'totalCount of nftBoughtEventsConnection add totalCount of auctionsConnection',
       value: sale,
     },
     {
@@ -206,7 +206,7 @@ export default function Home() {
     },
     {
       subtitle: 'minted',
-      tooltip: ' sum balance of budgetRefillEvents',
+      tooltip: 'requestFundedEvents + rewardPaymentEvents + budgetUpdatedEvents',
       value: Number(minted?.toFixed(0)),
     },
     {
