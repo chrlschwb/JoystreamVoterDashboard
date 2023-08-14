@@ -215,7 +215,7 @@ export default function Home() {
       value: Number(councildata?.toFixed(0)),
     },
     {
-      subtitle: 'WG spending',
+      subtitle: 'WG mint',
       tooltip: ' sum budgetChangeAmount of budgetUpdatedEvents ',
       value: Number(proposal?.toFixed(0)),
     },
