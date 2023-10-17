@@ -3,6 +3,7 @@ import * as Types from './baseTypes.generated';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
+
 export type GetForumThreadsCountQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.ForumThreadWhereInput>;
 }>;

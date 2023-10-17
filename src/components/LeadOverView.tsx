@@ -1,16 +1,20 @@
 import { useProposals, useLeader, useWorkingGroups, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { GroupIdToGroupParam, isDefined, Leader } from '@/types';
+import { ExitedWorker, GroupIdToGroupParam, isDefined, Leader, LeaderPost, SlashedWorker, TerminatedWorker } from '@/types';
 import { Spinner, TableBodyCol, TableHeaderCol } from './common';
 
 export interface LeaderProps {
   Leader: Leader;
   key: number;
+  postOfLeaders: LeaderPost[] | undefined,
+  terminated: TerminatedWorker[] | undefined,
+  exited: ExitedWorker[] | undefined,
+  slashed: SlashedWorker[] | undefined,
+  hair: Leader[] | undefined
 }
 
-export function Leaders({ Leader, key }: LeaderProps) {
+export function Leaders({ Leader, key, postOfLeaders, terminated, exited, slashed, hair }: LeaderProps) {
   const { council } = useSelectedCouncil();
-  const { postOfLeaders, terminated, exited, slashed, hair } = useLeader({ council });
   const { proposals } = useProposals({ council });
   const { forumPost } = usePostTokenData({ council });
   const { budgetSpending, rewardToken } = useWorkingGroups({ council });
@@ -102,18 +106,7 @@ export function Leaders({ Leader, key }: LeaderProps) {
 export default function LeaderOverView() {
   const { council } = useSelectedCouncil();
 
-  const { loading, error, leaders } = useLeader({ council });
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return (
-      <div className="sub_panel loading" style={{ marginTop: '20px' }}>
-        error
-      </div>
-    );
-  }
+  const { loading, error, leaders, postOfLeaders, terminated, exited, slashed, hair } = useLeader({ council });
 
   const header = [
     { hd: 'WorkingGroup' },
@@ -142,9 +135,9 @@ export default function LeaderOverView() {
         <thead className="rounded-sm border border-gray-400 bg-gray-800 text-lg ">
           <tr>{headerHd}</tr>
         </thead>
-        <tbody className="text-center">
-          {isDefined(leaders) ? leaders.map((data, i) => <Leaders key={i} Leader={data} />) : null}
-        </tbody>
+        {loading || error ? <Spinner /> : <tbody className="text-center">
+          {isDefined(leaders) ? leaders.map((data, i) => <Leaders key={i} Leader={data} postOfLeaders={postOfLeaders} terminated={terminated} exited={exited} slashed={slashed} hair={hair} />) : null}
+        </tbody>}
       </table>
     </div>
   );

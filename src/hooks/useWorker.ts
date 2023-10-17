@@ -5,7 +5,6 @@ import {
   useGetWorkedExitedLazyQuery,
   useGetOpeningFilledLazyQuery,
 } from '@/queries';
-import { asWorkingGroup } from '@/types';
 
 import { ForSelectedCouncil } from './types';
 

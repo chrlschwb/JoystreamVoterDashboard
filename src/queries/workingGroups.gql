@@ -210,3 +210,16 @@ query GetBudgetSpending($where: BudgetSpendingEventWhereInput) {
     }
   }
 }
+
+query GetWorkingGroup($where: WorkingGroupWhereInput) {
+  workingGroups(where: $where) {
+    id
+    name
+    workers {
+      id
+      membership {
+        handle
+      }
+    }
+  }
+}

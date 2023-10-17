@@ -8,7 +8,6 @@ import { asFroumPost } from '@/types';
 export function usePostTokenData({ council }: ForSelectedCouncil) {
   const [fetchCreated, createdQuery] = useGetForumPostsCountLazyQuery();
   const [totalCreated, totalQuery] = useGetForumPostsCountLazyQuery();
-  const [fetchForumPost, forumPostQuery] = useGetForumPostsCountLazyQuery();
 
   useEffect(() => {
     if (!council) return;
@@ -19,9 +18,6 @@ export function usePostTokenData({ council }: ForSelectedCouncil) {
     fetchCreated({
       variables,
     });
-    fetchForumPost({
-      variables
-    })
 
     variables = {
       where: { createdAt_gt: '2013-01-10T22:50:12.000Z', createdAt_lt: council.endedAt?.timestamp },
@@ -32,17 +28,20 @@ export function usePostTokenData({ council }: ForSelectedCouncil) {
     });
   }, [council]);
 
-  const created = useMemo(() => createdQuery.data?.forumPostsConnection.totalCount, [createdQuery.data]);
-  const total = useMemo(() => totalQuery.data?.forumPostsConnection.totalCount, [totalQuery.data]);
-  const forum = useMemo(() => totalQuery.data?.forumPosts, [totalQuery.data]);
-  const forumPost = useMemo(() => forumPostQuery.data?.forumPostsConnection.edges.map(asFroumPost), [forumPostQuery.data]);
+  const buffer1 = useMemo(() => createdQuery.data, [createdQuery.data]);
+  const created = buffer1?.forumPostsConnection.totalCount;
+  const forumPost = buffer1?.forumPostsConnection.edges.map(asFroumPost);
+
+  const buffer2 = useMemo(() => totalQuery.data, [totalQuery.data]);
+  const total = buffer2?.forumPostsConnection.totalCount;
+  const forum = buffer2?.forumPosts;
 
   return {
     created,
     total,
     forum,
     forumPost,
-    loading: createdQuery.loading,
-    error: createdQuery.error,
+    loading: createdQuery.loading || totalQuery.loading,
+    error: createdQuery.error || totalQuery.error,
   };
 }

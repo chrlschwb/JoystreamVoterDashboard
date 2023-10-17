@@ -1,20 +1,20 @@
 import { useWorkingGroups } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { BudgetSpending, ElectedCouncil, GroupIdToGroupParam, isDefined, WorkingGroup } from '@/types';
-import { WorkerMemberFragment } from '@/queries';
+import { BudgetSpending, ElectedCouncil, GroupIdToGroupParam, isDefined, WorkingGroupName } from '@/types';
+import { WorkersFragment } from '@/queries';
 import { Error, Spinner, TableBodyCol, TableHeaderCol } from './common';
 
 export interface WorkerRewardTableBody {
-  Workers: WorkerMemberFragment;
+  Workers: WorkersFragment;
   council?: ElectedCouncil;
   budget: BudgetSpending[];
   workingGroups: string;
 }
 
 export interface WorkerRewardTable {
-  WorkingGroups: WorkingGroup;
+  WorkingGroups: WorkingGroupName;
   budget: BudgetSpending[];
-  worker: WorkerMemberFragment[];
+  worker: WorkersFragment[];
   council?: ElectedCouncil;
 }
 
@@ -74,7 +74,7 @@ function WorkderRewardTableBody({ Workers, council, budget, workingGroups }: Wor
   );
 }
 
-function removeDuplicates(jsonArray: WorkerMemberFragment[]): WorkerMemberFragment[] {
+function removeDuplicates(jsonArray: WorkersFragment[]): WorkersFragment[] {
   const uniqueNames = new Set<string>();
   return jsonArray.filter((item) => {
     if (!uniqueNames.has(item.membership.handle)) {
@@ -87,9 +87,10 @@ function removeDuplicates(jsonArray: WorkerMemberFragment[]): WorkerMemberFragme
 
 export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: WorkerRewardTable) {
   const members = worker.filter((data) => WorkingGroups.name === data.groupId);
+
   if (!members) return <></>;
 
-  const removeDupleMemeer: WorkerMemberFragment[] = removeDuplicates(members);
+  const removeDupleMemeer: WorkersFragment[] = removeDuplicates(members);
 
   const header = [{ hd: 'Worker' }, { hd: 'Regular Reward' }, { hd: 'Discretionary Reward' }, { hd: 'Total Reward' }];
 
@@ -108,14 +109,14 @@ export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: Wo
         <tbody>
           {isDefined(removeDupleMemeer)
             ? removeDupleMemeer.map((data, i) => (
-                <WorkderRewardTableBody
-                  key={i}
-                  Workers={data}
-                  council={council}
-                  budget={budget}
-                  workingGroups={WorkingGroups.name}
-                />
-              ))
+              <WorkderRewardTableBody
+                key={i}
+                Workers={data}
+                council={council}
+                budget={budget}
+                workingGroups={WorkingGroups.name}
+              />
+            ))
             : null}
         </tbody>
       </table>
@@ -126,28 +127,20 @@ export function WorkerRewardTable({ WorkingGroups, budget, worker, council }: Wo
 export default function WorkerRewardsData() {
   const { council } = useSelectedCouncil();
   const { workingGroups, loading, error, budgetSpending, workers } = useWorkingGroups({ council });
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <Error />;
-  }
   return (
     <div className="mt-5 border-collapse rounded border-2 bg-black shadow-md shadow-gray-300">
       <div className="mb-2 mt-5 text-4xl font-bold ">Workers Rewards</div>
       <hr className="border border-gray-600" />
-      {isDefined(workingGroups)
+      {(loading || error) ? <Spinner /> : isDefined(workingGroups)
         ? workingGroups.map((data, i) => (
-            <WorkerRewardTable
-              key={i}
-              WorkingGroups={data}
-              budget={budgetSpending!}
-              worker={workers}
-              council={council}
-            />
-          ))
+          <WorkerRewardTable
+            key={i}
+            WorkingGroups={data}
+            budget={budgetSpending!}
+            worker={workers}
+            council={council}
+          />
+        ))
         : null}
     </div>
   );

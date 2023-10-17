@@ -158,15 +158,15 @@ export default function Home() {
       tooltip: ' sum candidates.stake, cast.stake of electionRounds',
       value: isDefined(election)
         ? Number(
-            sumStakes(election.candidates)
-              .toString()
-              .slice(0, length - 10)
-          ) +
-          Number(
-            sumStakes(election.castVotes)
-              .toString()
-              .slice(0, length - 10)
-          )
+          sumStakes(election.candidates)
+            .toString()
+            .slice(0, length - 10)
+        ) +
+        Number(
+          sumStakes(election.castVotes)
+            .toString()
+            .slice(0, length - 10)
+        )
         : 0,
     },
   ];
