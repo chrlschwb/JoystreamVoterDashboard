@@ -1,12 +1,8 @@
-import React from 'react';
-
-import { useThreadData } from '@/hooks';
-import { useSelectedCouncil } from '@/store';
+import { Tooltip } from 'react-tooltip'
 import { isDefined } from '@/types';
-import Tooltip from './Tooltip';
 import Spinner from './Spinner';
-import Error from './Error';
 
+import './style.css'
 export interface SubPannelProps {
   title: string;
   data: PanelProps[];
@@ -19,18 +15,19 @@ export interface PanelProps {
   tooltip: string;
   subtitle: string;
 }
+
 export default function SubPannel({ data, loading, error, title }: SubPannelProps) {
+  const items = data.map((d: PanelProps, i) => {
+    return (<div key={i}>
 
-
-
-  const items = data.map((d: PanelProps) => {
-    return (
-      <Tooltip content={d.tooltip} position="top">
-        <div className="text-center">
-          <div className="border-b border-gray-800">{isDefined(d.value) ? (isNaN(d.value) ? '-' : d.value) : '-'}</div>
-          <div className="mt-1">{d.subtitle}</div>
-        </div>
+      <Tooltip id={d.tooltip} place={'top'} className='tooltip'>
+        {d.tooltip}
       </Tooltip>
+      <div className="text-center" data-tooltip-id={d.tooltip}>
+        <div className="border-b border-gray-800">{isDefined(d.value) ? (isNaN(d.value) ? '-' : d.value) : '-'}</div>
+        <div className="mt-1">{d.subtitle}</div>
+      </div>
+    </div>
     );
   });
 

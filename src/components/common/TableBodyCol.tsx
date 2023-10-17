@@ -1,5 +1,5 @@
-import Tooltip from './Tooltip';
-
+import { Tooltip } from 'react-tooltip'
+import './style.css'
 export interface TableBodyColProps {
     value: string,
     tooltip?: string
@@ -15,9 +15,10 @@ export default function TableBodyCol({ value, tooltip, link }: TableBodyColProps
                     target="_blank"
                     rel="noreferrer"
                 >
-                    <Tooltip content={tooltip} position="top">
-                        <div className='text-gray-400'>{value}</div>
+                    <Tooltip id={tooltip} place="top" className='tooltip'>
+                        {tooltip}
                     </Tooltip>
+                    <div className='text-gray-400' data-tooltip-id={tooltip}>{value}</div>
                 </a>
                 :
                 <a
@@ -27,9 +28,15 @@ export default function TableBodyCol({ value, tooltip, link }: TableBodyColProps
                 >
                     <div className='border-b text-gray-400'>{value}</div>
                 </a>
-                : tooltip ? <Tooltip content={tooltip} position="top">
-                    <div className='text-gray-400'>{value}</div>
-                </Tooltip> : <div className='border-b text-gray-400'>{value}</div>}
+                : tooltip ? <>
+                    <Tooltip id={tooltip} place="top" className='tooltip'>
+                        {tooltip}
+                    </Tooltip>
+                    <div className='text-gray-400' data-tooltip-id={tooltip} >{value}</div>
+                </>
+                    :
+                    <div className='border-b text-gray-400'>{value}</div>}
+
 
         </td>
     )

@@ -63,7 +63,7 @@ export function GroupWorkers({ workingGroup, workingTokens, rewardToken, budgetS
       />
       <TableBodyCol value={debt?.toFixed(0) ?? ''} tooltip="sum debt amount of workers in workinggroup" />
 
-      <td>{isDefined(workingGroup) ? workingGroup.budget?.div(new BN(10000000000)).toString() : ""}</td>
+      <TableBodyCol value={isDefined(workingGroup) ? String(workingGroup.budget?.div(new BN(10000000000)).toString()) : ""} tooltip="sum budget of workinggroup" />
     </tr>
   );
 }
@@ -71,14 +71,13 @@ export function GroupWorkers({ workingGroup, workingTokens, rewardToken, budgetS
 export default function WorkingGroups() {
   const { council } = useSelectedCouncil();
   const { workingGroups, loading, error, workingTokens, rewardToken, budgetSpending, workers } = useWorkingGroups({ council });
-
-  console.log(workers)
   const header = [
     { hd: 'Working Groups' },
     { hd: 'Workers' },
     { hd: 'Minted Tokens during Term' },
     { hd: 'Budget at end of Term ' },
     { hd: 'Current debt' },
+    { hd: 'Workgin Groups budgets' },
   ];
 
   const headerHd = header.map((d, i) => <TableHeaderCol key={i} value={d.hd} />);

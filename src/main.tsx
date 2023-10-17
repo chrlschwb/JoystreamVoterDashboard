@@ -2,6 +2,7 @@ import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import 'react-tooltip/dist/react-tooltip.css'
 
 import App from './App';
 import Providers from './Providers';

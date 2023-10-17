@@ -5,7 +5,7 @@ export interface TableHeaderColProps {
 
 export default function TableHeaderCol({ value, key }: TableHeaderColProps) {
   return (
-    <td key={key} className="p-1 text-gray-400">
+    <td className="p-1 text-gray-400">
       <div>{value}</div>
     </td>
   );
