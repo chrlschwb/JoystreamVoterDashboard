@@ -41,7 +41,7 @@ export const GetForumPostsCountDocument = gql`
       }
     }
   }
-  forumPosts (limit:10000){
+  forumPosts (limit:100000){
     createdAt
     author{
       handle

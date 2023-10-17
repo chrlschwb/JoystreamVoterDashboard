@@ -1,20 +1,19 @@
-import React from 'react';
-
 import { useWorkingGroups, useWorker } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { GroupIdToGroupParam, isDefined, WorkingGroup } from '@/types';
+import { BudgetSpending, GroupIdToGroupParam, isDefined, RewardPaid, WorkingGroupName } from '@/types';
 import { Error, Spinner, TableBodyCol, TableHeaderCol } from './common';
+import { BudgetUpdatedEventsFragment, WorkersFragment } from '@/queries';
+import { BN } from 'bn.js';
 export interface WorkingGroupProps {
-  workingGroup: WorkingGroup;
+  workingGroup: WorkingGroupName;
+  workingTokens: BudgetUpdatedEventsFragment[] | undefined,
+  rewardToken: RewardPaid[] | undefined,
+  budgetSpending: BudgetSpending[] | undefined,
+  workers: WorkersFragment[]
+  workingGroups: WorkingGroupName[] | undefined
 }
 
-export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
-  const { council } = useSelectedCouncil();
-  const { workingTokens, rewardToken, workingTokensRewardNow, budgetSpending, workingGroups } = useWorkingGroups({
-    council,
-  });
-  const { exitedWorker, filledWorker, terminatedWorker } = useWorker({ council });
-
+export function GroupWorkers({ workingGroup, workingTokens, rewardToken, budgetSpending, workingGroups, workers }: WorkingGroupProps) {
   var token = workingTokens
     ?.filter((data) => workingGroup.name === data.groupId)
     .reduce((a: number, b) => {
@@ -27,7 +26,7 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
       return a + b.amount / 10000000000;
     }, 0);
 
-  var updateReward = workingTokensRewardNow
+  var updateReward = workingTokens
     ?.filter((data) => workingGroup.name === data.groupId)
     .reduce((a: number, b) => {
       return a + b.budgetChangeAmount / 10000000000;
@@ -46,23 +45,8 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
     }, 0);
 
   var budget: number = updateReward! - reward! - spendingEvent!;
-  console.log(updateReward, reward, spendingEvent);
 
-  var filled = filledWorker
-    ?.filter((data) => workingGroup.name === data.groupId)
-    .reduce((a: number, b) => {
-      return isNaN(a + b.workersHired.length) ? 0 : a + b.workersHired.length;
-    }, 0);
-
-  var exited = exitedWorker?.filter((data) => workingGroup.name === data.groupId);
-
-  var terminated = terminatedWorker?.filter((data) => workingGroup.name === data.groupId);
-
-  var worker = 0;
-
-  if (exited && terminated) {
-    worker = filled! - exited.length - terminated.length;
-  }
+  var worker = workers.filter(d => d.groupId === workingGroup.name).length;
 
   return (
     <tr>
@@ -79,23 +63,16 @@ export function GroupWorkers({ workingGroup }: WorkingGroupProps) {
       />
       <TableBodyCol value={debt?.toFixed(0) ?? ''} tooltip="sum debt amount of workers in workinggroup" />
 
-      {/* <td>{isDefined(workingGroup) ? workingGroup.budget?.div(new BN(10000000000)).toString() : ""}</td> */}
+      <td>{isDefined(workingGroup) ? workingGroup.budget?.div(new BN(10000000000)).toString() : ""}</td>
     </tr>
   );
 }
 
 export default function WorkingGroups() {
   const { council } = useSelectedCouncil();
-  const { workingGroups, loading, error } = useWorkingGroups({ council });
+  const { workingGroups, loading, error, workingTokens, rewardToken, budgetSpending, workers } = useWorkingGroups({ council });
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <Error />;
-  }
-
+  console.log(workers)
   const header = [
     { hd: 'Working Groups' },
     { hd: 'Workers' },
@@ -116,8 +93,8 @@ export default function WorkingGroups() {
           <tr>{headerHd}</tr>
         </thead>
         <tbody>
-          {isDefined(workingGroups)
-            ? workingGroups.map((workingGroup) => <GroupWorkers key={workingGroup.id} workingGroup={workingGroup} />)
+          {(loading || error) ? <Spinner /> : isDefined(workingGroups)
+            ? workingGroups.map((workingGroup) => <GroupWorkers key={workingGroup.id} workingGroup={workingGroup} workingTokens={workingTokens} rewardToken={rewardToken} budgetSpending={budgetSpending} workers={workers} workingGroups={workingGroups} />)
             : null}
         </tbody>
       </table>

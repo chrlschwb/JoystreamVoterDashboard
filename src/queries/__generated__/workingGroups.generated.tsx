@@ -7,228 +7,99 @@ import { GroupIdName } from '@/types';
 
 const defaultOptions = {} as const;
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////           working groups         ///////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-export type SpendingRewardFieldsFragment = { __typename: "RewardPaidEvent", createdAt: any | undefined, deletedAt: any | undefined, amount: number, worker: { membership: { handle: string } } };
-export type SpendingBudgetFieldsFragment = { __typename: "BudgetSpendingEvent", createdAt: any | undefined, deletedAt: any | undefined, amount: number };
-export type HireOpeningFillFieldsFragment = { __typename: "OpeningFilledEvent", createdAt: any | undefined, deletedAt: any | undefined, workersHired: { membership: { handle: string } } };
-export type FireTerminatedFieldsFragment = { __typename: "TerminatedWorkerEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
-export type FireExitedFieldsFragment = { __typename: "WorkerExitedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
-export type SlashStakeFieldsFragment = { __typename: "StakeSlashedEvent", createdAt: any | undefined, deletedAt: any | undefined, worker: { membership: { handle: string } } };
-export type WorkerMemberFragment = {
-  __typename: 'Worker',
-  membership: { handle: string, rootAccount: string, controllerAccount: string },
-  stake: string,
-  rewardAccount: string,
-  roleAccount: string,
-  groupId: string,
-  payouts: Array<WorkerPaymentType>,
-  entry: { createdAt: any | undefined },
-  terminatedworkereventworker: Array<{ createdAt: any | undefined }>,
-  workerexitedeventworker: Array<{ createdAt: any | undefined }>
-};
+export type GetWorkingGroupsNameQueryVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.WorkingGroupWhereInput>;
+}>;
 
+export type FireTerminatedFieldsFragment = { __typename: "TerminatedWorkerEvent", createdAt: any | undefined };
+export type FireExitedFieldsFragment = { __typename: "WorkerExitedEvent", createdAt: any | undefined };
 export type WorkerPaymentType = {
   amount: number, paymentType: string, createdAt: any | undefined
 }
+export type WorkersFragment = {
+  id: string,
+  stake: number,
+  groupId: string,
+  membership: {
+    handle: string, rootAccount: string, controllerAccount: string
+  }
+  payouts: Array<WorkerPaymentType>,
+  entry: { createdAt: any | undefined },
+  terminatedworkereventworker: Array<FireTerminatedFieldsFragment>,
+  workerexitedeventworker: Array<FireExitedFieldsFragment>
+  rewardAccount: string,
+  roleAccount: string,
+}
 
-export type WorkingGroupFieldsFragment = {
-  __typename: 'WorkingGroup',
-  id: GroupIdName,
-  name: string,
-  budget: string,
-  metadata?: {
-    __typename: 'WorkingGroupMetadata',
-    about?: string | null,
-    description?: string | null,
-    status?: string | null,
-    statusMessage?: string | null
-  } | null,
-  rewardpaideventgroup: Array<SpendingRewardFieldsFragment>,
-  budgetspendingeventgroup: Array<SpendingBudgetFieldsFragment>,
-  openingfilledeventgroup: Array<HireOpeningFillFieldsFragment>,
-  terminatedworkereventgroup: Array<FireTerminatedFieldsFragment>,
-  workerexitedeventgroup: Array<FireExitedFieldsFragment>,
-  stakeslashedeventgroup: Array<SlashStakeFieldsFragment>,
-  workers: Array<WorkerMemberFragment>,
-  leader: { __typename: 'Worker', membershipId: string, isActive: boolean, membership: { handle: string } } | null
+export type GetWorkingGroupsNameQuery = {
+  __typename: 'Query', workingGroups: Array<WorkingGroupsNameFragment>
 };
 
-export const SpendingRewardFieldsFragmentDoc = gql`
-fragment SpendingRewardFields on RewardPaidEvent {
-  createdAt
-  deletedAt
-    amount
-    worker{
-      membership{
-        handle
-      }
-    }
-} 
-`
-export const SpendingBudgetFieldsFragmentDoc = gql`
-fragment SpendingBudgetFields on BudgetSpendingEvent {
-  createdAt
-  deletedAt
-   amount
+export type WorkingGroupsNameFragment = {
+  __typename: 'WorkingGroup',
+  id: GroupIdName, name: string, workers: Array<WorkersFragment>,
+  budget: string
 }
-`
-export const HireOpeningFillFieldsFragmentDoc = gql`
-fragment HireOpeningFillFields on OpeningFilledEvent{
-  createdAt
-  deletedAt
-   workersHired{
+
+export const GetWrokingGroupsNameDocument = gql`
+  query GetWorkingGroup($where: WorkingGroupWhereInput){
+    workingGroups(where: $where) {
+      id
+      name
+      budget
+      workers{
+        payouts{ createdAt amount paymentType}
+        groupId
+        stake
+        id
+        entry{
+          createdAt
+        }
+        terminatedworkereventworker{
+          createdAt
+          __typename
+        }
+        workerexitedeventworker{
+          createdAt
+          __typename
+        }
         membership{
+          controllerAccount
+          rootAccount
           handle
         }
+        roleAccount
+        rewardAccount
       }
-}
-`
-export const FireTerminatedFieldsFragmentDoc = gql`
-fragment FireTerminatedWorkerFields on TerminatedWorkerEvent {
-  createdAt
-  deletedAt
-  worker{
-        membership{
-          handle
-        }
-      }
-}
-`
-export const FireExitedFieldsFragmentDoc = gql`
-fragment FireWorkeredExitedFields on WorkerExitedEvent{
-  createdAt
-  deletedAt
-  worker{
-        membership{
-          handle
-        }
-      }
-}
-`
-export const SlashStakeFieldsFragmentDoc = gql`
-fragment SlashStakeFields on StakeSlashedEvent{
-  createdAt
-  deletedAt
-      worker{
-        membership{
-          handle
-        }
-      }
-}
-`
-
-export type GetWorkingGroupsQueryVariables = Types.Exact<{
-  where?: Types.InputMaybe<Types.WorkingGroupWhereInput>;
-  orderBy?: Types.InputMaybe<Array<Types.WorkingGroupOrderByInput> | Types.WorkingGroupOrderByInput>;
-  offset?: Types.InputMaybe<Types.Scalars['Int']>;
-  limit?: Types.InputMaybe<Types.Scalars['Int']>;
-}>;
-
-export type GetWorkingGroupsQuery = { __typename: 'Query', workingGroups: Array<WorkingGroupFieldsFragment> };
-
-export const WorkingGroupMetadataFieldsFragmentDoc = gql`
-    fragment WorkingGroupMetadataFields on WorkingGroupMetadata {
-  about
-  description
-  status
-  statusMessage
-}
-    `;
-
-export const WorkingGroupFieldsFragmentDoc = gql`
-    fragment WorkingGroupFields on WorkingGroup {
-  id
-  name
-  budget
-  metadata {
-    ...WorkingGroupMetadataFields
-  }
-  workers {
-    groupId
-    roleAccount
-    rewardAccount
-    membership{
-      handle
-      rootAccount
-      controllerAccount
-    }
-    payouts{
-      amount
-      paymentType
-      createdAt
-    }
-    entry{
-      createdAt
-    }
-    terminatedworkereventworker{
-      createdAt
-    }
-    workerexitedeventworker{
-      createdAt
-    }
-    stake
-    missingRewardAmount
-  }
-  rewardpaideventgroup{
-    ...SpendingRewardFields
-  }
-  budgetspendingeventgroup{
-    ...SpendingBudgetFields
-  }
-  openingfilledeventgroup{
-    ...HireOpeningFillFields
-  }
-  terminatedworkereventgroup{
-    ...FireTerminatedWorkerFields
-  }
-  workerexitedeventgroup{
-    ...FireWorkeredExitedFields
-  }
-  stakeslashedeventgroup{
-    ...SlashStakeFields
-  }
-  leader {
-    membershipId
-    isActive
-    membership {
-      handle
+      __typename
     }
   }
-}
-    ${WorkingGroupMetadataFieldsFragmentDoc}
-    ${SpendingRewardFieldsFragmentDoc}
-    ${SpendingBudgetFieldsFragmentDoc}
-    ${HireOpeningFillFieldsFragmentDoc}
-    ${FireTerminatedFieldsFragmentDoc}
-    ${FireExitedFieldsFragmentDoc}
-    ${SlashStakeFieldsFragmentDoc}
     `;
 
 
-export const GetWorkingGroupsDocument = gql`
-query GetWorkingGroups($where: WorkingGroupWhereInput, $orderBy: [WorkingGroupOrderByInput!], $offset: Int, $limit: Int) {
-workingGroups(where: $where, orderBy: $orderBy, offset: $offset, limit: $limit) {
-...WorkingGroupFields
-}
-}
-${WorkingGroupFieldsFragmentDoc}`;
-
-
-
-export function useGetWorkingGroupsQuery(baseOptions?: Apollo.QueryHookOptions<GetWorkingGroupsQuery, GetWorkingGroupsQueryVariables>) {
+export function useGetWorkingGroupsNameQuery(baseOptions?: Apollo.QueryHookOptions<GetWorkingGroupsNameQuery, GetWorkingGroupsNameQueryVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GetWorkingGroupsQuery, GetWorkingGroupsQueryVariables>(GetWorkingGroupsDocument, options);
+  return Apollo.useQuery<GetWorkingGroupsNameQuery, GetWorkingGroupsNameQueryVariables>(GetWrokingGroupsNameDocument, options);
 }
-export function useGetWorkingGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorkingGroupsQuery, GetWorkingGroupsQueryVariables>) {
+export function useGetWorkingGroupsNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorkingGroupsNameQuery, GetWorkingGroupsNameQueryVariables>) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<GetWorkingGroupsQuery, GetWorkingGroupsQueryVariables>(GetWorkingGroupsDocument, options);
+  return Apollo.useLazyQuery<GetWorkingGroupsNameQuery, GetWorkingGroupsNameQueryVariables>(GetWrokingGroupsNameDocument, options);
 }
-export type GetWorkingGroupsQueryHookResult = ReturnType<typeof useGetWorkingGroupsQuery>;
-export type GetWorkingGroupsLazyQueryHookResult = ReturnType<typeof useGetWorkingGroupsLazyQuery>;
-export type GetWorkingGroupsQueryResult = Apollo.QueryResult<GetWorkingGroupsQuery, GetWorkingGroupsQueryVariables>;
+export type GetWorkingGroupsNameQueryHookResult = ReturnType<typeof useGetWorkingGroupsNameQuery>;
+export type GetWorkingGroupsNameLazyQueryHookResult = ReturnType<typeof useGetWorkingGroupsNameLazyQuery>;
+export type GetWorkingGroupsNameQueryResult = Apollo.QueryResult<GetWorkingGroupsNameQuery, GetWorkingGroupsNameQueryVariables>;
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////           working groups         ///////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////               workers              /////////////////////////////////

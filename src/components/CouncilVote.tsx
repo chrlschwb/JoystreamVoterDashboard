@@ -1,10 +1,7 @@
-import React from 'react';
-
 import { useProposals, useCouncilMembers, usePostTokenData } from '@/hooks';
 import { useSelectedCouncil } from '@/store';
-import { isDefined, CouncilMember, propsEquals } from '@/types';
-import { compactAddLength, isNumber } from '@polkadot/util';
-import { Error, Spinner, TableBodyCol, TableHeaderCol } from './common';
+import { isDefined, CouncilMember } from '@/types';
+import { Spinner, TableBodyCol, TableHeaderCol } from './common';
 
 export interface CouncilMemberProps {
   CouncilMember: CouncilMember;
@@ -16,7 +13,6 @@ export function Member({ CouncilMember }: CouncilMemberProps) {
   const { forum } = usePostTokenData({ council });
 
   var buffer: number = 0;
-  var textLenght: Array<number>;
   var approve: number = 0;
   var rejected: number = 0;
   var abstained: number = 0;
@@ -35,13 +31,6 @@ export function Member({ CouncilMember }: CouncilMemberProps) {
       .reduce((a: number, b) => {
         return a + b.text.length;
       }, buffer);
-
-    textLenght = data.posts
-      ?.filter((d) => d.author.handle === CouncilMember.handler)
-      .map((d) => {
-        maxPostLength = maxPostLength < d.text.length ? d.text.length : maxPostLength;
-        return d.text.length;
-      });
   });
 
   const ignored = proposals?.length! - approve! - rejected! - abstained!;
@@ -91,13 +80,7 @@ export default function CouncilVote() {
   const { council } = useSelectedCouncil();
 
   const { loading, error, member } = useCouncilMembers({ council });
-  if (loading) {
-    return <Spinner />;
-  }
 
-  if (error) {
-    return <Error />;
-  }
   const header = [
     { hd: 'Council Member' },
     { hd: 'Approved Proposals' },
@@ -121,7 +104,7 @@ export default function CouncilVote() {
         <thead className="rounded-sm border border-gray-400 bg-gray-800 text-lg ">
           <tr>{headerHd}</tr>
         </thead>
-        <tbody>{isDefined(member) ? member.map((data, i) => <Member key={i} CouncilMember={data} />) : null}</tbody>
+        {loading || error ? <Spinner /> : <tbody>{isDefined(member) ? member.map((data, i) => <Member key={i} CouncilMember={data} />) : null}</tbody>}
       </table>
     </div>
   );

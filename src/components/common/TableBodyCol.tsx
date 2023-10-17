@@ -16,7 +16,6 @@ export default function TableBodyCol({ value, tooltip, link }: TableBodyColProps
                     rel="noreferrer"
                 >
                     <Tooltip content={tooltip} position="top">
-
                         <div className='text-gray-400'>{value}</div>
                     </Tooltip>
                 </a>

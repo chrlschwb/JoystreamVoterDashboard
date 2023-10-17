@@ -8,14 +8,6 @@ export default function ListProposal() {
   const { council } = useSelectedCouncil();
   const { proposals, loading, error } = useProposals({ council });
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <Error />;
-  }
-
   const header = [{ hd: 'title' }, { hd: 'creation date' }, { hd: 'link' }, { hd: 'status' }];
 
   const headerHd = header.map((d, i) => <TableHeaderCol key={i} value={d.hd} />);
@@ -31,22 +23,22 @@ export default function ListProposal() {
           <tr>{headerHd}</tr>
         </thead>
         <tbody>
-          {isDefined(proposals)
+          {loading || error ? <Spinner /> : isDefined(proposals)
             ? proposals.map((proposal) => (
-                <tr key={proposal.id}>
-                  <TableBodyCol value={proposal.title} tooltip="title of proposals" />
-                  <TableBodyCol
-                    value={moment(proposal.createdAt).format('YYYY/MM/DD hh:mm:ss')}
-                    tooltip="createAt of proposals"
-                  />
-                  <TableBodyCol
-                    value="Link to porposal"
-                    tooltip={'https://pioneerapp.xyz/#/proposals/preview/${proposal.id} of proposals'}
-                    link={`https://pioneerapp.xyz/#/proposals/preview/${proposal.id}`}
-                  />
-                  <TableBodyCol value={proposal.status} tooltip="status of proposals" />
-                </tr>
-              ))
+              <tr key={proposal.id}>
+                <TableBodyCol value={proposal.title} tooltip="title of proposals" />
+                <TableBodyCol
+                  value={moment(proposal.createdAt).format('YYYY/MM/DD hh:mm:ss')}
+                  tooltip="createAt of proposals"
+                />
+                <TableBodyCol
+                  value="Link to porposal"
+                  tooltip={'https://pioneerapp.xyz/#/proposals/preview/${proposal.id} of proposals'}
+                  link={`https://pioneerapp.xyz/#/proposals/preview/${proposal.id}`}
+                />
+                <TableBodyCol value={proposal.status} tooltip="status of proposals" />
+              </tr>
+            ))
             : null}
         </tbody>
       </table>

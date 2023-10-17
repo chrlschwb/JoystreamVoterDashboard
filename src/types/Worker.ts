@@ -1,5 +1,4 @@
-
-import { WorkerFieldsFragment, WorkerMemberFragment } from '@/queries';
+import { WorkerFieldsFragment } from '@/queries';
 
 import { Block } from './common';
 import { asMember, Member } from './Member';
@@ -8,7 +7,6 @@ export interface WorkerBaseInfo {
   member: Member;
   applicationId: string;
 }
-
 
 export interface PastWorker {
   id: string;
@@ -29,8 +27,3 @@ export const asWorkerBaseInfo = (fields: WorkerFieldsFragment): WorkerBaseInfo =
   member: asMember(fields.membership),
   applicationId: fields.applicationId,
 });
-
-
-
-
-

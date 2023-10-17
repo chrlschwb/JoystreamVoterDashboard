@@ -18,7 +18,10 @@ export type GetCouncilTokenVariables = Types.Exact<{
 
 export type GetMintedTokenCountQuery = { __typename: 'Query', rewardPaymentEvents: Array<{ __typename: 'RewardPaymentEvent', paidBalance: number }> };
 
-export type GetWorkingGroupTokenQuery = { __typename: 'Query', budgetUpdatedEvents: Array<{ __typename: 'BudgetUpdatedEvent', budgetChangeAmount: number, groupId: string }> };
+export type BudgetUpdatedEventsFragment = {
+  __typename: 'BudgetUpdatedEvent', budgetChangeAmount: number, groupId: string
+}
+export type GetWorkingGroupTokenQuery = { __typename: 'Query', budgetUpdatedEvents: Array<BudgetUpdatedEventsFragment> };
 
 export type GetCouncilTokenQuery = { __typename: 'Query', budgetRefillEvents: Array<{ __typename: 'BudgetRefillEvent', balance: number }> };
 
