@@ -24,60 +24,6 @@ export const GroupIdToGroupParam = {
 
 export type GroupIdName = keyof typeof GroupIdToGroupParam;
 
-// export interface WorkingGroup {
-//   id: GroupIdName;
-//   name: string;
-//   image?: string;
-//   about?: string;
-//   leadId?: string;
-//   status?: string;
-//   description?: string;
-//   statusMessage?: string;
-//   budget?: BN;
-//   averageStake?: BN;
-//   isActive?: boolean;
-//   leader?: string;
-//   spendingReward?: number;
-//   spendingBudget?: number;
-//   hire?: number;
-//   fireExited?: number;
-//   fireTerminated?: number;
-//   slashed?: number;
-//   workers: WorkerMemberFragment[];
-//   debt: number;
-// }
-
-// export const asWorkingGroup = (group: WorkingGroupFieldsFragment): WorkingGroup => {
-//   return {
-//     id: group.id,
-//     image: undefined,
-//     name: group.name,
-//     about: group.metadata?.about ?? '',
-//     description: group.metadata?.description ?? '',
-//     status: group.metadata?.status ?? '',
-//     statusMessage: group.metadata?.statusMessage ?? '',
-//     budget: new BN(group.budget),
-//     averageStake: getAverageStake(group.workers),
-//     leadId: group.leader?.membershipId,
-//     isActive: group.leader?.isActive ?? false,
-//     leader: group.leader?.membership.handle,
-//     slashed: group.stakeslashedeventgroup.length,
-//     fireExited: group.workerexitedeventgroup.length,
-//     fireTerminated: group.terminatedworkereventgroup.length,
-//     hire: group.openingfilledeventgroup.length,
-//     spendingBudget: group.budgetspendingeventgroup.reduce((a: number, b) => {
-//       return a + Number(b.amount);
-//     }, 0),
-//     spendingReward: group.rewardpaideventgroup.reduce((a: number, b) => {
-//       return a + Number(b.amount);
-//     }, 0),
-//     workers: group.workers,
-//     debt: group.workers.reduce((a: number, b) => {
-//       return a + Number(b.stake);
-//     }, 0),
-//   };
-// };
-
 export interface WorkingGroupName {
   id: GroupIdName;
   name: string;
@@ -116,7 +62,7 @@ export const asBudgetSpending = (data: BudgetSpendingFragment): BudgetSpending =
   amount: data.amount,
   create: data.createdAt,
   groupId: data.groupId,
-  leader: data.group.leader.membership.handle,
+  leader: data.group.leader?.membership.handle,
   receive: data.reciever,
 });
 
@@ -139,11 +85,11 @@ export interface RewardBudgetWorker {
 export const asRewardPaid = (data: RewardPaidFragment): RewardPaid => ({
   amount: data.amount,
   groupId: data.groupId,
-  leader: data.group.leader.membership.handle,
+  leader: data.group.leader?.membership.handle,
   create: data.createdAt,
-  worker: data.worker.membership.handle,
+  worker: data.worker?.membership.handle,
   rewardAccount: data.worker.rewardAccount,
   roleAccount: data.worker.roleAccount,
-  rootAccount: data.worker.membership.rootAccount,
-  controlAccount: data.worker.membership.controllerAccount,
+  rootAccount: data.worker?.membership.rootAccount,
+  controlAccount: data.worker?.membership.controllerAccount,
 });
